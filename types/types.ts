@@ -1,3 +1,7 @@
+export interface ArrowBackProps {
+  iSize: number;
+}
+
 interface ClassementJournee {
   "@id": string;
   "@type": string;
