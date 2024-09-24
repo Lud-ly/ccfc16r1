@@ -10,7 +10,13 @@ export const Header = () => {
       style={{ backgroundColor: "rgb(9, 87, 159)" }}
     >
       <Link href={"/"}>
-        <Image src="/images/logo.png" alt="logo ccfc" width={60} height={60} />
+        <Image
+          src="/images/logo.png"
+          alt="logo ccfc"
+          width={70}
+          height={70}
+          priority
+        />
       </Link>
       <p className="text-white text-xl font-semibold">U16 Régional 1</p>
     </div>

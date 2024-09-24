@@ -36,6 +36,7 @@ const ClassementComponent = () => {
   const [classements, setClassements] = useState<ClassementJournee[]>([]);
   const [logos, setLogos] = useState<{ [key: string]: string }>({});
   const [lastUpdated, setLastUpdated] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchClassements = async () => {
@@ -81,8 +82,10 @@ const ClassementComponent = () => {
         }, {} as { [key: string]: string });
 
         setLogos(logosMap);
+        setIsLoading(false);
       } catch (error) {
         console.error("Erreur lors de la récupération des classements:", error);
+        setIsLoading(false);
       }
     };
 
@@ -118,6 +121,14 @@ const ClassementComponent = () => {
       return "😕"; // Autre cas
     }
   };
+
+  if (isLoading) {
+    return (
+      <div>
+        <p className="text-center m-5">Chargement...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4">
@@ -159,12 +170,12 @@ const ClassementComponent = () => {
                         <Image
                           src={logos[clubId]}
                           alt={`Logo ${classement.equipe.short_name}`}
-                          width={30}
-                          height={30}
-                          className="mr-2"
+                          width={40}
+                          height={40}
+                          className="mr-2 w-auto h-auto"
                           onError={(e) => {
                             e.currentTarget.onerror = null;
-                            e.currentTarget.src = "/placeholder-logo.png";
+                            e.currentTarget.src = "/images/next.svg.png";
                           }}
                         />
                       ) : (
