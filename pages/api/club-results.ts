@@ -1,6 +1,5 @@
-// pages/api/club-results.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import {prisma} from '../../src/db/prisma';
+import { prisma } from '../../src/db/prisma';
 
 interface ClubResult {
   clubId: string;
@@ -22,16 +21,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         // Logique de tendance
         let trend = '';
 
-        // Si le club a gagné plus de matchs que perdu, tendance positive
         if (result.wonGamesCount > result.lostGamesCount) {
           trend = 'up';
-        }
-        // Si le club a perdu plus de matchs que gagné, tendance négative
-        else if (result.lostGamesCount > result.wonGamesCount) {
+        } else if (result.lostGamesCount > result.wonGamesCount) {
           trend = 'down';
-        }
-        // Si égalité entre victoires et défaites, ou beaucoup de nuls, tendance neutre
-        else if (result.wonGamesCount === result.lostGamesCount || result.drawGamesCount > 0) {
+        } else if (result.wonGamesCount === result.lostGamesCount || result.drawGamesCount > 0) {
           trend = 'neutral';
         }
 
@@ -56,4 +50,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
-

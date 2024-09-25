@@ -39,9 +39,8 @@ interface ClubResult {
   drawGamesCount: number;
   lostGamesCount: number;
   totalGames: number;
-  winRate: number;
-  drawRate: number;
-  lossRate: number;
+  goals_for_count: number;
+  goals_against_count: number;
   trend: string;
 }
 
@@ -69,6 +68,9 @@ const ClassementComponent = () => {
             : current.external_updated_at;
         }, "");
         setLastUpdated(latestUpdate);
+
+        // Vérifier et mettre à jour les données en base si nécessaire
+        await checkAndUpdateDatabase(latestUpdate, data["hydra:member"]);
 
         // Récupérer les logos pour chaque équipe
         const logoPromises = data["hydra:member"].map(async (classement) => {
@@ -131,6 +133,44 @@ const ClassementComponent = () => {
       hour: "2-digit",
       minute: "2-digit",
     });
+  };
+
+  // Fonction pour vérifier et mettre à jour les données dans la base Prisma
+  const checkAndUpdateDatabase = async (latestUpdate: string, classements: ClassementJournee[]) => {
+    try {
+      // Appel à un endpoint pour vérifier la date en base
+      const res = await fetch('/api/check-update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ latestUpdate }),
+      });
+
+      const data = await res.json();
+
+      // Si la date de la base est différente, mettre à jour les résultats et calculer la tendance
+      if (data.shouldUpdate) {
+        // Envoyer les classements pour les stocker en base
+        const saveRes = await fetch('/api/save-classement', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ classements }),
+        });
+
+        if (saveRes.ok) {
+          console.log("Classements mis à jour dans la base de données.");
+        } else {
+          console.error("Erreur lors de la mise à jour des classements.");
+        }
+      } else {
+        console.log("Les classements sont déjà à jour.");
+      }
+    } catch (error) {
+      console.error("Erreur lors de la vérification de la base de données:", error);
+    }
   };
 
   if (isLoading) {
