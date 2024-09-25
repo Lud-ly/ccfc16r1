@@ -6,7 +6,7 @@ const Footer = () => {
       <h6 className="text-xs text-white font-semibold tracking-wide text-right mb-1">
         &copy; {currentYear}
       </h6>
-      <p className="text-xs text-white text-right">Propulsé par L. Mouly</p>
+      <p className="text-xs text-white text-right">L. Mouly</p>
     </footer>
   );
 };
