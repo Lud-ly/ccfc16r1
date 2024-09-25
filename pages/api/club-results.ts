@@ -14,7 +14,16 @@ interface ClubResult {
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ClubResult[] | { error: string }>) {
   if (req.method === 'GET') {
     try {
-      const results = await prisma.clubResult.findMany();
+      const results = await prisma.clubResult.findMany({
+        select: {
+          clubId: true,
+          clubName: true, 
+          wonGamesCount: true,
+          drawGamesCount: true,
+          lostGamesCount: true,
+          updatedAt: true,
+        },
+      });
       const trends: ClubResult[] = results.map(result => {
         const totalGames = result.wonGamesCount + result.drawGamesCount + result.lostGamesCount;
 
