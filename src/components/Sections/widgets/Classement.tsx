@@ -227,7 +227,7 @@ const ClassementComponent = () => {
                           <FaArrowUp className="text-green-500" />
                         )}
                         {trend === 'neutral' && (
-                          <FaArrowRight className="text-orange-500" />
+                          <FaArrowRight className="text-orange-300" />
                         )}
                         {trend === 'down' && (
                           <FaArrowDown className="text-red-500" />
