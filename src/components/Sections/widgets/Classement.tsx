@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { FaArrowUp, FaArrowRight, FaArrowDown } from 'react-icons/fa'; // Import des icônes
+import { FaArrowUp, FaArrowRight, FaArrowDown } from 'react-icons/fa';
 
 interface ClubData {
   logo: string;
