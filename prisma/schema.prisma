@@ -13,8 +13,11 @@ datasource db {
 model ClubResult {
   id               Int       @id @default(autoincrement())
   clubId           String
+  clubName         String
   wonGamesCount    Int
   drawGamesCount   Int
   lostGamesCount   Int
+  goalsScored      Int       
+  goalsConceded    Int  
   updatedAt        DateTime  @updatedAt
 }

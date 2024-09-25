@@ -2,7 +2,7 @@ export interface ArrowBackProps {
   iSize: number;
 }
 
-interface ClassementJournee {
+interface ClassementDetails {
   "@id": string;
   "@type": string;
   season: number;
@@ -61,7 +61,7 @@ interface ApiResponse {
   "@context": string;
   "@id": string;
   "@type": string;
-  "hydra:member": ClassementJournee[];
+  "hydra:member": ClassementDetails[];
 }
 
 interface ClubData {

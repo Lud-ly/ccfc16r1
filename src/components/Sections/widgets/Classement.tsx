@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { FaArrowUp, FaArrowRight, FaArrowDown } from 'react-icons/fa'; // Import des icônes
 
-// Définitions des types
 interface ClubData {
   logo: string;
 }
@@ -32,11 +32,26 @@ interface ApiResponse {
   "hydra:member": ClassementJournee[];
 }
 
+interface ClubResult {
+  clubId: string;
+  clubName: string;
+  wonGamesCount: number;
+  drawGamesCount: number;
+  lostGamesCount: number;
+  totalGames: number;
+  winRate: number;
+  drawRate: number;
+  lossRate: number;
+  trend: string;
+}
+
 const ClassementComponent = () => {
   const [classements, setClassements] = useState<ClassementJournee[]>([]);
   const [logos, setLogos] = useState<{ [key: string]: string }>({});
   const [lastUpdated, setLastUpdated] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
+  const [results, setResults] = useState<ClubResult[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchClassements = async () => {
@@ -90,6 +105,21 @@ const ClassementComponent = () => {
     };
 
     fetchClassements();
+
+    const fetchClubResults = async () => {
+      try {
+        const response = await fetch('/api/club-results');
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data: ClubResult[] = await response.json();
+        setResults(data);
+      } catch (error) {
+        console.error('Error fetching club results:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClubResults();
   }, []);
 
   const formatDate = (dateString: string) => {
@@ -101,25 +131,6 @@ const ClassementComponent = () => {
       hour: "2-digit",
       minute: "2-digit",
     });
-  };
-
-  const calculateTendance = (classement: ClassementJournee) => {
-    const { won_games_count, draw_games_count, lost_games_count } = classement;
-    if (won_games_count >= 2) {
-      return "😊"; // Smiley vert
-    } else if (
-      lost_games_count >= 2 ||
-      (draw_games_count >= 1 && lost_games_count >= 1)
-    ) {
-      return "😡"; // Smiley rouge
-    } else if (draw_games_count >= 2) {
-      return "😐"; // Smiley orange
-    } else if (
-      lost_games_count >= 2 ||
-      (draw_games_count >= 1 && won_games_count >= 1)
-    ) {
-      return "😕"; // Autre cas
-    }
   };
 
   if (isLoading) {
@@ -148,7 +159,6 @@ const ClassementComponent = () => {
               <th className="p-2 text-right text-blue-800 font-bold text-lg">
                 Pts
               </th>
-              <th className="p-2 text-right">T</th>
               <th className="p-2 text-right">J</th>
               <th className="p-2 text-right">G</th>
               <th className="p-2 text-right">N</th>
@@ -156,12 +166,16 @@ const ClassementComponent = () => {
               <th className="p-2 text-right">BP</th>
               <th className="p-2 text-right">BC</th>
               <th className="p-2 text-right">Diff</th>
+              <th className="p-2 text-right">T</th>
             </tr>
           </thead>
           <tbody>
             {classements && classements.length > 0 ? (
               classements.map((classement) => {
                 const clubId = classement.equipe.club["@id"].split("/").pop();
+                const clubResult = results.find(result => result.clubId === clubId); // Trouver le résultat du club correspondant
+                const trend = clubResult ? clubResult.trend : 'neutral'; // Déterminer la tendance
+
                 return (
                   <tr key={classement["@id"]} className="border-b">
                     <td className="p-2">{classement.rank}</td>
@@ -183,11 +197,8 @@ const ClassementComponent = () => {
                       )}
                     </td>
                     <td className="p-2">{classement.equipe.short_name}</td>
-                    <td className="p-2 text-right text-blue-800 font-bold text-xl">
+                    <td className="py-2 text-right text-blue-800 font-bold text-xl">
                       {classement.point_count}
-                    </td>
-                    <td className="p-2 text-lg text-right">
-                      {calculateTendance(classement)}
                     </td>
                     <td className="p-2 text-right">
                       {classement.total_games_count}
@@ -207,13 +218,28 @@ const ClassementComponent = () => {
                     <td className="p-2 text-right">
                       {classement.goals_against_count}
                     </td>
-                    <td className="p-2 text-right">{classement.goals_diff}</td>
+                    <td className="p-2 text-right"> 
+                      {classement.goals_for_count - classement.goals_against_count}
+                    </td>
+                    <td className="p-2 text-right"> 
+                      <div className="inline-block p-2 bg-black rounded-full">
+                        {trend === 'up' && (
+                          <FaArrowUp className="text-green-500" />
+                        )}
+                        {trend === 'neutral' && (
+                          <FaArrowRight className="text-orange-500" />
+                        )}
+                        {trend === 'down' && (
+                          <FaArrowDown className="text-red-500" />
+                        )}
+                      </div>
+                    </td>
                   </tr>
                 );
               })
             ) : (
               <tr>
-                <td colSpan={11} className="p-4 text-left text-gray-600">
+                <td colSpan={12} className="p-4 text-left text-gray-600"> 
                   Pas de données disponibles,
                   <br /> vérifier votre connexion.
                 </td>
