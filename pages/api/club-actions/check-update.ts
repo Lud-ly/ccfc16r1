@@ -1,13 +1,16 @@
 // pages/api/check-update.ts
-import { NextApiRequest, NextApiResponse } from 'next';
-import {prisma} from '../../src/db/prisma';
+import { NextApiRequest, NextApiResponse } from "next";
+import { prisma } from "~/src/db/prisma";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const { latestUpdate } = req.body;
 
   // Récupérer la dernière date de mise à jour en base
   const lastUpdate = await prisma.clubResult.findFirst({
-    orderBy: { updatedAt: 'desc' }
+    orderBy: { updatedAt: "desc" },
   });
 
   // Si la date est différente, retourner une réponse indiquant qu'il faut mettre à jour

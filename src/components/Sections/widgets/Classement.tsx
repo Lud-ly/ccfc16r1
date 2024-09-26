@@ -110,7 +110,7 @@ const ClassementComponent = () => {
 
     const fetchClubResults = async () => {
       try {
-        const response = await fetch("/api/club-results");
+        const response = await fetch("/api/club-actions/club-results");
         if (!response.ok) throw new Error("Network response was not ok");
         const data: ClubResult[] = await response.json();
         console.log("fetchClubResults");
@@ -149,7 +149,7 @@ const ClassementComponent = () => {
         : "http://localhost:3000";
 
     try {
-      const res = await fetch(`${baseUrl}/api/check-update`, {
+      const res = await fetch(`${baseUrl}/api/club-actions/check-update`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -165,13 +165,16 @@ const ClassementComponent = () => {
       console.log("checkAndUpdateDatabase", data);
 
       if (data.shouldUpdate) {
-        const saveRes = await fetch(`${baseUrl}/api/save-classements`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ classements }),
-        });
+        const saveRes = await fetch(
+          `${baseUrl}/api/club-actions/save-classements`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ classements }),
+          }
+        );
 
         if (!saveRes.ok) {
           throw new Error("Erreur lors de la sauvegarde des classements.");
