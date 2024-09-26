@@ -70,7 +70,7 @@ const ClassementComponent = () => {
         setLastUpdated(latestUpdate);
 
         // Vérifier et mettre à jour les données en base si nécessaire
-        //await checkAndUpdateDatabase(latestUpdate, data["hydra:member"]);
+        await checkAndUpdateDatabase(latestUpdate, data["hydra:member"]);
 
         // Récupérer les logos pour chaque équipe
         const logoPromises = data["hydra:member"].map(async (classement) => {
@@ -107,6 +107,29 @@ const ClassementComponent = () => {
     };
 
     fetchClassements();
+
+    const fetchClubResults = async () => {
+      try {
+        const response = await fetch("/api/club-results/club-results", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) throw new Error("Network response was not ok");
+        const data: ClubResult[] = await response.json();
+        console.log("fetchClubResults");
+        console.log(data);
+        console.log("__________");
+        setResults(data);
+      } catch (error) {
+        console.error("Error fetching club results:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClubResults();
   }, []);
 
   const formatDate = (dateString: string) => {
@@ -118,6 +141,60 @@ const ClassementComponent = () => {
       hour: "2-digit",
       minute: "2-digit",
     });
+  };
+
+  // Fonction pour vérifier et mettre à jour les données dans la base Prisma
+  const checkAndUpdateDatabase = async (
+    latestUpdate: string,
+    classements: ClassementJournee[]
+  ) => {
+    const baseUrl =
+      process.env.NODE_ENV === "production"
+        ? "https://ccfc16r1.vercel.app"
+        : "http://localhost:3000";
+
+    try {
+      const res = await fetch(`${baseUrl}/api/check-update/check-update`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ latestUpdate }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Erreur lors de la vérification de la mise à jour.");
+      }
+
+      const data = await res.json();
+      console.log("checkAndUpdateDatabase", data);
+
+      if (data.shouldUpdate) {
+        const saveRes = await fetch(
+          `${baseUrl}/api/save-classements/save-classements`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ classements }),
+          }
+        );
+
+        if (!saveRes.ok) {
+          throw new Error("Erreur lors de la sauvegarde des classements.");
+        }
+
+        console.log("Classements mis à jour dans la base de données.");
+      } else {
+        console.log("Les classements sont déjà à jour.");
+      }
+    } catch (error) {
+      console.error(
+        "Erreur lors de la vérification de la base de données:",
+        error
+      );
+    }
   };
 
   if (isLoading) {
@@ -153,6 +230,7 @@ const ClassementComponent = () => {
               <th className="p-2 text-right">BP</th>
               <th className="p-2 text-right">BC</th>
               <th className="p-2 text-right">Diff</th>
+              <th className="p-2 text-right">T</th>
             </tr>
           </thead>
           <tbody>
@@ -209,6 +287,19 @@ const ClassementComponent = () => {
                     <td className="p-2 text-right">
                       {classement.goals_for_count -
                         classement.goals_against_count}
+                    </td>
+                    <td className="p-2 text-right">
+                      <div className="inline-block p-2 bg-black rounded-full">
+                        {trend === "up" && (
+                          <FaArrowUp className="text-green-500" />
+                        )}
+                        {trend === "neutral" && (
+                          <FaArrowRight className="text-orange-300" />
+                        )}
+                        {trend === "down" && (
+                          <FaArrowDown className="text-red-500" />
+                        )}
+                      </div>
                     </td>
                   </tr>
                 );
