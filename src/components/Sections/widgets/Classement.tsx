@@ -113,6 +113,9 @@ const ClassementComponent = () => {
         const response = await fetch("/api/club-results");
         if (!response.ok) throw new Error("Network response was not ok");
         const data: ClubResult[] = await response.json();
+        console.log("fetchClubResults");
+        console.log(data);
+        console.log("__________");
         setResults(data);
       } catch (error) {
         console.error("Error fetching club results:", error);
@@ -151,7 +154,9 @@ const ClassementComponent = () => {
       });
 
       const data = await res.json();
-
+      console.log("checkAndUpdateDatabase");
+      console.log(data);
+      console.log("__________");
       // Si la date de la base est différente, mettre à jour les résultats et calculer la tendance
       if (data.shouldUpdate) {
         // Envoyer les classements pour les stocker en base
@@ -162,7 +167,9 @@ const ClassementComponent = () => {
           },
           body: JSON.stringify({ classements }),
         });
-
+        console.log("save-classement");
+        console.log(saveRes);
+        console.log("__________");
         if (saveRes.ok) {
           console.log("Classements mis à jour dans la base de données.");
         } else {

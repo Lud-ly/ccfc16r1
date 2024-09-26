@@ -21,7 +21,8 @@ export default async function handler(
       const trends: ClubResult[] = results.map((result) => {
         const totalGames =
           result.wonGamesCount + result.drawGamesCount + result.lostGamesCount;
-
+        const goalsConceded = result.goalsConceded;
+        const goalsScored = result.goalsScored;
         // Logique de tendance
         let trend = "";
 
@@ -43,6 +44,8 @@ export default async function handler(
           drawGamesCount: result.drawGamesCount,
           lostGamesCount: result.lostGamesCount,
           totalGames,
+          goalsConceded,
+          goalsScored,
           trend,
         };
       });
