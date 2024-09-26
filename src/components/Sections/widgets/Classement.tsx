@@ -150,10 +150,6 @@ const ClassementComponent = () => {
 
     try {
       const res = await fetch(`${baseUrl}/api/club-actions/check-update`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({ latestUpdate }),
       });
 
@@ -168,10 +164,6 @@ const ClassementComponent = () => {
         const saveRes = await fetch(
           `${baseUrl}/api/club-actions/save-classements`,
           {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
             body: JSON.stringify({ classements }),
           }
         );
