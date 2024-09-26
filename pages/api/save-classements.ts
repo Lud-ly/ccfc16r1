@@ -1,6 +1,6 @@
 // pages/api/save-classements.ts
 import { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "../../src/db/prisma";
+import { prisma } from "~/src/db/prisma";
 
 export default async function handler(
   req: NextApiRequest,

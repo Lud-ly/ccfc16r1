@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "../../src/db/prisma";
+import { prisma } from "~/src/db/prisma";
 
 interface ClubResult {
   clubId: string;

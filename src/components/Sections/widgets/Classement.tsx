@@ -282,7 +282,6 @@ const ClassementComponent = () => {
                     </td>
                     <td className="p-2 text-right">
                       <div className="inline-block p-2 bg-black rounded-full">
-                        isLoading ?
                         {trend === "up" && (
                           <FaArrowUp className="text-green-500" />
                         )}
