@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { FaArrowUp, FaArrowRight, FaArrowDown } from 'react-icons/fa';
+import { FaArrowUp, FaArrowRight, FaArrowDown } from "react-icons/fa"; // Import des icônes
 
 interface ClubData {
   logo: string;
@@ -110,12 +110,12 @@ const ClassementComponent = () => {
 
     const fetchClubResults = async () => {
       try {
-        const response = await fetch('/api/club-results');
-        if (!response.ok) throw new Error('Network response was not ok');
+        const response = await fetch("/api/club-results");
+        if (!response.ok) throw new Error("Network response was not ok");
         const data: ClubResult[] = await response.json();
         setResults(data);
       } catch (error) {
-        console.error('Error fetching club results:', error);
+        console.error("Error fetching club results:", error);
       } finally {
         setLoading(false);
       }
@@ -136,13 +136,16 @@ const ClassementComponent = () => {
   };
 
   // Fonction pour vérifier et mettre à jour les données dans la base Prisma
-  const checkAndUpdateDatabase = async (latestUpdate: string, classements: ClassementJournee[]) => {
+  const checkAndUpdateDatabase = async (
+    latestUpdate: string,
+    classements: ClassementJournee[]
+  ) => {
     try {
       // Appel à un endpoint pour vérifier la date en base
-      const res = await fetch('/api/check-update', {
-        method: 'POST',
+      const res = await fetch("/api/check-update", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ latestUpdate }),
       });
@@ -152,10 +155,10 @@ const ClassementComponent = () => {
       // Si la date de la base est différente, mettre à jour les résultats et calculer la tendance
       if (data.shouldUpdate) {
         // Envoyer les classements pour les stocker en base
-        const saveRes = await fetch('/api/save-classement', {
-          method: 'POST',
+        const saveRes = await fetch("/api/save-classements", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ classements }),
         });
@@ -169,7 +172,10 @@ const ClassementComponent = () => {
         console.log("Les classements sont déjà à jour.");
       }
     } catch (error) {
-      console.error("Erreur lors de la vérification de la base de données:", error);
+      console.error(
+        "Erreur lors de la vérification de la base de données:",
+        error
+      );
     }
   };
 
@@ -213,8 +219,10 @@ const ClassementComponent = () => {
             {classements && classements.length > 0 ? (
               classements.map((classement) => {
                 const clubId = classement.equipe.club["@id"].split("/").pop();
-                const clubResult = results.find(result => result.clubId === clubId); // Trouver le résultat du club correspondant
-                const trend = clubResult ? clubResult.trend : 'neutral'; // Déterminer la tendance
+                const clubResult = results.find(
+                  (result) => result.clubId === clubId
+                ); // Trouver le résultat du club correspondant
+                const trend = clubResult ? clubResult.trend : "neutral"; // Déterminer la tendance
 
                 return (
                   <tr key={classement["@id"]} className="border-b">
@@ -258,18 +266,19 @@ const ClassementComponent = () => {
                     <td className="p-2 text-right">
                       {classement.goals_against_count}
                     </td>
-                    <td className="p-2 text-right"> 
-                      {classement.goals_for_count - classement.goals_against_count}
+                    <td className="p-2 text-right">
+                      {classement.goals_for_count -
+                        classement.goals_against_count}
                     </td>
-                    <td className="p-2 text-right"> 
+                    <td className="p-2 text-right">
                       <div className="inline-block p-2 bg-black rounded-full">
-                        {trend === 'up' && (
+                        {trend === "up" && (
                           <FaArrowUp className="text-green-500" />
                         )}
-                        {trend === 'neutral' && (
+                        {trend === "neutral" && (
                           <FaArrowRight className="text-orange-300" />
                         )}
-                        {trend === 'down' && (
+                        {trend === "down" && (
                           <FaArrowDown className="text-red-500" />
                         )}
                       </div>
@@ -279,7 +288,7 @@ const ClassementComponent = () => {
               })
             ) : (
               <tr>
-                <td colSpan={12} className="p-4 text-left text-gray-600"> 
+                <td colSpan={12} className="p-4 text-left text-gray-600">
                   Pas de données disponibles,
                   <br /> vérifier votre connexion.
                 </td>
