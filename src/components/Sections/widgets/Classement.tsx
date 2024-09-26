@@ -110,7 +110,12 @@ const ClassementComponent = () => {
 
     const fetchClubResults = async () => {
       try {
-        const response = await fetch("/api/club-actions/club-results");
+        const response = await fetch("/api/club-actions/club-results", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         if (!response.ok) throw new Error("Network response was not ok");
         const data: ClubResult[] = await response.json();
         console.log("fetchClubResults");
@@ -150,6 +155,10 @@ const ClassementComponent = () => {
 
     try {
       const res = await fetch(`${baseUrl}/api/club-actions/check-update`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ latestUpdate }),
       });
 
@@ -164,6 +173,10 @@ const ClassementComponent = () => {
         const saveRes = await fetch(
           `${baseUrl}/api/club-actions/save-classements`,
           {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify({ classements }),
           }
         );
