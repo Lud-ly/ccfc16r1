@@ -143,9 +143,13 @@ const ClassementComponent = () => {
     latestUpdate: string,
     classements: ClassementJournee[]
   ) => {
+    const baseUrl =
+      process.env.NODE_ENV === "production"
+        ? "https://ccfc16r1.vercel.app"
+        : "http://localhost:3000";
+
     try {
-      // Appel à un endpoint pour vérifier la date en base
-      const res = await fetch("/api/check-update", {
+      const res = await fetch(`${baseUrl}/api/check-update`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -153,28 +157,27 @@ const ClassementComponent = () => {
         body: JSON.stringify({ latestUpdate }),
       });
 
+      if (!res.ok) {
+        throw new Error("Erreur lors de la vérification de la mise à jour.");
+      }
+
       const data = await res.json();
-      console.log("checkAndUpdateDatabase");
-      console.log(data);
-      console.log("__________");
-      // Si la date de la base est différente, mettre à jour les résultats et calculer la tendance
+      console.log("checkAndUpdateDatabase", data);
+
       if (data.shouldUpdate) {
-        // Envoyer les classements pour les stocker en base
-        const saveRes = await fetch("/api/save-classements", {
+        const saveRes = await fetch(`${baseUrl}/api/save-classements`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ classements }),
         });
-        console.log("save-classement");
-        console.log(saveRes);
-        console.log("__________");
-        if (saveRes.ok) {
-          console.log("Classements mis à jour dans la base de données.");
-        } else {
-          console.error("Erreur lors de la mise à jour des classements.");
+
+        if (!saveRes.ok) {
+          throw new Error("Erreur lors de la sauvegarde des classements.");
         }
+
+        console.log("Classements mis à jour dans la base de données.");
       } else {
         console.log("Les classements sont déjà à jour.");
       }
@@ -279,6 +282,7 @@ const ClassementComponent = () => {
                     </td>
                     <td className="p-2 text-right">
                       <div className="inline-block p-2 bg-black rounded-full">
+                        isLoading ?
                         {trend === "up" && (
                           <FaArrowUp className="text-green-500" />
                         )}
