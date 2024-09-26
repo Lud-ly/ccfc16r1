@@ -18,38 +18,25 @@ const ClubResultSchema = z.object({
   goalsScored: z.number().nonnegative("Goals scored cannot be negative"),
 });
 
-// Define the response type for the API handler
-type ClubResult = z.infer<typeof ClubResultSchema>;
-
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ClubResult[] | { error: string }>
+  res: NextApiResponse
 ) {
   if (req.method === "GET") {
     res.setHeader("Allow", ["GET"]);
     try {
       const results = await prisma.clubResult.findMany();
 
-      const trends: ClubResult[] = results.map((result) => {
+      const trends = results.map((result) => {
         const totalGames =
           result.wonGamesCount + result.drawGamesCount + result.lostGamesCount;
-        const goalsConceded = result.goalsConceded;
-        const goalsScored = result.goalsScored;
+        const trend =
+          result.wonGamesCount > result.lostGamesCount
+            ? "up"
+            : result.lostGamesCount > result.wonGamesCount
+            ? "down"
+            : "neutral";
 
-        // Logique de tendance
-        let trend = "";
-        if (result.wonGamesCount > result.lostGamesCount) {
-          trend = "up";
-        } else if (result.lostGamesCount > result.wonGamesCount) {
-          trend = "down";
-        } else if (
-          result.wonGamesCount === result.lostGamesCount ||
-          result.drawGamesCount > 0
-        ) {
-          trend = "neutral";
-        }
-
-        // Validate the trend data before returning
         const clubResultData = {
           clubId: result.clubId,
           clubName: result.clubName,
@@ -57,13 +44,18 @@ export default async function handler(
           drawGamesCount: result.drawGamesCount,
           lostGamesCount: result.lostGamesCount,
           totalGames,
-          goalsConceded,
-          goalsScored,
+          goalsConceded: result.goalsConceded,
+          goalsScored: result.goalsScored,
           trend,
         };
 
         // Validate the data using Zod
-        ClubResultSchema.parse(clubResultData);
+        try {
+          ClubResultSchema.parse(clubResultData);
+        } catch (validationError) {
+          console.error("Validation error:", validationError);
+          throw new Error("Validation failed");
+        }
 
         return clubResultData;
       });
@@ -71,7 +63,12 @@ export default async function handler(
       res.status(200).json(trends);
     } catch (error) {
       console.error("Error fetching club results:", error);
-      res.status(500).json({ error: "Failed to fetch club results" });
+      res.status(500).json({
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to fetch club results",
+      });
     }
   } else {
     res.setHeader("Allow", ["GET"]);
