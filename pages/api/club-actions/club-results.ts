@@ -16,6 +16,7 @@ export default async function handler(
   res: NextApiResponse<ClubResult[] | { error: string }>
 ) {
   if (req.method === "GET") {
+    res.setHeader("Allow", ["GET"]);
     try {
       const results = await prisma.clubResult.findMany();
       const trends: ClubResult[] = results.map((result) => {
