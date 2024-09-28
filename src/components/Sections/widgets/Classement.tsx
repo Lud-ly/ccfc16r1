@@ -69,9 +69,6 @@ const ClassementComponent = () => {
         }, "");
         setLastUpdated(latestUpdate);
 
-        // Vérifier et mettre à jour les données en base si nécessaire
-        await checkAndUpdateDatabase(latestUpdate, data["hydra:member"]);
-
         // Récupérer les logos pour chaque équipe
         const logoPromises = data["hydra:member"].map(async (classement) => {
           const clubId = classement.equipe.club["@id"].split("/").pop();
@@ -141,60 +138,6 @@ const ClassementComponent = () => {
       hour: "2-digit",
       minute: "2-digit",
     });
-  };
-
-  // Fonction pour vérifier et mettre à jour les données dans la base Prisma
-  const checkAndUpdateDatabase = async (
-    latestUpdate: string,
-    classements: ClassementJournee[]
-  ) => {
-    const baseUrl =
-      process.env.NODE_ENV === "production"
-        ? "https://ccfc16r1.vercel.app"
-        : "http://localhost:3000";
-
-    try {
-      const res = await fetch(`${baseUrl}/api/check-update/check-update`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ latestUpdate }),
-      });
-
-      if (!res.ok) {
-        throw new Error("Erreur lors de la vérification de la mise à jour.");
-      }
-
-      const data = await res.json();
-      console.log("checkAndUpdateDatabase", data);
-
-      if (data.shouldUpdate) {
-        const saveRes = await fetch(
-          `${baseUrl}/api/save-classements/save-classements`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ classements }),
-          }
-        );
-
-        if (!saveRes.ok) {
-          throw new Error("Erreur lors de la sauvegarde des classements.");
-        }
-
-        console.log("Classements mis à jour dans la base de données.");
-      } else {
-        console.log("Les classements sont déjà à jour.");
-      }
-    } catch (error) {
-      console.error(
-        "Erreur lors de la vérification de la base de données:",
-        error
-      );
-    }
   };
 
   if (isLoading) {
