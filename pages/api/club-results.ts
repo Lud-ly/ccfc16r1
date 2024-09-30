@@ -19,16 +19,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       const results = await prisma.clubResult.findMany();
       const trends: ClubResult[] = results.map(result => {
         const totalGames = result.wonGamesCount + result.drawGamesCount + result.lostGamesCount;
-
+      
+        // Calcul des pourcentages
+        const winPercentage = totalGames > 0 ? (result.wonGamesCount / totalGames) * 100 : 0;
+        const drawPercentage = totalGames > 0 ? (result.drawGamesCount / totalGames) * 100 : 0;
+        const losePercentage = totalGames > 0 ? (result.lostGamesCount / totalGames) * 100 : 0;
+      
         let trend = '';
-        if (result.wonGamesCount > result.lostGamesCount) {
-          trend = 'up';
-        } else if (result.lostGamesCount > result.wonGamesCount) {
-          trend = 'down';
-        } else if (result.wonGamesCount === result.lostGamesCount || result.drawGamesCount > 0) {
-          trend = 'neutral';
+      
+        // Évaluation de la tendance basée sur les pourcentages
+        if (winPercentage >= 60) {
+          trend = 'up'; // Tendance forte vers le haut
+        } else if (winPercentage >= 40 && drawPercentage >= 20) {
+          trend = 'neutral'; // Victoires et nuls significatifs
+        } else if (losePercentage >= 60) {
+          trend = 'down'; // Tendance forte vers le bas
+        } else if (losePercentage >= 40 && winPercentage < 40) {
+          trend = 'concerning'; // Beaucoup de défaites, mais peu de victoires
+        } else if (winPercentage >= 40 && losePercentage < 20) {
+          trend = 'encouraging'; // Quelques victoires avec peu de défaites
+        } else {
+          trend = 'neutral'; // Par défaut, si rien ne s'applique
         }
-
+      
         return {
           clubId: result.clubId,
           clubName: result.clubName,
@@ -39,8 +52,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           goalsScored: result.goalsScored,
           goalsConceded: result.goalsConceded,
           trend,
+          winPercentage: winPercentage.toFixed(2), 
+          drawPercentage: drawPercentage.toFixed(2),
+          losePercentage: losePercentage.toFixed(2),
         };
       });
+      
 
       res.status(200).json(trends);
     } catch (error) {

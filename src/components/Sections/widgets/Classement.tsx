@@ -59,8 +59,8 @@ const ClassementComponent = () => {
   useEffect(() => {
     let isCancelled = false;
     const fetchClassements = async () => {
-      setIsLoading(true); 
-   
+      setIsLoading(true);
+
       try {
         const res = await fetch(
           "https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/classement_journees"
@@ -301,8 +301,15 @@ const ClassementComponent = () => {
                         {trend === "down" && (
                           <FaArrowDown className="text-red-500" />
                         )}
+                        {trend === "encouraging" && (
+                          <FaArrowUp className="text-blue-500" />
+                        )}
+                        {trend === "concerning" && (
+                          <FaArrowDown className="text-purple-500" />
+                        )}
                       </div>
                     </td>
+
                   </tr>
                 );
               })
