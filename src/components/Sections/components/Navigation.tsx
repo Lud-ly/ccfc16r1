@@ -51,24 +51,24 @@ const Navigation = () => {
             <div className="flex flex-col items-center p-4"></div>
             <Link
               href="/classement"
-              className="flex items-center py-2 text-lg text-black hover:text-blue-500"
+              className="flex items-center py-2 text-2xl  text-black hover:text-blue-500"
               onClick={handleLinkClick}
             >
-              <FaChartLine className="mr-2 text-blue-500" /> Classement
+              <FaChartLine className="mr-2 text-black" /> Classement
             </Link>
             <Link
               href="/matchs-a-venir"
-              className="flex items-center py-2 text-lg text-black hover:text-blue-500"
+              className="flex items-center py-2 text-2xl text-black hover:text-blue-500"
               onClick={handleLinkClick}
             >
-              <FaCalendarAlt className="mr-2 text-blue-500" /> Match à venir
+              <FaCalendarAlt className="mr-2 text-black" /> Match à venir
             </Link>
             <Link
               href="/tous-les-matchs"
-              className="flex items-center py-2 text-lg text-black hover:text-blue-500"
+              className="flex items-center py-2 text-2xl  text-black hover:text-blue-500"
               onClick={handleLinkClick}
             >
-              <FaList className="mr-2 text-blue-500" /> Tous les Matchs
+              <FaList className="mr-2 text-black" /> Tous les Matchs
             </Link>
           </div>
         </div>
