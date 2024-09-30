@@ -26,22 +26,16 @@ const Navigation = () => {
       {isOpen && (
         <div className="flex flex-col items-start p-4">
           <Link
-            href="/calendrier"
+            href="/derniers-resultats"
             className="flex items-center py-2 text-gray-700 hover:text-blue-500"
           >
-            <FaCalendar className="mr-2" /> Calendrier
+            <FaHistory className="mr-2" /> Derniers Résultats
           </Link>
           <Link
-            href="/dernier-resultat"
+            href="/matchs-a-venir"
             className="flex items-center py-2 text-gray-700 hover:text-blue-500"
           >
-            <FaClipboardList className="mr-2" /> Dernier Résultat
-          </Link>
-          <Link
-            href="/a-venir"
-            className="flex items-center py-2 text-gray-700 hover:text-blue-500"
-          >
-            <FaHistory className="mr-2" /> À Venir
+            <FaCalendar className="mr-2" /> Match à venir
           </Link>
           <Link
             href="/tous-les-resultats"
