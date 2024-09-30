@@ -14,7 +14,7 @@ interface ClubResult {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ClubResult[] | { error: string }>) {
-  if (req.method === 'GET') {
+  if (req.method === 'POST') {
     try {
       const results = await prisma.clubResult.findMany();
       const trends: ClubResult[] = results.map(result => {
