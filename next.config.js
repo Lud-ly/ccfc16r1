@@ -5,7 +5,7 @@ const nextConfig = {
     domains: ['cdn-transverse.azureedge.net'],
   },
   experimental: {
-    appDir: true,
+    appDir: false,
   },
 }
 
