@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import Navigation from "../Sections/components/Navigation";
 
 export const Header = () => {
   return (
@@ -18,7 +19,7 @@ export const Header = () => {
           priority
         />
       </Link>
-      <p className="text-white text-xl font-semibold">U16 Régional 1</p>
+      <Navigation />
     </div>
   );
 };
