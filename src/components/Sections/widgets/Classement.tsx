@@ -222,7 +222,7 @@ const ClassementComponent = () => {
               <th className="p-2 text-left">Pos</th>
               <th className="p-2 text-left">Club</th>
               <th className="p-2 text-left">Nom</th>
-              <th className="p-2 text-right text-blue-800 font-bold text-lg">
+              <th className="p-2 text-center text-blue-900 font-bold text-lg">
                 Pts
               </th>
               <th className="p-2 text-right">J</th>
@@ -265,7 +265,7 @@ const ClassementComponent = () => {
                       )}
                     </td>
                     <td className="p-2">{classement.equipe.short_name}</td>
-                    <td className="py-2 text-right text-blue-800 font-bold text-xl">
+                    <td className="py-2 text-center text-blue-800 font-bold text-xl">
                       {classement.point_count}
                     </td>
                     <td className="p-2 text-right">
