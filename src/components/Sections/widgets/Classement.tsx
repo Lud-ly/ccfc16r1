@@ -187,7 +187,7 @@ const ClassementComponent = () => {
   
           console.log("Classements mis à jour dans la base de données.");
         } else {
-          console.log("Les classements sont déjà à jour.");
+          console.log("Les classements sont déjà à jour .");
         }
       } catch (error) {
         console.error(
