@@ -136,3 +136,6 @@ export interface Match {
   match_feuille: string;  // URL vers la feuille de match
 }
 
+interface TousLesResultatsProps {
+  matches: Match[]; // Définition du type pour matches
+}

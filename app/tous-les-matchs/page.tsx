@@ -5,7 +5,9 @@ import ArrowBack from "../../src/components/Sections/components/ArrowBack";
 import { Match } from "../../types/types";
 import Image from "next/image";
 
+
 export default function TousLesMatchsPage() {
+
   const [matches, setMatches] = useState<Match[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -28,10 +30,41 @@ export default function TousLesMatchsPage() {
     fetchMatches(currentPage);
   }, [currentPage]);
 
+  // Groupement des matchs par journée
+  const groupedMatches = matches.reduce((acc: Record<number, Match[]>, match) => {
+    const journeeNumber = match.poule_journee.number; // Récupère le numéro de la journée
+    if (!acc[journeeNumber]) {
+      acc[journeeNumber] = [];
+    }
+    acc[journeeNumber].push(match);
+    return acc;
+  }, {});
+
   return (
     <div className="container mx-auto px-4">
       <ArrowBack iSize={40} />
       <h1 className="text-2xl font-bold my-4">Résultats des Matchs</h1>
+
+      {/* Pagination en haut */}
+      <div className="flex justify-between items-center my-4">
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+        >
+          Précédent
+        </button>
+        <span className="text-center">
+          Page {currentPage} sur {totalPages}
+        </span>
+        <button
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+        >
+          Suivant
+        </button>
+      </div>
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-300">
           <thead className="hidden md:table-header-group">
@@ -44,64 +77,76 @@ export default function TousLesMatchsPage() {
           </thead>
           <tbody>
 
-            {matches.map((match) => (
-              <tr key={match.ma_no} className="border-b">
-                <td className="p-2 block sm:table-cell">
-                  <div className="flex flex-row justify-around items-center m-2">
-                    <span>
-                      {new Date(match.date).toLocaleString("fr-FR", {
-                        dateStyle: "short",
-                      })}
-                    </span>
-                    <span>-</span>
-                    <span>
-                      {match.time}
-                    </span>
-                  </div>
-                </td>
-                <td className="p-2 block sm:table-cell">
-                  <div className="flex flex-row justify-around items-center m-2">
-                    {match.home.short_name}
-                    <Image
-                      src={match.home.club.logo}
-                      alt={`Logo ${match.home.club.logo}`}
-                      width={40}
-                      height={40}
-                      className="w-8 h-8 m-2"
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = "/images/next.svg.png";
-                      }}
-                    />
-                    vs
-                    <Image
-                      src={match.away.club.logo}
-                      alt={`Logo ${match.away.short_name}`}
-                      width={40}
-                      height={40}
-                      className="w-8 h-8 m-2"
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = "/images/next.svg.png";
-                      }}
-                    />
-                    {match.away.short_name}
-                  </div>
-                </td>
-                <td className="p-2 font-semibold block sm:table-cell">
-                  <div className="flex flex-row justify-around items-center m-2">
-                    {match.home_score !== null && match.away_score !== null
-                      ? <h2 className="text-lg sm:text-2xl font-bold">
-                        {match.home_score} - {match.away_score}</h2>
-                      : "⏳"}
-                  </div>
-                </td>
-                <td className="p-2 block sm:table-cell">
-                  <div className="flex flex-row  justify-center items-center m-2">
-                    {match.terrain.name}, {match.terrain.city}
-                  </div>
-                </td>
-              </tr>
+            {Object.entries(groupedMatches).map(([journeeNumber, matches]) => (
+              <React.Fragment key={journeeNumber}>
+                {/* Affiche le numéro de la journée */}
+                <tr>
+                  <td colSpan={4} className="text-center text-blue-500 font-bold text-lg m-4">
+                    Journée {journeeNumber}
+                  </td>
+                </tr>
+                {/* Affiche les matchs de la journée */}
+                {matches.map((match) => (
+                  <tr key={match.ma_no} className="border-b">
+                    <td className="p-2 block sm:table-cell">
+                      <div className="flex flex-row justify-around items-center m-2">
+                        <span>
+                          {new Date(match.date).toLocaleString("fr-FR", {
+                            dateStyle: "short",
+                          })}
+                        </span>
+                        <span>-</span>
+                        <span>{match.time}</span>
+                      </div>
+                    </td>
+                    <td className="p-2 block sm:table-cell">
+                      <div className="flex flex-row justify-around items-center m-2">
+                        {match.home.short_name}
+                        <Image
+                          src={match.home.club.logo}
+                          alt={`Logo ${match.home.club.logo}`}
+                          width={40}
+                          height={40}
+                          className="w-8 h-8 m-2"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = "/images/next.svg.png";
+                          }}
+                        />
+                        vs
+                        <Image
+                          src={match.away.club.logo}
+                          alt={`Logo ${match.away.short_name}`}
+                          width={40}
+                          height={40}
+                          className="w-8 h-8 m-2"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = "/images/next.svg.png";
+                          }}
+                        />
+                        {match.away.short_name}
+                      </div>
+                    </td>
+                    <td className="p-2 font-semibold block sm:table-cell">
+                      <div className="flex flex-row justify-around items-center m-2">
+                        {match.home_score !== null && match.away_score !== null ? (
+                          <h2 className="text-lg sm:text-2xl font-bold">
+                            {match.home_score} - {match.away_score}
+                          </h2>
+                        ) : (
+                          "⏳"
+                        )}
+                      </div>
+                    </td>
+                    <td className="p-2 block sm:table-cell">
+                      <div className="flex flex-row justify-center items-center m-2">
+                        {match.terrain.name}, {match.terrain.city}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </React.Fragment>
             ))}
           </tbody>
         </table>
