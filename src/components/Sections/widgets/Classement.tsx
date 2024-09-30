@@ -115,7 +115,7 @@ const ClassementComponent = () => {
     const fetchClubResults = async () => {
       try {
         const response = await fetch(`${baseUrl}/api/club-results`, {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
@@ -152,6 +152,7 @@ const ClassementComponent = () => {
       latestUpdate: string,
       classements: ClassementJournee[]
     ) => {
+  
       try {
         const res = await fetch(`${baseUrl}/api/check-update`, {
           method: "POST",
