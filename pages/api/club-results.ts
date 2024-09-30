@@ -17,9 +17,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   if (req.method === 'GET') {
     try {
       const results = await prisma.clubResult.findMany();
-      const trends: ClubResult[] = results.map((result: { wonGamesCount: number; drawGamesCount: number; lostGamesCount: number; goalsScored: number; goalsConceded: number; clubId: any; clubName: any; }) => {
+      const trends: ClubResult[] = results.map(result => {
         const totalGames = result.wonGamesCount + result.drawGamesCount + result.lostGamesCount;
-const goals = result.goalsScored - result.goalsConceded;
+
         let trend = '';
         if (result.wonGamesCount > result.lostGamesCount) {
           trend = 'up';
@@ -36,6 +36,8 @@ const goals = result.goalsScored - result.goalsConceded;
           drawGamesCount: result.drawGamesCount,
           lostGamesCount: result.lostGamesCount,
           totalGames,
+          goalsScored: result.goalsScored,
+          goalsConceded: result.goalsConceded,
           trend,
         };
       });

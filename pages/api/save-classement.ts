@@ -1,3 +1,4 @@
+// pages/api/save-classements.ts
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../src/db/prisma';
 
@@ -11,25 +12,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
       for (const classement of classements) {
-        const clubId = classement.equipe.club["@id"].split("/").pop();
-        const clubName = classement.equipe.short_name;
-        const wonGamesCount = classement.won_games_count;
-        const drawGamesCount = classement.draw_games_count;
-        const lostGamesCount = classement.lost_games_count;
-        const goalsScored = classement.goals_for_count;
-        const goalsConceded = classement.goals_against_count;
+        const clubId = classement.equipe.club["@id"].split("/").pop(); // Obtenir l'ID du club
+        const clubName = classement.equipe.short_name; // Nom court du club
+        const wonGamesCount = classement.won_games_count; // Nombre de matchs gagnés
+        const drawGamesCount = classement.draw_games_count; // Nombre de matchs nuls
+        const lostGamesCount = classement.lost_games_count; // Nombre de matchs perdus
+        const goalsScored = classement.goals_for_count; // Nombre de buts marqués
+        const goalsConceded = classement.goals_against_count; // Nombre de buts encaissés
 
-        await prisma.clubResult.upsert({
-          where: { clubName: clubName },
-          update: {
-            clubId,
-            wonGamesCount,
-            drawGamesCount,
-            lostGamesCount,
-            goalsScored,
-            goalsConceded,
+        // Vérifier si un résultat existe déjà pour ce club
+        const existingClubResult = await prisma.clubResult.findFirst({
+          where: {
+            clubName: clubName,
           },
-          create: {
+        });
+
+        if (existingClubResult) {
+          // Mettre à jour les données du club
+          console.log({
             clubId,
             clubName,
             wonGamesCount,
@@ -37,8 +37,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             lostGamesCount,
             goalsScored,
             goalsConceded,
-          },
-        });
+          });
+          await prisma.clubResult.update({
+            where: {
+              id: existingClubResult.id,
+            },
+            data: {
+              clubId,
+              clubName,
+              wonGamesCount,
+              drawGamesCount,
+              lostGamesCount,
+            },
+          });
+        } else {
+          // Créer une nouvelle entrée
+          await prisma.clubResult.create({
+            data: {
+              clubId,
+              clubName,
+              wonGamesCount,
+              drawGamesCount,
+              lostGamesCount,
+              goalsScored,
+              goalsConceded,
+            },
+          });
+        }
       }
 
       res.status(200).json({ message: 'Classements saved successfully' });
