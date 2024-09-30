@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { FaArrowUp, FaArrowRight, FaArrowDown } from "react-icons/fa"; // Import des icônes
+import { FaArrowUp, FaArrowRight, FaArrowDown } from "react-icons/fa"; 
 
 interface ClubData {
   logo: string;
@@ -122,9 +122,7 @@ const ClassementComponent = () => {
         });
         if (!response.ok) throw new Error("Network response was not ok");
         const data: ClubResult[] = await response.json();
-        console.log("fetchClubResults");
-        console.log(data);
-        console.log("__________");
+    
         setResults(data);
       } catch (error) {
         console.error("Error fetching club results:", error);
@@ -167,8 +165,7 @@ const ClassementComponent = () => {
         }
   
         const data = await res.json();
-        console.log("checkAndUpdateDatabase", data);
-  
+
         if (data.shouldUpdate) {
           const saveRes = await fetch(
             `${baseUrl}/api/save-classement`,
