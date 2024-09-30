@@ -43,7 +43,11 @@ interface ClubResult {
   goals_against_count: number;
   trend: string;
 }
-
+const baseUrl =
+process.env.NODE_ENV === "production"
+  ? "https://ccfc16r1.vercel.app"
+  : "http://localhost:3000";
+  
 const ClassementComponent = () => {
   const [classements, setClassements] = useState<ClassementJournee[]>([]);
   const [logos, setLogos] = useState<{ [key: string]: string }>({});
@@ -110,7 +114,7 @@ const ClassementComponent = () => {
 
     const fetchClubResults = async () => {
       try {
-        const response = await fetch("/api/club-results", {
+        const response = await fetch(`${baseUrl}/api/club-results`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -148,11 +152,6 @@ const ClassementComponent = () => {
       latestUpdate: string,
       classements: ClassementJournee[]
     ) => {
-      const baseUrl =
-        process.env.NODE_ENV === "production"
-          ? "https://ccfc16r1.vercel.app"
-          : "http://localhost:3000";
-  
       try {
         const res = await fetch(`${baseUrl}/api/check-update`, {
           method: "POST",
