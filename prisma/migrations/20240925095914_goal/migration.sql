@@ -1,10 +1,11 @@
-/*
-  Warnings:
-
-  - Added the required column `goalsConceded` to the `ClubResult` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `goalsScored` to the `ClubResult` table without a default value. This is not possible if the table is not empty.
-
-*/
 -- AlterTable
-ALTER TABLE "ClubResult" ADD COLUMN     "goalsConceded" INTEGER NOT NULL,
-ADD COLUMN     "goalsScored" INTEGER NOT NULL;
+ALTER TABLE "ClubResult" 
+ADD COLUMN "goalsScored" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN "goalsConceded" INTEGER NOT NULL DEFAULT 0;
+
+-- Update existing rows (optional, only if you want to set specific values)
+-- UPDATE "ClubResult" SET "goalsScored" = 0, "goalsConceded" = 0;
+
+-- Remove the default constraint after updating
+ALTER TABLE "ClubResult" ALTER COLUMN "goalsScored" DROP DEFAULT;
+ALTER TABLE "ClubResult" ALTER COLUMN "goalsConceded" DROP DEFAULT;
