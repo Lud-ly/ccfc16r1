@@ -104,7 +104,7 @@ const MatchAVenirPage: React.FC<{ params: { 'match-a-venirId': string } }> = ({ 
                     {match.home_score} - {match.away_score}
                 </div>
                 <div className="flex items-center w-1/2 justify-start">
-                    <span className="truncate order-2 md:order-1 ml-4 md:ml-0 md:mr-4 text-lg">{match.away.short_name}</span>
+                    <span className="order-2 md:order-1 ml-4 md:ml-0 md:mr-4 text-lg">{match.away.short_name}</span>
                     <Image
                         src={match.away.club.logo}
                         alt={`Logo ${match.away.short_name}`}
