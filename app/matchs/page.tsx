@@ -57,7 +57,7 @@ const MatchsAVenirPage: React.FC = () => {
       <h1 className="text-2xl font-bold text-center my-4">Nos Matchs</h1>
       <div className="grid grid-cols-1 gap-4">
         {matches.map((match) => (
-          <Link key={match.ma_no} href={`/matchs-a-venir/${match.ma_no}`}>
+          <Link key={match.ma_no} href={`/matchs/${match.ma_no}`}>
             <div className="border p-4 rounded-md shadow-md cursor-pointer">
               <p className="text-center mt-2">
                 {new Date(match.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).replace(/^\w/, (c) => c.toUpperCase())} à <span className='text-blue-500'>{match.time}</span>

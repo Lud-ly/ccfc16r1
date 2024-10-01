@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Loader from '../../../src/components/Sections/components/Loader';
 import ArrowBack from "../../../src/components/Sections/components/ArrowBack";
+import Link from "next/link";
 
 interface Club {
     logo: string;
@@ -48,7 +49,7 @@ interface MatchData {
     "hydra:member": MatchMembre[];
 }
 
-const MatchAVenirPage: React.FC<{ params: { 'match-a-venirId': string } }> = ({ params }) => {
+const MatchAVenirPage: React.FC<{ params: { 'matchId': string } }> = ({ params }) => {
     const [matchData, setMatchData] = useState<MatchData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -57,7 +58,7 @@ const MatchAVenirPage: React.FC<{ params: { 'match-a-venirId': string } }> = ({ 
             setIsLoading(true);
             try {
                 const response = await fetch(
-                    `https://api-dofa.prd-aws.fff.fr/api/match_membres?match_entity.ma_no=${params['match-a-venirId']}`
+                    `https://api-dofa.prd-aws.fff.fr/api/match_membres?match_entity.ma_no=${params['matchId']}`
                 );
                 const data: MatchData = await response.json();
                 setMatchData(data);
@@ -126,7 +127,16 @@ const MatchAVenirPage: React.FC<{ params: { 'match-a-venirId': string } }> = ({ 
                 <p className="font-semibold">Officiels</p>
                 <p>{matchMembre.prenom} {matchMembre.nom}</p>
                 <p>{matchMembre.label_position}</p>
+
             </div>
+            <Link href={`https://occitanie.fff.fr/competitions?competition_id=420289&poule=1&match_id=${params['matchId']}`} target="_blank">
+                <div className="flex justify-center items-center">
+                    <button className="bg-gray-500 text-white rounded-md p-2 hover:bg-gray-900">
+                        Fiche match
+                    </button>
+                </div>
+            </Link>
+
         </div>
     );
 };
