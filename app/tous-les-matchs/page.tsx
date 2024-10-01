@@ -44,6 +44,12 @@ export default function TousLesMatchsPage() {
     return acc;
   }, {});
 
+
+  const getSuffix = (number: number) => {
+    if (number === 1) return "ère"; // Exception pour 1ère
+    return "ème";
+  };
+
   return (
     <div className="container mx-auto px-4">
       <ArrowBack iSize={40} />
@@ -64,10 +70,12 @@ export default function TousLesMatchsPage() {
             {Object.entries(groupedMatches).map(([journeeNumber, matches]) => (
               <React.Fragment key={journeeNumber}>
                 <tr>
-                  <td colSpan={4} className="text-center text-blue-500 font-bold text-lg m-4">
-                    Journée {journeeNumber}
+                  <td colSpan={4} className="text-center text-blue-500 font-bold text- p-5">
+                    {journeeNumber}
+                    <sup>{getSuffix(Number(journeeNumber))}</sup>  Journée
                   </td>
                 </tr>
+
                 {matches.map((match) => (
                   <tr key={match.ma_no} className="border-b">
                     <td className="p-2 block sm:table-cell">
@@ -83,7 +91,7 @@ export default function TousLesMatchsPage() {
                     </td>
                     <td className="p-2 block sm:table-cell">
                       <div className="flex flex-row justify-around items-center m-2">
-                        {match.home.short_name}
+                        <span className="w-32 text-center truncate">{match.home.short_name}</span>
                         <Image
                           src={match.home.club.logo}
                           alt={`Logo ${match.home.club.logo}`}
@@ -107,17 +115,17 @@ export default function TousLesMatchsPage() {
                             e.currentTarget.src = "/images/next.svg.png";
                           }}
                         />
-                        {match.away.short_name}
+                        <span className="w-32 text-center truncate">{match.away.short_name}</span>
                       </div>
                     </td>
                     <td className="p-2 font-semibold block sm:table-cell">
-                      <div className="flex flex-row justify-around items-center m-2">
+                      <div className="flex flex-row justify-center items-center m-2">
                         {match.home_score !== null && match.away_score !== null ? (
-                          <h2 className="text-lg sm:text-2xl font-bold">
+                          <h2 className="text-4xl sm:text-3xl lg:text-2xl font-bold lg:font-semibold text-blue-55x">
                             {match.home_score} - {match.away_score}
                           </h2>
                         ) : (
-                          "⏳"
+                          <span className="text-3xl sm:text-2xl lg:text-xl font-semibold text-gray-500">⏳</span>
                         )}
                       </div>
                     </td>
