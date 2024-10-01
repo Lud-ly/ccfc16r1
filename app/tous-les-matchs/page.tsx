@@ -6,13 +6,16 @@ import ArrowBack from "../../src/components/Sections/components/ArrowBack";
 import { Match } from "../../types/types";
 import Image from "next/image";
 import Pagination from "../../src/components/Sections/components/Pagination";
+import Loader from "../../src/components/Sections/components/Loader";
 
 export default function TousLesMatchsPage() {
   const [matches, setMatches] = useState<Match[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchMatches = async (page: number) => {
+    setIsLoading(true);
     try {
       const response = await fetch(
         `https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/matchs?page=${page}`
@@ -20,6 +23,7 @@ export default function TousLesMatchsPage() {
       const data = await response.json();
       setMatches(data["hydra:member"]);
       setTotalPages(Math.ceil(data["hydra:totalItems"] / 30));
+      setIsLoading(false);
     } catch (error) {
       console.error("Erreur lors de la récupération des matchs:", error);
     }
@@ -49,6 +53,10 @@ export default function TousLesMatchsPage() {
     if (number === 1) return "ère"; // Exception pour 1ère
     return "ème";
   };
+
+  if (isLoading) {
+    return  <Loader />;
+  }
 
   return (
     <div className="container mx-auto px-4">

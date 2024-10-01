@@ -8,7 +8,6 @@ export default function ClassementPage() {
     <div className="flex flex-col gap-5">
       <div className="flex flex-row items-center">
         <ArrowBack iSize={40} />
-        <h1 className="text-2xl p-3">Classement</h1>
       </div>
       <Classement />
     </div>
