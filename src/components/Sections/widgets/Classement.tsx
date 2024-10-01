@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaArrowUp, FaArrowRight, FaArrowDown } from "react-icons/fa";
+import Loader from "../components/Loader";
 
 interface ClubData {
   logo: string;
@@ -200,12 +201,9 @@ const ClassementComponent = () => {
   };
 
   if (isLoading) {
-    return (
-      <div>
-        <p className="text-center m-5">Chargement...</p>
-      </div>
-    );
+    return  <Loader />;
   }
+  
 
   return (
     <div className="p-4">
