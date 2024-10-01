@@ -16,7 +16,7 @@ const Loader: React.FC = () => {
           cx="50"
           cy="50"
           r="45"
-          stroke="gray"
+          stroke="green"
           strokeWidth="5"
           fill="none"
         />
