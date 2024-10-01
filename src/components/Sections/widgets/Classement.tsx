@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaArrowUp, FaArrowRight, FaArrowDown } from "react-icons/fa";
 import Loader from "../components/Loader";
-import ArrowBack from "../components/ArrowBack";
 
 interface ClubData {
   logo: string;
@@ -208,7 +207,6 @@ const ClassementComponent = () => {
 
   return (
     <div className="p-4">
-      <ArrowBack iSize={40} />
       <h1 className="text-2xl font-bold my-4 text-center">Classement</h1>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
         <p className="text-sm text-black mt-2 md:mt-0">

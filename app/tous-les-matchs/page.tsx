@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ArrowBack from "../../src/components/Sections/components/ArrowBack";
 import { Match } from "../../types/types";
 import Image from "next/image";
 import Pagination from "../../src/components/Sections/components/Pagination";
@@ -22,7 +21,7 @@ export default function TousLesMatchsPage() {
       );
       const data = await response.json();
       setMatches(data["hydra:member"]);
-      setTotalPages(Math.ceil(data["hydra:totalItems"] / 30));
+      setTotalPages(Math.ceil(data["hydra:totalItems"] / 12));
       setIsLoading(false);
     } catch (error) {
       console.error("Erreur lors de la récupération des matchs:", error);
@@ -60,10 +59,7 @@ export default function TousLesMatchsPage() {
 
   return (
     <div className="container mx-auto px-4">
-      <ArrowBack iSize={40} />
-      <h1 className="text-2xl font-bold my-4 text-center">Résultats des Matchs</h1>
-
-      {/* Table des résultats */}
+      <h1 className="text-2xl font-bold my-4 text-center">Tous les Matchs</h1>
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-300">
           <thead className="hidden md:table-header-group">

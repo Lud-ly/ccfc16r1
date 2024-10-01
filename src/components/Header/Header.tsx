@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import Navigation from "../Sections/components/Navigation";
-import { FaFacebook, FaInstagram } from "react-icons/fa";
 
 export const Header = () => {
   return (

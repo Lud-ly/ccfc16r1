@@ -2,10 +2,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import {
-  FaBars, FaTimes,
+  FaBars,
+  FaTimes,
   FaChartLine,
   FaCalendarAlt,
   FaList,
+  FaFutbol,
 } from "react-icons/fa";
 
 const Navigation = () => {
@@ -16,6 +18,7 @@ const Navigation = () => {
       setIsOpen(false);
     }
   };
+
   const handleLinkClick = () => {
     setIsOpen(false);
   };
@@ -27,7 +30,7 @@ const Navigation = () => {
           className="text-white focus:outline-none"
           onClick={() => setIsOpen(!isOpen)}
         >
-          {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+          {isOpen ? <FaFutbol size={24} /> : <FaBars size={24} />}
         </button>
       </div>
 
@@ -35,40 +38,50 @@ const Navigation = () => {
       {isOpen && (
         <div
           id="popup"
-          className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50"
+          className="fixed inset-0 bg-black bg-opacity-70 z-50"
           onClick={handleOutsideClick}
         >
-          <div className="bg-white rounded-lg p-4 w-4/5 sm:w-1/3">
-            <div className="home flex flex-row justify-center items-center m-2">
-              <Image
-                src="/images/logo.png"
-                alt="logo ccfc"
-                width={50}
-                height={50}
-                priority
-              />
+          <div
+            className="bg-[rgb(9,87,159)] bg-opacity-50 w-3/4 sm:w-1/3 h-full flex flex-col p-4"
+          >
+            <div className="flex justify-between items-center mb-10">
+              <div className="home flex flex-row items-center">
+                <Image
+                  src="/images/logo.png"
+                  alt="logo ccfc"
+                  width={50}
+                  height={50}
+                  priority
+                />
+                <h1 className="ml-2 text-xl font-bold text-white">U16 R1</h1>
+              </div>
+              <button
+                className="text-white focus:outline-none"
+                onClick={() => setIsOpen(false)}
+              >
+                <FaTimes size={24} />
+              </button>
             </div>
-            <div className="flex flex-col items-center p-4"></div>
             <Link
               href="/classement"
-              className="flex items-center py-2 text-2xl  text-black hover:text-blue-500"
+              className="flex items-center py-2 text-xl text-white hover:text-blue-300 uppercase"
               onClick={handleLinkClick}
             >
-              <FaChartLine className="mr-2 text-black" /> Classement
+              <FaChartLine className="mr-2 text-white" /> Classement
             </Link>
             <Link
               href="/matchs-a-venir"
-              className="flex items-center py-2 text-2xl text-black hover:text-blue-500"
+              className="flex items-center py-2 text-xl text-white hover:text-blue-300 uppercase"
               onClick={handleLinkClick}
             >
-              <FaCalendarAlt className="mr-2 text-black" /> Nos Matchs
+              <FaCalendarAlt className="mr-2 text-white" /> Nos Matchs
             </Link>
             <Link
               href="/tous-les-matchs"
-              className="flex items-center py-2 text-2xl  text-black hover:text-blue-500"
+              className="flex items-center py-2 text-xl text-white hover:text-blue-300 uppercase"
               onClick={handleLinkClick}
             >
-              <FaList className="mr-2 text-black" /> Tous les Matchs
+              <FaList className="mr-2 text-white" /> Tous les Matchs
             </Link>
           </div>
         </div>
