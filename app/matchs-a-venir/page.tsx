@@ -3,12 +3,14 @@
 import React, { useEffect, useState } from 'react';
 import Image from "next/image";
 import Loader from '../../src/components/Sections/components/Loader';
+import ArrowBack from '../../src/components/Sections/components/ArrowBack';
 
 interface Match {
   ma_no: number;
   date: string;
   home_score: number;
   away_score: number;
+  time: number;
   home: {
     short_name: string;
     club: {
@@ -47,17 +49,22 @@ const MatchsAVenirPage: React.FC = () => {
   }, []);
 
   if (isLoading) {
-    return  <Loader />;
+    return <Loader />;
   }
 
   return (
     <div className="container mx-auto">
+      <ArrowBack iSize={40} />
       <h1 className="text-2xl font-bold text-center my-4">Nos Matchs</h1>
       <div className="grid grid-cols-1 gap-4">
         {matches.map((match) => (
           <div key={match.ma_no} className="border p-4 rounded-md shadow-md">
+            <p className="text-center mt-2">
+              {new Date(match.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).replace(/^\w/, (c) => c.toUpperCase())} à <span className='text-blue-500'>{match.time}</span>
+            </p>
             <div className="flex justify-between items-center">
-              <div className="flex items-center">
+              {/* Home Team */}
+              <div className="flex items-center w-1/3">
                 <Image
                   src={match.home.club.logo}
                   alt={`Logo ${match.home.club.logo}`}
@@ -69,27 +76,30 @@ const MatchsAVenirPage: React.FC = () => {
                     e.currentTarget.src = "/images/next.svg.png";
                   }}
                 />
-                <span>{match.home.short_name}</span>
+                <span className="truncate">{match.home.short_name}</span>
               </div>
-              <div className="text-lg font-bold">
+
+              {/* Score */}
+              <div className="text-lg font-bold w-1/3 text-center">
                 {match.home_score} - {match.away_score}
               </div>
-              <div className="flex items-center">
+
+              {/* Away Team */}
+              <div className="flex items-center w-1/3 justify-end">
+                <span className="truncate">{match.away.short_name}</span>
                 <Image
                   src={match.away.club.logo}
                   alt={`${match.away.short_name} logo`}
                   width={40}
                   height={40}
-                  className="w-10 h-10 mr-4"
+                  className="w-10 h-10 ml-4"
                   onError={(e) => {
                     e.currentTarget.onerror = null;
                     e.currentTarget.src = "/images/next.svg.png";
                   }}
                 />
-                <span>{match.away.short_name}</span>
               </div>
             </div>
-            <p className="text-center mt-2">Date: {new Date(match.date).toLocaleDateString()}</p>
           </div>
         ))}
       </div>

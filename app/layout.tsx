@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Header } from "~/src/components/Header/Header";
 import Footer from "~/src/components/Footer/footer";
+import BackToTopButton from '../src/components/Sections/components/BackToTopButton';
 
 export default function RootLayout({
   children,
@@ -13,6 +14,7 @@ export default function RootLayout({
       <body className="flex flex-col min-h-screen">
         <Header />
         <main className="flex-grow p-4">{children}</main>
+        <BackToTopButton />
         <Footer />
       </body>
     </html>

@@ -61,7 +61,7 @@ const Navigation = () => {
               className="flex items-center py-2 text-2xl text-black hover:text-blue-500"
               onClick={handleLinkClick}
             >
-              <FaCalendarAlt className="mr-2 text-black" /> Match à venir
+              <FaCalendarAlt className="mr-2 text-black" /> Nos Matchs
             </Link>
             <Link
               href="/tous-les-matchs"

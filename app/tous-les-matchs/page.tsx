@@ -61,7 +61,7 @@ export default function TousLesMatchsPage() {
   return (
     <div className="container mx-auto px-4">
       <ArrowBack iSize={40} />
-      <h1 className="text-2xl font-bold my-4">Résultats des Matchs</h1>
+      <h1 className="text-2xl font-bold my-4 text-center">Résultats des Matchs</h1>
 
       {/* Table des résultats */}
       <div className="overflow-x-auto">
