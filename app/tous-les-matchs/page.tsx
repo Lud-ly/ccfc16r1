@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import ReactPaginate from "react-paginate";
 import ArrowBack from "../../src/components/Sections/components/ArrowBack";
 import { Match } from "../../types/types";
 import Image from "next/image";
-
+import Pagination from "../../src/components/Sections/components/Pagination";
 
 export default function TousLesMatchsPage() {
-
   const [matches, setMatches] = useState<Match[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -20,7 +20,6 @@ export default function TousLesMatchsPage() {
       const data = await response.json();
       setMatches(data["hydra:member"]);
       setTotalPages(Math.ceil(data["hydra:totalItems"] / 30));
-
     } catch (error) {
       console.error("Erreur lors de la récupération des matchs:", error);
     }
@@ -30,9 +29,14 @@ export default function TousLesMatchsPage() {
     fetchMatches(currentPage);
   }, [currentPage]);
 
+  // Handler pour la pagination
+  const handlePageClick = (selectedItem: { selected: number }) => {
+    setCurrentPage(selectedItem.selected + 1);
+  };
+
   // Groupement des matchs par journée
   const groupedMatches = matches.reduce((acc: Record<number, Match[]>, match) => {
-    const journeeNumber = match.poule_journee.number; // Récupère le numéro de la journée
+    const journeeNumber = match.poule_journee.number;
     if (!acc[journeeNumber]) {
       acc[journeeNumber] = [];
     }
@@ -45,26 +49,7 @@ export default function TousLesMatchsPage() {
       <ArrowBack iSize={40} />
       <h1 className="text-2xl font-bold my-4">Résultats des Matchs</h1>
 
-      {/* Pagination en haut */}
-      <div className="flex justify-between items-center my-4">
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-          className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-        >
-          Précédent
-        </button>
-        <span className="text-center">
-          Page {currentPage} sur {totalPages}
-        </span>
-        <button
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={currentPage === totalPages}
-          className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-        >
-          Suivant
-        </button>
-      </div>
+      {/* Table des résultats */}
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-300">
           <thead className="hidden md:table-header-group">
@@ -76,16 +61,13 @@ export default function TousLesMatchsPage() {
             </tr>
           </thead>
           <tbody>
-
             {Object.entries(groupedMatches).map(([journeeNumber, matches]) => (
               <React.Fragment key={journeeNumber}>
-                {/* Affiche le numéro de la journée */}
                 <tr>
                   <td colSpan={4} className="text-center text-blue-500 font-bold text-lg m-4">
                     Journée {journeeNumber}
                   </td>
                 </tr>
-                {/* Affiche les matchs de la journée */}
                 {matches.map((match) => (
                   <tr key={match.ma_no} className="border-b">
                     <td className="p-2 block sm:table-cell">
@@ -151,25 +133,7 @@ export default function TousLesMatchsPage() {
           </tbody>
         </table>
       </div>
-      <div className="flex justify-between items-center my-4">
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-          className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-        >
-          Précédent
-        </button>
-        <span className="text-center">
-          Page {currentPage} sur {totalPages}
-        </span>
-        <button
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={currentPage === totalPages}
-          className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-        >
-          Suivant
-        </button>
-      </div>
+      <Pagination pageCount={totalPages} onPageChange={handlePageClick} />
     </div>
   );
 }
