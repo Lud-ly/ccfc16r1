@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ReactPaginate from "react-paginate";
 import ArrowBack from "../../src/components/Sections/components/ArrowBack";
 import { Match } from "../../types/types";
 import Image from "next/image";
 import Pagination from "../../src/components/Sections/components/Pagination";
 import Loader from "../../src/components/Sections/components/Loader";
+import { FaArrowRight } from "react-icons/fa";
 
 export default function TousLesMatchsPage() {
   const [matches, setMatches] = useState<Match[]>([]);
@@ -55,7 +55,7 @@ export default function TousLesMatchsPage() {
   };
 
   if (isLoading) {
-    return  <Loader />;
+    return <Loader />;
   }
 
   return (
@@ -93,7 +93,9 @@ export default function TousLesMatchsPage() {
                             dateStyle: "short",
                           })}
                         </span>
-                        <span>-</span>
+                        <span className="text-blue-500">
+                          <FaArrowRight />
+                        </span>
                         <span>{match.time}</span>
                       </div>
                     </td>
@@ -138,9 +140,8 @@ export default function TousLesMatchsPage() {
                       </div>
                     </td>
                     <td className="p-2 block sm:table-cell">
-                      <div className="flex flex-row justify-center items-center m-2">
-                        {match.terrain.name}, {match.terrain.city}
-                      </div>
+                        <span className="mr-2">{match.terrain.name},</span>
+                        <span>{match.terrain.city}</span>
                     </td>
                   </tr>
                 ))}
