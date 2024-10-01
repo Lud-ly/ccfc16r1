@@ -5,28 +5,36 @@ import Image from "next/image";
 import Loader from '../../../src/components/Sections/components/Loader';
 import ArrowBack from "../../../src/components/Sections/components/ArrowBack";
 
+interface Club {
+    logo: string;
+}
+
+interface Equipe {
+    short_name: string;
+    club: Club;
+}
+
+interface Terrain {
+    name: string;
+    city: string;
+    adress2?: string;
+    zip_code?: string;
+    libelle_surface?: string;
+}
+
 interface MatchEntity {
     ma_no: number;
     date: string;
     time: string;
     home_score: number;
     away_score: number;
-    home: {
-        short_name: string;
-        club: {
-            logo: string;
-        };
-    };
-    away: {
-        short_name: string;
-        club: {
-            logo: string;
-        };
-    };
-    terrain: {
-        name: string;
-        city: string;
-    };
+    home: Equipe;
+    away: Equipe;
+    terrain: Terrain;
+    season: number;
+    is_overtime: string;
+    home_resu: string;
+    away_resu: string;
 }
 
 interface MatchMembre {
@@ -61,7 +69,7 @@ const MatchAVenirPage: React.FC<{ params: { 'match-a-venirId': string } }> = ({ 
         };
 
         fetchMatchDetails();
-    }, [params['match-a-venirId']]);
+    }, [params]);
 
     if (isLoading) {
         return <Loader />;
@@ -82,7 +90,7 @@ const MatchAVenirPage: React.FC<{ params: { 'match-a-venirId': string } }> = ({ 
                 {new Date(match.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).replace(/^\w/, (c) => c.toUpperCase())} à {match.time}
             </p>
             <div className="flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-8">
-                <div className="flex items-center">
+                <div className="flex items-center w-1/2 justify-end">
                     <Image
                         src={match.home.club.logo}
                         alt={`Logo ${match.home.short_name}`}
@@ -92,10 +100,10 @@ const MatchAVenirPage: React.FC<{ params: { 'match-a-venirId': string } }> = ({ 
                     />
                     <span className="truncate text-lg">{match.home.short_name}</span>
                 </div>
-                <div className="text-4xl font-bold text-blue-500 mx-4">
+                <div className="flex flex-row items-center w-1/2 justify-center text-3xl text-blue-500">
                     {match.home_score} - {match.away_score}
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center w-1/2 justify-start">
                     <span className="truncate order-2 md:order-1 ml-4 md:ml-0 md:mr-4 text-lg">{match.away.short_name}</span>
                     <Image
                         src={match.away.club.logo}
@@ -106,13 +114,16 @@ const MatchAVenirPage: React.FC<{ params: { 'match-a-venirId': string } }> = ({ 
                     />
                 </div>
             </div>
+
             <div className="text-center">
                 <p className="font-semibold">Lieu du match</p>
                 <p>{match.terrain.name}</p>
-                <p>{match.terrain.city}</p>
+                <p>{match.terrain.city} {match.terrain.zip_code && `(${match.terrain.zip_code})`}</p>
+                {match.terrain.adress2 && <p>{match.terrain.adress2}</p>}
+                {match.terrain.libelle_surface && <p>Surface : {match.terrain.libelle_surface}</p>}
             </div>
             <div className="text-center">
-                <p className="font-semibold">Arbitre</p>
+                <p className="font-semibold">Officiels</p>
                 <p>{matchMembre.prenom} {matchMembre.nom}</p>
                 <p>{matchMembre.label_position}</p>
             </div>
