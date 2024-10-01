@@ -216,7 +216,7 @@ const ClassementComponent = () => {
         </p>
       </div>
       <div className="overflow-x-auto">
-        <table className="min-w-full border-collapse">
+        <table className="table-auto min-w-full border-collapse">
           <thead>
             <tr className="bg-gray-200">
               <th className="p-2 text-left">Pos</th>

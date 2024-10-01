@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Match } from "../../../../types/types";
 import Image from "next/image";
 import Loader from "../components/Loader";
+import Link from "next/link";
 
 export default function DernierMatch() {
     const [latestMatch, setLatestMatch] = useState<Match | null>(null);
@@ -50,12 +51,19 @@ export default function DernierMatch() {
     }
 
     return (
-        <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden md:max-w-2xl p-3">
-            <div className="md:flex">
-                <div className="w-full p-4">
-                    <h1 className="text-2xl font-bold text-center text-gray-800">Dernier Résultat</h1>
-                    <div className="flex flex-col md:flex-row justify-center items-center mt-4">
-                        <div className="flex flex-col items-center w-full md:w-1/3 text-center">
+        <Link href="/classement">
+            <div className="w-full bg-white shadow-lg rounded-lg overflow-hidden p-4 cursor-pointer"> 
+                <div className="flex flex-col md:flex-row justify-between items-center">
+                    <p className="text-center mt-2 w-full md:w-1/4"> 
+                        {new Date(latestMatch.date).toLocaleDateString('fr-FR', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        }).replace(/^\w/, (c) => c.toUpperCase())}
+                    </p>
+                    <div className="flex items-center justify-center w-full mt-4 md:mt-0"> 
+                        <div className="flex flex-col items-center mx-2"> 
                             <Image
                                 src={latestMatch.home.club.logo}
                                 alt={`Logo ${latestMatch.home.short_name}`}
@@ -69,13 +77,11 @@ export default function DernierMatch() {
                             />
                         </div>
 
-                        <div className="my-4 md:my-0 text-center">
-                            <span className="text-4xl font-bold text-gray-800">
-                                {latestMatch.home_score} - {latestMatch.away_score}
-                            </span>
-                        </div>
+                        <span className="text-4xl font-bold text-gray-800 mx-4">
+                            {latestMatch.home_score} - {latestMatch.away_score}
+                        </span>
 
-                        <div className="flex flex-col items-center w-full md:w-1/3 text-center">
+                        <div className="flex flex-col items-center mx-2"> 
                             <Image
                                 src={latestMatch.away.club.logo}
                                 alt={`Logo ${latestMatch.away.short_name}`}
@@ -89,18 +95,8 @@ export default function DernierMatch() {
                             />
                         </div>
                     </div>
-
-                    <div className="text-center mt-4">
-                        <p className="text-gray-600">
-                            Terrain : <span>{latestMatch.terrain.name}, {latestMatch.terrain.city}</span>
-                        </p>
-                        <p className="text-center mt-2">
-                            {new Date(latestMatch.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).replace(/^\w/, (c) => c.toUpperCase())} à <span className='text-blue-500'>{latestMatch.time}</span>
-                        </p>
-                    </div>
                 </div>
             </div>
-        </div>
-
+        </Link>
     );
 }

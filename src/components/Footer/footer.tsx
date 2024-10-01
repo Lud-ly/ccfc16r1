@@ -1,12 +1,44 @@
+import Link from "next/link";
+import Navigation from "../Sections/components/Navigation";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="p-3" style={{ backgroundColor: "rgb(9, 87, 159)" }}>
-      <h6 className="text-xs text-white font-semibold tracking-wide text-right mb-1">
-        &copy; {currentYear}
-      </h6>
-      <p className="text-xs text-white text-right">L. Mouly</p>
+    <footer className="p-4" style={{ backgroundColor: "rgb(9, 87, 159)" }}>
+      <div className="flex justify-between items-center">
+        {/* Left side - Social media icons */}
+        <div className="flex space-x-4">
+          <Link
+            href="https://www.facebook.com/CastelnauLeCres/?locale=fr_FR"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaFacebook
+              size={24}
+              className="text-white hover:text-blue-300 transition-colors"
+            />
+          </Link>
+          <Link
+            href="https://www.instagram.com/castelnaulecresfc"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaInstagram
+              size={24}
+              className="text-white hover:text-pink-400 transition-colors"
+            />
+          </Link>
+        </div>
+
+        {/* Right side - Text */}
+        <div className="text-right">
+          <h6 className="text-xs text-white font-semibold tracking-wide">
+            L.M &copy; {currentYear}
+          </h6>
+        </div>
+      </div>
     </footer>
   );
 };
