@@ -136,6 +136,26 @@ export interface Match {
   match_feuille: string;  // URL vers la feuille de match
 }
 
-interface TousLesResultatsProps {
-  matches: Match[]; // Définition du type pour matches
+export interface TousLesResultatsProps {
+  matches: Match[]; 
+}
+
+export interface MatchAVenir {
+  ma_no: number;
+  date: string;
+  home_score: number;
+  away_score: number;
+  time: number;
+  home: {
+    short_name: string;
+    club: {
+      logo: string;
+    };
+  };
+  away: {
+    short_name: string;
+    club: {
+      logo: string;
+    };
+  };
 }
