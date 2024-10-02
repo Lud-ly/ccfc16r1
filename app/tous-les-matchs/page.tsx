@@ -111,7 +111,7 @@ export default function TousLesMatchsPage() {
                           }}
                         />
                         <span className="w-32 text-center">{match.home.short_name}</span>
-                        <span className="text-blue-500 text-sm">vs</span>
+                        <span className="text-blue-500 text-sm mx-2">vs</span>
                         <span className="w-32 text-center">{match.away.short_name}</span>
                         <Image
                           src={match.away.club.logo}
