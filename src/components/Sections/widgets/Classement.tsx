@@ -207,7 +207,7 @@ const ClassementComponent = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold my-4 text-center">Classement</h1>
+      <h1 className="text-2xl font-bold py-10 uppercase">Classement</h1>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
         <p className="text-sm text-black mt-2 md:mt-0">
           Mise à jour le : {formatDate(lastUpdated)}
