@@ -59,7 +59,7 @@ export default function TousLesMatchsPage() {
 
   return (
     <div className="container mx-auto px-1">
-      <h1 className="text-2xl font-bold py-10 uppercase">Tous les Matchs</h1>
+      <h1 className="text-2xl font-bold py-10 text-center uppercase">Tous les Matchs</h1>
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-300">
           <thead className="hidden md:table-header-group">
@@ -202,8 +202,6 @@ export default function TousLesMatchsPage() {
           forcePage={currentPage - 1}
         />
       </div>
-
-
     </div>
   );
 }
