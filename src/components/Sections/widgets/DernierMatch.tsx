@@ -51,9 +51,9 @@ export default function DernierMatch() {
     }
 
     return (
-        <Link href="/classement">
-            <div className="w-full bg-white shadow-lg rounded-lg overflow-hidden p-4 cursor-pointer"> 
-                <div className="flex flex-col md:flex-row justify-between items-center">
+        <Link href="/classement" className="block h-screen">
+            <div className="w-full bg-white shadow-lg opacity-80 overflow-hidden cursor-pointer rounded">
+                <div className="flex flex-col md:flex-row justify-between items-center p-4">
                     <p className="text-center mt-2 w-full md:w-1/4"> 
                         {new Date(latestMatch.date).toLocaleDateString('fr-FR', {
                             weekday: 'long',
@@ -62,10 +62,9 @@ export default function DernierMatch() {
                             day: 'numeric'
                         }).replace(/^\w/, (c) => c.toUpperCase())}
                     </p>
-                    <div className="flex items-center justify-center w-full mt-4 md:mt-0"> 
+                    <div className="flex items-center justify-center w-full mt-4 md:mt-0 text-bold"> 
                         <div className="flex flex-col items-center mx-2"> 
                           NOUS
-                            
                         </div>
 
                         <span className="text-4xl font-bold text-gray-800 mx-4">
@@ -81,7 +80,7 @@ export default function DernierMatch() {
                                 className="w-16 h-16 mb-2"
                                 onError={(e) => {
                                     e.currentTarget.onerror = null;
-                                    e.currentTarget.src = "/images/next.svg.png";
+                                    e.currentTarget.src = "/next.svg.png";
                                 }}
                             />
                         </div>

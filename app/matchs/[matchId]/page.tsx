@@ -95,11 +95,11 @@ const MatchAVenirPage: React.FC<{ params: { 'matchId': string } }> = ({ params }
                     <Image
                         src={match.home.club.logo}
                         alt={`Logo ${match.home.short_name}`}
-                        width={40}
-                        height={40}
+                        width={60}
+                        height={60}
                         className="w-10 h-10 mr-4"
                     />
-                    <span className="truncate text-lg">{match.home.short_name}</span>
+                    <span className="text-lg">{match.home.short_name}</span>
                 </div>
                 <div className="flex flex-row items-center w-1/2 justify-center text-3xl text-blue-500">
                     {match.home_score} - {match.away_score}
@@ -109,30 +109,30 @@ const MatchAVenirPage: React.FC<{ params: { 'matchId': string } }> = ({ params }
                     <Image
                         src={match.away.club.logo}
                         alt={`Logo ${match.away.short_name}`}
-                        width={40}
-                        height={40}
+                        width={60}
+                        height={60}
                         className="w-10 h-10 order-1 md:order-2"
                     />
                 </div>
             </div>
 
             <div className="text-center">
-                <p className="font-semibold">Lieu du match</p>
+                <p className="font-semibold text-blue-500">Lieu du match</p>
                 <p>{match.terrain.name}</p>
                 <p>{match.terrain.city} {match.terrain.zip_code && `(${match.terrain.zip_code})`}</p>
                 {match.terrain.adress2 && <p>{match.terrain.adress2}</p>}
                 {match.terrain.libelle_surface && <p>Surface : {match.terrain.libelle_surface}</p>}
             </div>
             <div className="text-center">
-                <p className="font-semibold">Officiels</p>
+                <p className="font-semibold text-blue-500">Officiels</p>
                 <p>{matchMembre.prenom} {matchMembre.nom}</p>
                 <p>{matchMembre.label_position}</p>
 
             </div>
             <Link href={`https://occitanie.fff.fr/competitions?competition_id=420289&poule=1&match_id=${params['matchId']}`} target="_blank">
                 <div className="flex justify-center items-center">
-                    <button className="bg-gray-500 text-white rounded-md p-2 hover:bg-gray-900">
-                        Fiche match
+                    <button className="text-white rounded-md p-2 hover:bg-gray-900"style={{ backgroundColor: "rgb(9, 87, 159)" }}>
+                        Fiche Match LFO
                     </button>
                 </div>
             </Link>

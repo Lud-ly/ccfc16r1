@@ -70,7 +70,7 @@ const Navigation = () => {
               <FaChartLine className="mr-2 text-white" /> Classement
             </Link>
             <Link
-              href="/matchs-a-venir"
+              href="/matchs"
               className="flex items-center py-2 text-xl text-white hover:text-blue-300 uppercase"
               onClick={handleLinkClick}
             >

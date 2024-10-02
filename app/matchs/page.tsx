@@ -72,7 +72,7 @@ const MatchsAVenirPage: React.FC = () => {
                     className="w-10 h-10 mr-4"
                     onError={(e) => {
                       e.currentTarget.onerror = null;
-                      e.currentTarget.src = "/images/next.svg.png";
+                      e.currentTarget.src = "/next.svg.png";
                     }}
                   />
                   <span className="truncate">{match.home.short_name}</span>
@@ -90,7 +90,7 @@ const MatchsAVenirPage: React.FC = () => {
                     className="w-10 h-10 ml-4"
                     onError={(e) => {
                       e.currentTarget.onerror = null;
-                      e.currentTarget.src = "/images/next.svg.png";
+                      e.currentTarget.src = "/next.svg.png";
                     }}
                   />
                 </div>

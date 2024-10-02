@@ -255,7 +255,7 @@ const ClassementComponent = () => {
                           className="mr-2 w-auto h-auto"
                           onError={(e) => {
                             e.currentTarget.onerror = null;
-                            e.currentTarget.src = "/images/next.svg.png";
+                            e.currentTarget.src = "/next.svg.png";
                           }}
                         />
                       ) : (

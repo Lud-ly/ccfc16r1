@@ -21,7 +21,7 @@ export default function TousLesMatchsPage() {
       );
       const data = await response.json();
       setMatches(data["hydra:member"]);
-      setTotalPages(Math.ceil(data["hydra:totalItems"] / 12));
+      setTotalPages(Math.ceil(data["hydra:totalItems"] / 30));
       setIsLoading(false);
     } catch (error) {
       console.error("Erreur lors de la récupération des matchs:", error);
@@ -58,7 +58,7 @@ export default function TousLesMatchsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto">
       <h1 className="text-2xl font-bold my-4 text-center">Tous les Matchs</h1>
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-300">
@@ -70,7 +70,7 @@ export default function TousLesMatchsPage() {
               <th className="p-2 text-center">Terrain</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="mb-5">
             {Object.entries(groupedMatches).map(([journeeNumber, matches]) => (
               <React.Fragment key={journeeNumber}>
                 <tr>
@@ -106,7 +106,7 @@ export default function TousLesMatchsPage() {
                           className="w-8 h-8 m-2"
                           onError={(e) => {
                             e.currentTarget.onerror = null;
-                            e.currentTarget.src = "/images/next.svg.png";
+                            e.currentTarget.src = "/next.svg.png";
                           }}
                         />
                         vs
@@ -118,7 +118,7 @@ export default function TousLesMatchsPage() {
                           className="w-8 h-8 m-2"
                           onError={(e) => {
                             e.currentTarget.onerror = null;
-                            e.currentTarget.src = "/images/next.svg.png";
+                            e.currentTarget.src = "/next.svg.png";
                           }}
                         />
                         <span className="w-32 text-center truncate">{match.away.short_name}</span>
