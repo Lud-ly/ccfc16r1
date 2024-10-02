@@ -86,7 +86,7 @@ export default function TousLesMatchsPage() {
                   <tr key={match.ma_no} className="border-b-2 border-gray-700 bg-white my-4">
                     <td className="p-2 block sm:table-cell">
                       <div className="flex flex-row justify-around items-center m-2">
-                        <span>
+                        <span className="text-gray-500">
                           {new Date(match.date).toLocaleString("fr-FR", {
                             dateStyle: "short",
                           })}
@@ -94,7 +94,7 @@ export default function TousLesMatchsPage() {
                         <span className="text-blue-500">
                           <FaArrowRight />
                         </span>
-                        <span>{match.time}</span>
+                        <span className="font-bold">{match.time}</span>
                       </div>
                     </td>
                     <td className="p-2 block sm:table-cell">
@@ -107,12 +107,12 @@ export default function TousLesMatchsPage() {
                           className="w-8 h-8 m-2"
                           onError={(e) => {
                             e.currentTarget.onerror = null;
-                            e.currentTarget.src = "/images/next.svg.png";
+                            e.currentTarget.src = "/next.svg.png";
                           }}
                         />
-                        <span className="w-32 text-center">{match.home.short_name}</span>
+                        <span className="w-32 text-center font-bold">{match.home.short_name}</span>
                         <span className="text-blue-500 text-sm mx-2">vs</span>
-                        <span className="w-32 text-center">{match.away.short_name}</span>
+                        <span className="w-32 text-center font-bold">{match.away.short_name}</span>
                         <Image
                           src={match.away.club.logo}
                           alt={`Logo ${match.away.short_name}`}
@@ -121,7 +121,7 @@ export default function TousLesMatchsPage() {
                           className="w-8 h-8 m-2"
                           onError={(e) => {
                             e.currentTarget.onerror = null;
-                            e.currentTarget.src = "/images/next.svg.png";
+                            e.currentTarget.src = "/next.svg.png";
                           }}
                         />
                       </div>
