@@ -54,7 +54,12 @@ export default function DernierMatch() {
         <Link href="/matchs" className="block h-screen">
             <div className="w-full bg-white shadow-lg opacity-80 overflow-hidden cursor-pointer rounded">
                 <div className="flex flex-col md:flex-row justify-between items-center p-4">
-                    <p className="text-center mt-2 w-full md:w-1/4"> 
+                    <p className="mt-2 w-full md:w-1/4">
+                        <span className="inline-block bg-blue-500 text-white px-2 py-1 rounded">
+                            {latestMatch.poule_journee.number}ème Journée
+                        </span>
+                    </p>
+                    <p className="text-center mt-2 w-full md:w-1/4">
                         {new Date(latestMatch.date).toLocaleDateString('fr-FR', {
                             weekday: 'long',
                             year: 'numeric',
@@ -62,16 +67,16 @@ export default function DernierMatch() {
                             day: 'numeric'
                         }).replace(/^\w/, (c) => c.toUpperCase())}
                     </p>
-                    <div className="flex items-center justify-center w-full mt-4 md:mt-0 text-bold"> 
-                        <div className="flex flex-col items-center mx-2"> 
-                          <h2 className="text-2xl font-bold text-gray-800 mx-4">NOUS</h2>
+                    <div className="flex items-center justify-center w-full mt-4 md:mt-0 text-bold">
+                        <div className="flex flex-col items-center mx-2">
+                            <h2 className="text-2xl font-bold text-gray-800 mx-4">NOUS</h2>
                         </div>
 
                         <span className="text-4xl font-bold text-gray-800 mx-4">
                             {latestMatch.home_score} - {latestMatch.away_score}
                         </span>
 
-                        <div className="flex flex-col items-center mx-2"> 
+                        <div className="flex flex-col items-center mx-2">
                             <Image
                                 src={latestMatch.away.club.logo}
                                 alt={`Logo ${latestMatch.away.short_name}`}
