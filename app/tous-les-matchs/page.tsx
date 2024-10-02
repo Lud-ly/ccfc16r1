@@ -76,7 +76,7 @@ export default function TousLesMatchsPage() {
               <React.Fragment key={journeeNumber}>
                 {/* Affiche le numéro de la journée */}
                 <tr>
-                  <td colSpan={4} className="text-center text-blue-500 font-bold text-2xl p-5">
+                  <td colSpan={4} className="text-center text-blue-500 font-bold bg-yellow-500 text-2xl p-5">
                     {journeeNumber}
                     <sup>{getSuffix(Number(journeeNumber))}</sup>  Journée
                   </td>
