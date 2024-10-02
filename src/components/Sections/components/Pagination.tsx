@@ -8,7 +8,7 @@ interface PaginationProps {
 
 const Pagination: React.FC<PaginationProps> = ({ pageCount, onPageChange }) => {
   return (
-   <>
+   <div className="my-4 text-center">
         {/* Pagination */}
         <ReactPaginate
           previousLabel={
@@ -55,7 +55,7 @@ const Pagination: React.FC<PaginationProps> = ({ pageCount, onPageChange }) => {
           nextClassName="pagination__link px-4 py-2 border border-blue-500 text-blue-500 cursor-pointer"
           disabledClassName="pagination__link--disabled text-gray-400 cursor-not-allowed"
         />
-     </>
+     </div>
   );
 };
 

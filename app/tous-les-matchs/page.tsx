@@ -1,13 +1,16 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import ArrowBack from "../../src/components/Sections/components/ArrowBack";
 import { Match } from "../../types/types";
+import ReactPaginate from "react-paginate";
 import Image from "next/image";
-import Pagination from "../../src/components/Sections/components/Pagination";
 import Loader from "../../src/components/Sections/components/Loader";
 import { FaArrowRight } from "react-icons/fa";
 
+
 export default function TousLesMatchsPage() {
+
   const [matches, setMatches] = useState<Match[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -32,21 +35,19 @@ export default function TousLesMatchsPage() {
     fetchMatches(currentPage);
   }, [currentPage]);
 
-  // Handler pour la pagination
   const handlePageClick = (selectedItem: { selected: number }) => {
     setCurrentPage(selectedItem.selected + 1);
   };
 
   // Groupement des matchs par journée
   const groupedMatches = matches.reduce((acc: Record<number, Match[]>, match) => {
-    const journeeNumber = match.poule_journee.number;
+    const journeeNumber = match.poule_journee.number; // Récupère le numéro de la journée
     if (!acc[journeeNumber]) {
       acc[journeeNumber] = [];
     }
     acc[journeeNumber].push(match);
     return acc;
   }, {});
-
 
   const getSuffix = (number: number) => {
     if (number === 1) return "ère"; // Exception pour 1ère
@@ -58,8 +59,9 @@ export default function TousLesMatchsPage() {
   }
 
   return (
-    <div className="container mx-auto">
-      <h1 className="text-2xl font-bold my-4 text-center">Tous les Matchs</h1>
+    <div className="container mx-auto px-4">
+      <ArrowBack iSize={40} />
+      <h1 className="text-2xl font-bold my-4">Résultats des Matchs</h1>
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-300">
           <thead className="hidden md:table-header-group">
@@ -70,16 +72,18 @@ export default function TousLesMatchsPage() {
               <th className="p-2 text-center">Terrain</th>
             </tr>
           </thead>
-          <tbody className="mb-5">
+          <tbody>
+
             {Object.entries(groupedMatches).map(([journeeNumber, matches]) => (
               <React.Fragment key={journeeNumber}>
+                {/* Affiche le numéro de la journée */}
                 <tr>
-                  <td colSpan={4} className="text-center text-blue-500 font-bold text- p-5">
+                  <td colSpan={4} className="text-center text-blue-500 font-bold text-2xl p-5">
                     {journeeNumber}
                     <sup>{getSuffix(Number(journeeNumber))}</sup>  Journée
                   </td>
                 </tr>
-
+                {/* Affiche les matchs de la journée */}
                 {matches.map((match) => (
                   <tr key={match.ma_no} className="border-b">
                     <td className="p-2 block sm:table-cell">
@@ -97,7 +101,6 @@ export default function TousLesMatchsPage() {
                     </td>
                     <td className="p-2 block sm:table-cell">
                       <div className="flex flex-row justify-around items-center m-2">
-                        <span className="w-32 text-center truncate">{match.home.short_name}</span>
                         <Image
                           src={match.home.club.logo}
                           alt={`Logo ${match.home.club.logo}`}
@@ -106,10 +109,12 @@ export default function TousLesMatchsPage() {
                           className="w-8 h-8 m-2"
                           onError={(e) => {
                             e.currentTarget.onerror = null;
-                            e.currentTarget.src = "/next.svg.png";
+                            e.currentTarget.src = "/images/next.svg.png";
                           }}
                         />
+                        <span className="w-32 text-center truncate">{match.home.short_name}</span>
                         vs
+                        <span className="w-32 text-center truncate">{match.away.short_name}</span>
                         <Image
                           src={match.away.club.logo}
                           alt={`Logo ${match.away.short_name}`}
@@ -118,26 +123,27 @@ export default function TousLesMatchsPage() {
                           className="w-8 h-8 m-2"
                           onError={(e) => {
                             e.currentTarget.onerror = null;
-                            e.currentTarget.src = "/next.svg.png";
+                            e.currentTarget.src = "/images/next.svg.png";
                           }}
                         />
-                        <span className="w-32 text-center truncate">{match.away.short_name}</span>
                       </div>
                     </td>
                     <td className="p-2 font-semibold block sm:table-cell">
-                      <div className="flex flex-row justify-center items-center m-2">
+                      <div className="flex flex-row justify-around items-center m-2">
                         {match.home_score !== null && match.away_score !== null ? (
-                          <h2 className="text-4xl sm:text-3xl lg:text-2xl font-bold lg:font-semibold text-blue-55x">
+                          <h2 className="text-lg sm:text-2xl font-bold">
                             {match.home_score} - {match.away_score}
                           </h2>
-                        ) : (
-                          <span className="text-3xl sm:text-2xl lg:text-xl font-semibold text-gray-500">⏳</span>
-                        )}
+                        ) : <h2 className="text-lg sm:text-2xl font-bold">
+                          ⏳
+                        </h2>
+                        }
                       </div>
                     </td>
                     <td className="p-2 block sm:table-cell">
-                        <span className="mr-2">{match.terrain.name},</span>
-                        <span>{match.terrain.city}</span>
+                      <div className="flex flex-row justify-center items-center m-2">
+                        {match.terrain.name}, {match.terrain.city}
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -146,7 +152,58 @@ export default function TousLesMatchsPage() {
           </tbody>
         </table>
       </div>
-      <Pagination pageCount={totalPages} onPageChange={handlePageClick} />
+     
+      <div className="my-4 text-center">
+        {/* Pagination */}
+        <ReactPaginate
+          previousLabel={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          }
+          nextLabel={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          }
+          breakLabel={"..."}
+          pageCount={totalPages}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
+          containerClassName="pagination flex justify-center list-none p-0"
+          pageClassName="pagination__link mx-1 px-4 py-2 border border-blue-500 text-blue-500 cursor-pointer"
+          activeClassName="pagination__link--active bg-blue-500 text-white"
+          previousClassName="pagination__link px-4 py-2 border border-blue-500 text-blue-500 cursor-pointer"
+          nextClassName="pagination__link px-4 py-2 border border-blue-500 text-blue-500 cursor-pointer"
+          disabledClassName="pagination__link--disabled text-gray-400 cursor-not-allowed"
+          forcePage={currentPage - 1}
+        />
+     </div>
+
+
     </div>
   );
 }

@@ -64,7 +64,7 @@ export default function DernierMatch() {
                     </p>
                     <div className="flex items-center justify-center w-full mt-4 md:mt-0 text-bold"> 
                         <div className="flex flex-col items-center mx-2"> 
-                          NOUS
+                          <h2 className="text-2xl font-bold text-gray-800 mx-4">NOUS</h2>
                         </div>
 
                         <span className="text-4xl font-bold text-gray-800 mx-4">

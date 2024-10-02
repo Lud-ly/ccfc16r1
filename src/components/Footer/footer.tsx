@@ -44,9 +44,6 @@ const Footer = () => {
 
         {/* Right side - Text */}
         <div className="text-right">
-          <h6 className="text-xs text-white font-semibold tracking-wide">
-            L.M &copy; {currentYear}
-          </h6>
           <span className="text-xs text-white">Source : </span>
           <a
             href="https://occitanie.fff.fr"
@@ -56,7 +53,9 @@ const Footer = () => {
           >
             occitanie.fff.fr
           </a>
-
+          <h6 className="text-xs text-white font-semibold tracking-wide">
+            L.M &copy; {currentYear}
+          </h6>
         </div>
       </div>
     </footer>
