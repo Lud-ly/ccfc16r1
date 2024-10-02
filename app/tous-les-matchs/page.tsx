@@ -5,7 +5,7 @@ import { Match } from "../../types/types";
 import ReactPaginate from "react-paginate";
 import Image from "next/image";
 import Loader from "../../src/components/Sections/components/Loader";
-import { FaArrowRight } from "react-icons/fa";
+import { FaSync } from "react-icons/fa";
 
 export default function TousLesMatchsPage() {
   const [matches, setMatches] = useState<Match[]>([]);
@@ -88,7 +88,7 @@ export default function TousLesMatchsPage() {
           className="mx-1 my-1 bg-gray-300 text-black px-4 py-2 rounded transition duration-200 ease-in-out hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
           onClick={() => setSelectedJournee(null)}
         >
-          Réinitialiser
+          <FaSync />
         </button>
       </div>
 
