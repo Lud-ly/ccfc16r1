@@ -58,7 +58,7 @@ export default function TousLesMatchsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-1">
       <h1 className="text-2xl font-bold py-10 uppercase">Tous les Matchs</h1>
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-300">
@@ -83,7 +83,7 @@ export default function TousLesMatchsPage() {
                 </tr>
                 {/* Affiche les matchs de la journée */}
                 {matches.map((match) => (
-                  <tr key={match.ma_no} className="border-b">
+                  <tr key={match.ma_no} className="border-b-2 border-gray-700 bg-white my-4">
                     <td className="p-2 block sm:table-cell">
                       <div className="flex flex-row justify-around items-center m-2">
                         <span>
@@ -110,9 +110,9 @@ export default function TousLesMatchsPage() {
                             e.currentTarget.src = "/images/next.svg.png";
                           }}
                         />
-                        <span className="w-32 text-center truncate">{match.home.short_name}</span>
-                        vs
-                        <span className="w-32 text-center truncate">{match.away.short_name}</span>
+                        <span className="w-32 text-center">{match.home.short_name}</span>
+                        <span className="text-blue-500 text-sm">vs</span>
+                        <span className="w-32 text-center">{match.away.short_name}</span>
                         <Image
                           src={match.away.club.logo}
                           alt={`Logo ${match.away.short_name}`}
@@ -140,7 +140,9 @@ export default function TousLesMatchsPage() {
                     </td>
                     <td className="p-2 block sm:table-cell">
                       <div className="flex flex-row justify-center items-center m-2">
-                        {match.terrain.name}, {match.terrain.city}
+                        <span className="text-gray-500 text-sm">
+                          {match.terrain.name}, {match.terrain.city}
+                        </span>
                       </div>
                     </td>
                   </tr>
@@ -150,7 +152,7 @@ export default function TousLesMatchsPage() {
           </tbody>
         </table>
       </div>
-     
+
       <div className="my-4 text-center">
         {/* Pagination */}
         <ReactPaginate
@@ -199,7 +201,7 @@ export default function TousLesMatchsPage() {
           disabledClassName="pagination__link--disabled text-gray-400 cursor-not-allowed"
           forcePage={currentPage - 1}
         />
-     </div>
+      </div>
 
 
     </div>
