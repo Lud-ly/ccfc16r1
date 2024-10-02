@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Match } from "../../types/types";
 import ReactPaginate from "react-paginate";
 import Image from "next/image";
@@ -12,7 +12,7 @@ export default function TousLesMatchsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedJournee, setSelectedJournee] = useState<number | null>(null); // État pour suivre la journée sélectionnée
+  const [selectedJournee, setSelectedJournee] = useState<number | null>(null);
 
   const fetchMatches = async (page: number) => {
     setIsLoading(true);
@@ -21,8 +21,19 @@ export default function TousLesMatchsPage() {
         `https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/matchs?page=${page}`
       );
       const data = await response.json();
-      setMatches(data["hydra:member"]);
+      const fetchedMatches = data["hydra:member"];
+      setMatches(fetchedMatches);
       setTotalPages(Math.ceil(data["hydra:totalItems"] / 30));
+
+      // Logique pour sélectionner la première journée avec un match à venir
+      const today = new Date();
+      const upcomingMatch = fetchedMatches.find(
+        (match: Match) => new Date(match.date) >= today
+      );
+      if (upcomingMatch) {
+        setSelectedJournee(upcomingMatch.poule_journee.number);
+      }
+      
       setIsLoading(false);
     } catch (error) {
       console.error("Erreur lors de la récupération des matchs:", error);
@@ -66,11 +77,11 @@ export default function TousLesMatchsPage() {
           <button
             key={journeeNumber}
             className={`mx-1 my-1 px-4 py-2 rounded transition duration-200 ease-in-out 
-        ${selectedJournee === Number(journeeNumber) ? "bg-yellow-500" : "bg-blue-500"} 
-        text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300`}
+              ${selectedJournee === Number(journeeNumber) ? "bg-yellow-500" : "bg-blue-500"} 
+              text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300`}
             onClick={() => setSelectedJournee(selectedJournee === Number(journeeNumber) ? null : Number(journeeNumber))} // Toggle pour sélectionner/désélectionner la journée
           >
-             {journeeNumber}{getSuffix(Number(journeeNumber))} jour.
+            {journeeNumber}{getSuffix(Number(journeeNumber))} jour.
           </button>
         ))}
         <button
@@ -94,7 +105,6 @@ export default function TousLesMatchsPage() {
           <tbody>
             {Object.entries(groupedMatches).map(([journeeNumber, matches]) => (
               <React.Fragment key={journeeNumber}>
-                {/* Affiche le numéro de la journée uniquement si c'est la journée sélectionnée */}
                 {selectedJournee === Number(journeeNumber) && (
                   <>
                     <tr className="bg-yellow-100">
@@ -103,13 +113,18 @@ export default function TousLesMatchsPage() {
                         <sup>{getSuffix(Number(journeeNumber))}</sup> Journée
                       </td>
                     </tr>
-                    {/* Affiche les matchs de la journée */}
                     {matches.map((match) => (
                       <tr key={match.ma_no} className="border-b-2 border-gray-700 bg-white my-4">
                         <td className="p-2 block sm:table-cell">
                           <div className="flex flex-row justify-around items-center m-2">
                             <span className="text-gray-500">
-                            {new Date(match.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).replace(/^\w/, (c) => c.toUpperCase())} à <span className='text-blue-500'>{match.time}</span>
+                              {new Date(match.date).toLocaleDateString('fr-FR', { 
+                                weekday: 'long', 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric' 
+                              }).replace(/^\w/, (c) => c.toUpperCase())} 
+                              à <span className='text-blue-500'>{match.time}</span>
                             </span>
                           </div>
                         </td>
@@ -171,7 +186,6 @@ export default function TousLesMatchsPage() {
       </div>
 
       <div className="my-4 text-center">
-        {/* Pagination */}
         <ReactPaginate
           previousLabel={
             <svg
