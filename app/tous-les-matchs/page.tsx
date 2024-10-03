@@ -33,7 +33,7 @@ export default function TousLesMatchsPage() {
       if (upcomingMatch) {
         setSelectedJournee(upcomingMatch.poule_journee.number);
       }
-      
+
       setIsLoading(false);
     } catch (error) {
       console.error("Erreur lors de la récupération des matchs:", error);
@@ -118,13 +118,13 @@ export default function TousLesMatchsPage() {
                         <td className="p-2 block sm:table-cell">
                           <div className="flex flex-row justify-around items-center m-2">
                             <span className="text-gray-500">
-                              {new Date(match.date).toLocaleDateString('fr-FR', { 
-                                weekday: 'long', 
-                                year: 'numeric', 
-                                month: 'long', 
-                                day: 'numeric' 
-                              }).replace(/^\w/, (c) => c.toUpperCase())} 
-                              à <span className='text-blue-500'>{match.time}</span>
+                              {new Date(match.date).toLocaleDateString('fr-FR', {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                              }).replace(/^\w/, (c) => c.toUpperCase())}{" "}
+                              à <span className="text-blue-500">{match.time}</span>
                             </span>
                           </div>
                         </td>
