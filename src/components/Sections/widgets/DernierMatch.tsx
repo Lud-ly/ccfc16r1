@@ -86,9 +86,13 @@ export default function DernierMatch() {
                             </span>
                         </div>
 
-                        <span className="text-4xl font-bold text-gray-800 mx-4 my-2 md:my-0 text-center">
-                            {latestMatch.home_score} - {latestMatch.away_score}
-                        </span>
+                        {latestMatch.home_score !== null && latestMatch.away_score !== null ? (
+                            <h2 className="text-lg sm:text-2xl font-bold">
+                                {latestMatch.home_score} - {latestMatch.away_score}
+                            </h2>
+                        ) : (
+                            <h2 className="text-lg sm:text-2xl font-bold">⏳</h2>
+                        )}
 
                         <div className="flex flex-col items-center mx-2">
                             <Image
