@@ -170,7 +170,7 @@ const GraphComponent = () => {
             x: {
                 title: {
                     display: true,
-                    text: "Journées",
+                    text: "",
                     color: '#374151',
                 },
             },
@@ -198,7 +198,7 @@ const GraphComponent = () => {
                         return (
                             <div
                                 key={clubName}
-                                className="bg-white shadow-lg rounded-lg p-6 h-[400px] transition-transform transform hover:scale-105"
+                                className="bg-white shadow-lg rounded-lg p-6 h-[400px] transition-transform transform hover:scale-105 mb-5"
                             >
                                 <div className="flex items-center justify-center mb-4">
                                     {clubId && logos[clubId] ? ( // Vérifier que le logo est disponible
