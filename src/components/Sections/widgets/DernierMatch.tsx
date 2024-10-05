@@ -54,12 +54,20 @@ export default function DernierMatch() {
         <Link href="/matchs" className="block h-screen">
             <div className="w-full bg-white shadow-lg opacity-80 overflow-hidden cursor-pointer rounded">
                 <div className="flex flex-col md:flex-row justify-between items-center p-4">
-                    <p className="mt-2 w-full md:w-1/4">
-                        <span className="inline-block bg-blue-500 text-white px-2 py-1 rounded">
-                            {latestMatch.poule_journee.number}ème Journée
-                        </span>
-                    </p>
-                    <span className="text-gray-500">
+                    <div className="flex flex-col items-center space-y-2 px-5">
+                    <small className="inline-block text-gray-800 p-1 text-sm text-center rounded italic">
+                            {latestMatch.poule_journee.number}<sup>e</sup> j
+                        </small>
+                        <Image
+                            src="/images/lfo.png"
+                            alt="logo ccfc"
+                            width={30}
+                            height={30}
+                            priority
+                        />
+                    </div>
+
+                    <span className="text-gray-800 text-center text-sm-2xl font-bold">
                         {new Date(latestMatch.date).toLocaleDateString('fr-FR', {
                             weekday: 'long',
                             year: 'numeric',
@@ -68,7 +76,7 @@ export default function DernierMatch() {
                         }).replace(/^\w/, (c) => c.toUpperCase())}{" "}
                         à <span className="text-blue-500">{latestMatch.time}</span>
                     </span>
-                    <div className="flex flex-col md:flex-row items-center justify-center w-full mt-4 md:mt-0 text-bold">
+                    <div className="flex flex-col md:flex-row items-center justify-center w-full mt-5 md:mt-2 text-bold">
                         <div className="flex flex-col items-center mx-2">
                             <Image
                                 src={latestMatch.home.club.logo}
@@ -87,11 +95,11 @@ export default function DernierMatch() {
                         </div>
 
                         {latestMatch.home_score !== null && latestMatch.away_score !== null ? (
-                            <h2 className="text-lg sm:text-2xl font-bold">
+                            <h2 className="text-lg sm:text-2xl font-bold p-5">
                                 {latestMatch.home_score} - {latestMatch.away_score}
                             </h2>
                         ) : (
-                            <h2 className="text-lg sm:text-2xl font-bold">⏳</h2>
+                            <h2 className="text-lg sm:text-2xl font-bold p-5">⏳</h2>
                         )}
 
                         <div className="flex flex-col items-center mx-2">

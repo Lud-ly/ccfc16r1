@@ -52,7 +52,7 @@ const Navigation = () => {
                   width={50}
                   height={50}
                   priority
-                />
+                /> 
                 <h1 className="ml-2 text-xl font-bold text-white">U16 R1</h1>
               </div>
               <button
