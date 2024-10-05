@@ -67,12 +67,25 @@ export default function DernierMatch() {
                             day: 'numeric'
                         }).replace(/^\w/, (c) => c.toUpperCase())}
                     </p>
-                    <div className="flex items-center justify-center w-full mt-4 md:mt-0 text-bold">
+                    <div className="flex flex-col md:flex-row items-center justify-center w-full mt-4 md:mt-0 text-bold">
                         <div className="flex flex-col items-center mx-2">
-                            <h2 className="text-2xl font-bold text-gray-800 mx-4">NOUS</h2>
+                            <Image
+                                src={latestMatch.home.club.logo}
+                                alt={`Logo ${latestMatch.home.short_name}`}
+                                width={80}
+                                height={80}
+                                className="w-16 h-16 mb-2"
+                                onError={(e) => {
+                                    e.currentTarget.onerror = null;
+                                    e.currentTarget.src = "/next.svg.png";
+                                }}
+                            />
+                            <span className="text-sm font-bold text-gray-800 text-center">
+                                {latestMatch.home.short_name}
+                            </span>
                         </div>
 
-                        <span className="text-4xl font-bold text-gray-800 mx-4">
+                        <span className="text-4xl font-bold text-gray-800 mx-4 my-2 md:my-0 text-center">
                             {latestMatch.home_score} - {latestMatch.away_score}
                         </span>
 
@@ -88,6 +101,9 @@ export default function DernierMatch() {
                                     e.currentTarget.src = "/next.svg.png";
                                 }}
                             />
+                            <span className="text-sm font-bold text-gray-800 text-center">
+                                {latestMatch.away.short_name}
+                            </span>
                         </div>
                     </div>
                 </div>
