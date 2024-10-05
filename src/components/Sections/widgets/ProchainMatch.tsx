@@ -6,11 +6,11 @@ import Image from "next/image";
 import Loader from "../components/Loader";
 import Link from "next/link";
 
-export default function DernierMatch() {
-    const [latestMatch, setLatestMatch] = useState<Match | null>(null);
+export default function ProchainMatch() {
+    const [nextMatch, setNextMatch] = useState<Match | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    const fetchLatestMatch = async () => {
+    const fetchNextMatch = async () => {
         setIsLoading(true);
         try {
             const response = await fetch(
@@ -19,34 +19,34 @@ export default function DernierMatch() {
             const data = await response.json();
             const matches = data["hydra:member"];
 
-            // Filtrer les matchs dont la date est passée
-            const pastMatches = matches.filter((match: Match) => {
+            // Filtrer les matchs à venir (dont la date est après aujourd'hui)
+            const futureMatches = matches.filter((match: Match) => {
                 const matchDate = new Date(match.date);
                 const today = new Date();
-                return matchDate < today;
+                return matchDate >= today;
             });
 
-            // Trier les matchs du plus récent au plus ancien
-            pastMatches.sort((a: Match, b: Match) => new Date(b.date).getTime() - new Date(a.date).getTime());
+            // Trier les matchs par date du plus proche au plus éloigné
+            futureMatches.sort((a: Match, b: Match) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-            // Prendre le dernier match
-            const lastMatch = pastMatches[0];
-            setLatestMatch(lastMatch);
+            // Prendre le premier match futur
+            const upcomingMatch = futureMatches[0];
+            setNextMatch(upcomingMatch);
             setIsLoading(false);
         } catch (error) {
-            console.error("Erreur lors de la récupération du dernier match:", error);
+            console.error("Erreur lors de la récupération du prochain match:", error);
         }
     };
 
     useEffect(() => {
-        fetchLatestMatch();
+        fetchNextMatch();
     }, []);
 
     if (isLoading) {
         return <Loader />;
     }
 
-    if (!latestMatch) {
+    if (!nextMatch) {
         return <div>Pas de match trouvé.</div>;
     }
 
@@ -56,23 +56,22 @@ export default function DernierMatch() {
                 <div className="flex flex-col md:flex-row justify-between items-center p-4">
                     <p className="mt-2 w-full md:w-1/4">
                         <span className="inline-block bg-blue-500 text-white px-2 py-1 rounded">
-                            {latestMatch.poule_journee.number}ème Journée
+                            {nextMatch.poule_journee.number}ème Journée
                         </span>
                     </p>
-                    <span className="text-gray-500">
-                        {new Date(latestMatch.date).toLocaleDateString('fr-FR', {
+                    <p className="text-center mt-2 w-full md:w-1/4">
+                        {new Date(nextMatch.date).toLocaleDateString('fr-FR', {
                             weekday: 'long',
                             year: 'numeric',
                             month: 'long',
                             day: 'numeric'
-                        }).replace(/^\w/, (c) => c.toUpperCase())}{" "}
-                        à <span className="text-blue-500">{latestMatch.time}</span>
-                    </span>
+                        }).replace(/^\w/, (c) => c.toUpperCase())}
+                    </p>
                     <div className="flex flex-col md:flex-row items-center justify-center w-full mt-4 md:mt-0 text-bold">
                         <div className="flex flex-col items-center mx-2">
                             <Image
-                                src={latestMatch.home.club.logo}
-                                alt={`Logo ${latestMatch.home.short_name}`}
+                                src={nextMatch.home.club.logo}
+                                alt={`Logo ${nextMatch.home.short_name}`}
                                 width={80}
                                 height={80}
                                 className="w-16 h-16 mb-2"
@@ -82,18 +81,18 @@ export default function DernierMatch() {
                                 }}
                             />
                             <span className="text-sm font-bold text-gray-800 text-center">
-                                {latestMatch.home.short_name}
+                                {nextMatch.home.short_name}
                             </span>
                         </div>
 
                         <span className="text-4xl font-bold text-gray-800 mx-4 my-2 md:my-0 text-center">
-                            {latestMatch.home_score} - {latestMatch.away_score}
+                            {nextMatch.home_score} - {nextMatch.away_score}
                         </span>
 
                         <div className="flex flex-col items-center mx-2">
                             <Image
-                                src={latestMatch.away.club.logo}
-                                alt={`Logo ${latestMatch.away.short_name}`}
+                                src={nextMatch.away.club.logo}
+                                alt={`Logo ${nextMatch.away.short_name}`}
                                 width={80}
                                 height={80}
                                 className="w-16 h-16 mb-2"
@@ -103,7 +102,7 @@ export default function DernierMatch() {
                                 }}
                             />
                             <span className="text-sm font-bold text-gray-800 text-center">
-                                {latestMatch.away.short_name}
+                                {nextMatch.away.short_name}
                             </span>
                         </div>
                     </div>
