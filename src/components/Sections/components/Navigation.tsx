@@ -8,6 +8,7 @@ import {
   FaCalendarAlt,
   FaList,
   FaFutbol,
+  FaGraduationCap,
 } from "react-icons/fa";
 
 const Navigation = () => {
@@ -82,6 +83,13 @@ const Navigation = () => {
               onClick={handleLinkClick}
             >
               <FaList className="mr-2 text-white" /> Tous les Matchs
+            </Link>
+            <Link
+              href="/prefs"
+              className="flex items-center py-2 text-xl text-white hover:text-blue-300 uppercase"
+              onClick={handleLinkClick}
+            >
+              <FaGraduationCap className="mr-2 text-white" /> Prefs
             </Link>
           </div>
         </div>

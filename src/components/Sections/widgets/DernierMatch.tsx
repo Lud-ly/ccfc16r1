@@ -51,7 +51,7 @@ export default function DernierMatch() {
     }
 
     return (
-        <Link href="/matchs" className="block h-screen">
+        <Link href="/matchs" className="">
             <div className="w-full bg-white shadow-lg opacity-80 overflow-hidden cursor-pointer rounded">
                 <div className="flex flex-col md:flex-row justify-between items-center p-4">
                     <div className="flex flex-col items-center space-y-2 px-5">
