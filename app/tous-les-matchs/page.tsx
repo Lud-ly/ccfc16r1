@@ -69,7 +69,7 @@ export default function TousLesMatchsPage() {
 
   return (
     <div className="container mx-auto px-1">
-      <h1 className="text-2xl font-bold py-10 text-center uppercase">Tous les Matchs</h1>
+      <h1 className="text-2xl font-bold py-5 text-center uppercase">Tous les Matchs</h1>
 
       {/* Ajouter des boutons pour chaque journée */}
       <div className="mb-4 text-center flex flex-wrap justify-center">
