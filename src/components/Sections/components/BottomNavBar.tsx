@@ -7,7 +7,7 @@ const BottomNavBar: React.FC = () => {
       className="fixed bottom-0 left-0 right-0 shadow-lg rounded-t-3xl"
       style={{
         backgroundColor: "rgba(9, 87, 159, 0.95)",
-        padding: "10px 0",
+        padding: "2px 0",
         zIndex: 1000,
       }}
     >
