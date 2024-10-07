@@ -15,25 +15,25 @@ const BottomNavBar: React.FC = () => {
         {/* Bouton Home */}
         <Link href="/" className="flex flex-col items-center text-white">
           <FaHome className="text-[30px] sm:text-[34px]" />
-          <span className="text-[8px] sm:text-xs mt-1">Home</span>
+          <span className="text-[8px] sm:text-xs">Home</span>
         </Link>
 
         {/* Bouton Classement */}
         <Link href="/classement" className="flex flex-col items-center text-white">
           <FaChartLine className="text-[30px] sm:text-[34px]" />
-          <span className="text-[8px] sm:text-xs mt-1">Classement</span>
+          <span className="text-[8px] sm:text-xs">Classement</span>
         </Link>
 
         {/* Bouton Matchs */}
         <Link href="/matchs" className="flex flex-col items-center text-white">
           <FaCalendarAlt className="text-[30px] sm:text-[34px]" />
-          <span className="text-[8px] sm:text-xs mt-1">Nos matchs</span>
+          <span className="text-[8px] sm:text-xs">Nos matchs</span>
         </Link>
 
         {/* Bouton Tous les Matchs */}
         <Link href="/tous-les-matchs" className="flex flex-col items-center text-white">
           <FaList className="text-[30px] sm:text-[34px]" />
-          <span className="text-[8px] sm:text-xs mt-1">Tous les Matchs</span>
+          <span className="text-[8px] sm:text-xs">Tous les Matchs</span>
         </Link>
       </div>
     </nav>
