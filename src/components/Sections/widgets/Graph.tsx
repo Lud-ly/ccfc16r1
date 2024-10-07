@@ -17,7 +17,7 @@ import {
 } from "chart.js";
 import Loader from "../components/Loader";
 import { ClubData, Match } from "~/types/types";
-import Image from "next/image"; // Import du composant Image
+import Image from "next/image";
 
 ChartJS.register(
     CategoryScale,
@@ -30,9 +30,8 @@ ChartJS.register(
     Legend
 );
 
-
 const GraphComponent: React.FC = () => {
-    const [logos, setLogos] = useState<{ [key: string]: string }>({}); // Changer ici le type de logos
+    const [logos, setLogos] = useState<{ [key: string]: string }>({});
     const [results, setResults] = useState<Match[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [chartType, setChartType] = useState<"line" | "bar">("line");
@@ -55,12 +54,13 @@ const GraphComponent: React.FC = () => {
 
                 const logoPromises = Array.from(clubIds).map(clubId => fetchClubLogo(clubId));
                 const logosData = await Promise.all(logoPromises);
-                const logosMap = logosData.reduce((acc, { clubId, logo }) => {
+                const logosMap = logosData.reduce((acc, { clubId, logo, shortName }) => {
                     if (clubId && logo) {
-                        acc[clubId] = logo; // Conserver l'accès avec le clubId ici
+                        acc[shortName] = logo; // Use shortName as the key
+                        acc[logo] = logo; // Use shortName as the key
                     }
                     return acc;
-                }, {} as { [key: number]: string });
+                }, {} as { [key: string]: string });
 
                 setLogos(logosMap);
                 setResults(data["hydra:member"].sort((a: Match, b: Match) => a.poule_journee.number - b.poule_journee.number));
@@ -78,10 +78,11 @@ const GraphComponent: React.FC = () => {
         try {
             const clubRes = await fetch(`https://api-dofa.prd-aws.fff.fr/api/clubs/${clubId}`);
             const clubData: ClubData = await clubRes.json();
-            return { clubId, logo: clubData.logo };
+            console.log(clubData.logo);
+            return { clubId, logo: clubData.logo, shortName: clubData.name };
         } catch (error) {
             console.error(`Erreur lors de la récupération du logo pour le club ${clubId}:`, error);
-            return { clubId, logo: null };
+            return { clubId, logo: null, shortName: null };
         }
     };
 
@@ -185,6 +186,7 @@ const GraphComponent: React.FC = () => {
                 goalsFor: number;
                 goalsAgainst: number;
                 clubId: number;
+                logo: string;
             }
         } = {};
 
@@ -193,19 +195,23 @@ const GraphComponent: React.FC = () => {
             const awayTeam = match.away.short_name;
             const homeTeamId = match.home.club.cl_no;
             const awayTeamId = match.away.club.cl_no;
+            const homeTeamLogo = match.home.club.logo;
+            const awayTeamLogo = match.away.club.logo;
 
             if (!clubStats[homeTeam]) {
                 clubStats[homeTeam] = {
                     goalsFor: 0,
                     goalsAgainst: 0,
-                    clubId: homeTeamId
+                    clubId: homeTeamId,
+                    logo: homeTeamLogo
                 };
             }
             if (!clubStats[awayTeam]) {
                 clubStats[awayTeam] = {
                     goalsFor: 0,
                     goalsAgainst: 0,
-                    clubId: awayTeamId
+                    clubId: awayTeamId,
+                    logo: awayTeamLogo
                 };
             }
 
@@ -226,99 +232,99 @@ const GraphComponent: React.FC = () => {
         return sortedClubs;
     };
 
-
     const bestAttackers = sortClubs(results, 'attack');
     const bestDefenders = sortClubs(results, 'defense');
 
     return (
         <div className="p-8 bg-gray-100 min-h-screen">
-            <div className="flex justify-between mb-4">
-                <h1 className="text-2xl font-bold">Statistiques des Clubs</h1>
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold">Meilleures Attaques</h2>
                 <div>
                     <select
                         value={chartType}
                         onChange={(e) => setChartType(e.target.value as "line" | "bar")}
                         className="p-2 border border-gray-300 rounded"
                     >
-                        <option value="line">Graphique en Ligne</option>
-                        <option value="bar">Graphique à Barres</option>
+                        <option value="line">Courbes</option>
+                        <option value="bar">Barres</option>
                     </select>
                 </div>
             </div>
+
             {isLoading ? (
                 <Loader />
             ) : (
                 <div>
-                    <h2 className="text-xl font-semibold mb-4">Meilleures Attaques</h2>
-                    <ul className="space-y-2">
-  {bestAttackers.map(({ club, goalsFor }, index) => (
-    <li key={index} className="flex flex-col items-start hover:bg-gray-100 p-4 rounded-lg border border-gray-300">
-      <div className="flex items-center space-x-4">
-        {club && logos[club] ? (
-          <Image
-            src={logos[club]}
-            alt={`Logo ${club}`}
-            width={32}
-            height={32}
-            className="mr-2 w-auto h-auto"
-            onError={(e) => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = "/fallback-image.png"; // Fallback image
-            }}
-            unoptimized // Désactive l'optimisation pour les URLs dynamiques
-          />
-        ) : (
-          <div className="w-8 h-8 bg-gray-200 flex-shrink-0"></div> // Placeholder si le logo n'existe pas
-        )}
-        <button
-          onClick={() => setActiveClub(activeClub === club ? null : club)}
-          className="text-left flex-1 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-        >
-          {club} - Buts marqués: {goalsFor}
-        </button>
-      </div>
-      {activeClub === club && (
-        <div className="w-full mt-4">
-          {chartType === "line" ? (
-            <Line data={generateChartDataForClub(club, results)} options={commonOptions} />
-          ) : (
-            <Bar data={generateBarChartDataForClub(club, results)} options={commonOptions} />
-          )}
-        </div>
-      )}
-    </li>
-  ))}
-</ul>
+                    <ul className="flex flex-col gap-4 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                        {bestAttackers.map(({ club, goalsFor, logo }, index) => (
+                            <li
+                                key={index}
+                                className="flex flex-col items-center hover:bg-gray-100 p-4 rounded-lg border border-gray-300 w-full"
+                            >
+                                <button
+                                    onClick={() => setActiveClub(activeClub === club ? null : club)}
+                                    className="flex flex-col items-center text-center p-2 rounded hover:bg-blue-100 transition"
+                                >
+                                    <Image
+                                        src={logo}
+                                        alt={`Logo ${club}`}
+                                        width={24}
+                                        height={24}
+                                        className="mb-2 w-auto h-auto"
+                                        onError={(e) => {
+                                            e.currentTarget.onerror = null;
+                                            e.currentTarget.src = "./images/next.svg";
+                                        }}
+                                        unoptimized
+                                    />
+                                    <div className="flex flex-col items-center">
+                                        <span className="text-lg font-bold">#{index + 1}</span>
+                                        <span className="text-blue-500">{club}</span>
+                                        <span>{goalsFor} Buts</span>
+                                    </div>
+                                </button>
+                                {activeClub === club && (
+                                    <div className="w-full mt-4">
+                                        {chartType === "line" ? (
+                                            <Line data={generateChartDataForClub(club, results)} options={commonOptions} />
+                                        ) : (
+                                            <Bar data={generateBarChartDataForClub(club, results)} options={commonOptions} />
+                                        )}
+                                    </div>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
 
-
-                    <h2 className="text-xl font-semibold mb-4">Meilleures Défenses</h2>
-                    <ul className="space-y-2">
-                        {bestDefenders.map(({ club, goalsAgainst }, index) => (
-                            <li key={index} className="flex flex-col items-start">
-                                <div className="flex items-center">
-                                    {club && logos[club] ? ( // Vérifier que le logo est disponible
-                                        <Image
-                                            src={logos[club]}
-                                            alt={`Logo ${club}`}
-                                            width={32}
-                                            height={32}
-                                            className="mr-2 w-auto h-auto"
-                                            onError={(e) => {
-                                                e.currentTarget.onerror = null;
-                                                e.currentTarget.src = "/next.svg.png"; // Fallback en cas d'erreur
-                                            }}
-                                            unoptimized // Désactive les optimisations pour éviter les erreurs avec les URLs dynamiques
-                                        />
-                                    ) : (
-                                        <div className="w-[32px] h-[32px] bg-gray-200 mr-2"></div>
-                                    )}
-                                    <button
-                                        onClick={() => setActiveClub(activeClub === club ? null : club)}
-                                        className="text-left flex-1 bg-blue-500 text-white px-4 py-2 rounded"
-                                    >
-                                        {club} - Buts encaissés: {goalsAgainst}
-                                    </button>
-                                </div>
+                    <h2 className="text-xl my-8 uppercase font-bold"> Meilleures Défenses</h2>
+                    <ul className="flex flex-col gap-4 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                        {bestDefenders.map(({ club, goalsAgainst, logo }, index) => (
+                            <li
+                                key={index}
+                                className="flex flex-col items-center hover:bg-gray-100 p-4 rounded-lg border border-gray-300 w-full"
+                            >
+                                <button
+                                    onClick={() => setActiveClub(activeClub === club ? null : club)}
+                                    className="flex flex-col items-center text-center w-full bg-gray-200  p-2 rounded hover:bg-blue-100 transition"
+                                >
+                                    <Image
+                                        src={logo}
+                                        alt={`Logo ${club}`}
+                                        width={24}
+                                        height={24}
+                                        className="mb-2 w-auto h-auto"
+                                        onError={(e) => {
+                                            e.currentTarget.onerror = null;
+                                            e.currentTarget.src = "./images/next.svg";
+                                        }}
+                                        unoptimized
+                                    />
+                                    <div className="flex flex-col items-center">
+                                        <span className="text-sm font-bold">#{index + 1}</span>
+                                        <span className="text-blue-500">{club}</span>
+                                        <span>{goalsAgainst} Buts</span>
+                                    </div>
+                                </button>
                                 {activeClub === club && (
                                     <div className="w-full mt-4">
                                         {chartType === "line" ? (

@@ -4,6 +4,7 @@ export interface ArrowBackProps {
 
 export interface ClubData {
   logo: string;
+  name: string;
 }
 
 export interface Match {
