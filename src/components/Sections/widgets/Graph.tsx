@@ -78,7 +78,6 @@ const GraphComponent: React.FC = () => {
         try {
             const clubRes = await fetch(`https://api-dofa.prd-aws.fff.fr/api/clubs/${clubId}`);
             const clubData: ClubData = await clubRes.json();
-            console.log(clubData.logo);
             return { clubId, logo: clubData.logo, shortName: clubData.name };
         } catch (error) {
             console.error(`Erreur lors de la récupération du logo pour le club ${clubId}:`, error);
@@ -95,6 +94,8 @@ const GraphComponent: React.FC = () => {
 
     const generateChartDataForClub = (clubName: string, matches: Match[]): ChartData<'line'> => {
         const pointsData: (number | null)[] = [];
+        const goalsForData: (number | null)[] = [];
+        const goalsAgainstData: (number | null)[] = [];
         const labels: string[] = [];
         let cumulativePoints = 0;
 
@@ -113,6 +114,10 @@ const GraphComponent: React.FC = () => {
             } else {
                 pointsData.push(null);
             }
+
+            const isHome = match.home.short_name === clubName;
+            goalsForData.push(isHome ? match.home_score : match.away_score);
+            goalsAgainstData.push(isHome ? match.away_score : match.home_score);
         });
 
         return {
@@ -123,6 +128,22 @@ const GraphComponent: React.FC = () => {
                     data: pointsData,
                     borderColor: "rgba(56, 189, 248, 1)",
                     backgroundColor: "rgba(56, 189, 248, 0.2)",
+                    fill: false,
+                    spanGaps: true,
+                },
+                {
+                    label: "Buts marqués",
+                    data: goalsForData,
+                    borderColor: "rgba(34, 197, 94, 1)",
+                    backgroundColor: "rgba(34, 197, 94, 0.2)",
+                    fill: false,
+                    spanGaps: true,
+                },
+                {
+                    label: "Buts encaissés",
+                    data: goalsAgainstData,
+                    borderColor: "rgba(239, 68, 68, 1)",
+                    backgroundColor: "rgba(239, 68, 68, 0.2)",
                     fill: false,
                     spanGaps: true,
                 },
@@ -169,9 +190,11 @@ const GraphComponent: React.FC = () => {
         scales: {
             y: {
                 beginAtZero: true,
+                display: true, // Garder l'axe des ordonnées à gauche visible
             },
             y1: {
                 beginAtZero: true,
+                display: false, // Cacher l'axe des ordonnées à droite
                 position: "right",
                 grid: {
                     drawOnChartArea: false,
