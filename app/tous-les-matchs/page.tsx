@@ -6,6 +6,7 @@ import ReactPaginate from "react-paginate";
 import Image from "next/image";
 import Loader from "../../src/components/Sections/components/Loader";
 import { FaSync } from "react-icons/fa";
+import Link from "next/link";
 
 export default function TousLesMatchsPage() {
   const [matches, setMatches] = useState<Match[]>([]);
@@ -103,85 +104,94 @@ export default function TousLesMatchsPage() {
             </tr>
           </thead>
           <tbody>
-            {Object.entries(groupedMatches).map(([journeeNumber, matches]) => (
-              <React.Fragment key={journeeNumber}>
-                {selectedJournee === Number(journeeNumber) && (
-                  <>
-                    <tr className="bg-yellow-100">
-                      <td colSpan={4} className="text-center text-blue-500 font-bold bg-yellow-500 text-2xl p-5">
-                        {journeeNumber}
-                        <sup>{getSuffix(Number(journeeNumber))}</sup> Journée
-                      </td>
-                    </tr>
-                    {matches.map((match) => (
-                      <tr key={match.ma_no} className="border-b-2 border-gray-700 bg-white my-4">
-                        <td className="p-2 block sm:table-cell">
-                          <div className="flex flex-row justify-around items-center m-2">
-                            <span className="text-gray-500">
-                              {new Date(match.date).toLocaleDateString('fr-FR', {
-                                weekday: 'long',
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
-                              }).replace(/^\w/, (c) => c.toUpperCase())}{" "}
-                              à <span className="text-blue-500">{match.time}</span>
-                            </span>
-                          </div>
-                        </td>
-                        <td className="p-2 block sm:table-cell">
-                          <div className="flex flex-row justify-around items-center m-2">
-                            <Image
-                              src={match.home.club.logo}
-                              alt={`Logo ${match.home.club.logo}`}
-                              width={40}
-                              height={40}
-                              className="w-8 h-8 m-2"
-                              onError={(e) => {
-                                e.currentTarget.onerror = null;
-                                e.currentTarget.src = "/next.svg.png";
-                              }}
-                            />
-                            <span className="w-32 text-center font-bold">{match.home.short_name}</span>
-                            <span className="text-blue-500 text-sm mx-2">vs</span>
-                            <span className="w-32 text-center font-bold">{match.away.short_name}</span>
-                            <Image
-                              src={match.away.club.logo}
-                              alt={`Logo ${match.away.short_name}`}
-                              width={40}
-                              height={40}
-                              className="w-8 h-8 m-2"
-                              onError={(e) => {
-                                e.currentTarget.onerror = null;
-                                e.currentTarget.src = "/next.svg.png";
-                              }}
-                            />
-                          </div>
-                        </td>
-                        <td className="p-2 font-semibold block sm:table-cell">
-                          <div className="flex flex-row justify-around items-center m-2">
-                            {match.home_score !== null && match.away_score !== null ? (
-                              <h2 className="text-lg sm:text-2xl font-bold">
-                                {match.home_score} - {match.away_score}
-                              </h2>
-                            ) : (
-                              <h2 className="text-lg sm:text-2xl font-bold">⏳</h2>
-                            )}
-                          </div>
-                        </td>
-                        <td className="p-2 block sm:table-cell">
-                          <div className="flex flex-row justify-center items-center m-2">
-                            <span className="text-gray-500 text-sm">
-                              {match.terrain.name}, {match.terrain.city}
-                            </span>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </>
-                )}
-              </React.Fragment>
-            ))}
-          </tbody>
+  {Object.entries(groupedMatches).map(([journeeNumber, matches]) => (
+    <React.Fragment key={journeeNumber}>
+      {selectedJournee === Number(journeeNumber) && (
+        <>
+          <tr className="bg-yellow-100">
+            <td colSpan={4} className="text-center text-blue-500 font-bold bg-yellow-500 text-2xl p-5">
+              {journeeNumber}
+              <sup>{getSuffix(Number(journeeNumber))}</sup> Journée
+            </td>
+          </tr>
+          {matches.map((match) => (
+            <tr key={match.ma_no} className="border-b-2 border-gray-700 bg-white my-4">
+              <td className="p-2 block sm:table-cell">
+                <Link href={`/matchs/${match.ma_no}`} className="block w-full h-full">
+                  <div className="flex flex-row justify-around items-center m-2">
+                    <span className="text-gray-500">
+                      {new Date(match.date).toLocaleDateString('fr-FR', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      }).replace(/^\w/, (c) => c.toUpperCase())}{" "}
+                      à <span className="text-blue-500">{match.time}</span>
+                    </span>
+                  </div>
+                </Link>
+              </td>
+              <td className="p-2 block sm:table-cell">
+                <Link href={`/matchs/${match.ma_no}`} className="block w-full h-full">
+                  <div className="flex flex-row justify-around items-center m-2">
+                    <Image
+                      src={match.home.club.logo}
+                      alt={`Logo ${match.home.club.logo}`}
+                      width={40}
+                      height={40}
+                      className="w-8 h-8 m-2"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = "/next.svg.png";
+                      }}
+                    />
+                    <span className="w-32 text-center font-bold">{match.home.short_name}</span>
+                    <span className="text-blue-500 text-sm mx-2">vs</span>
+                    <span className="w-32 text-center font-bold">{match.away.short_name}</span>
+                    <Image
+                      src={match.away.club.logo}
+                      alt={`Logo ${match.away.short_name}`}
+                      width={40}
+                      height={40}
+                      className="w-8 h-8 m-2"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = "/next.svg.png";
+                      }}
+                    />
+                  </div>
+                </Link>
+              </td>
+              <td className="p-2 font-semibold block sm:table-cell">
+                <Link href={`/matchs/${match.ma_no}`} className="block w-full h-full">
+                  <div className="flex flex-row justify-around items-center m-2">
+                    {match.home_score !== null && match.away_score !== null ? (
+                      <h2 className="text-lg sm:text-2xl font-bold">
+                        {match.home_score} - {match.away_score}
+                      </h2>
+                    ) : (
+                      <h2 className="text-lg sm:text-2xl font-bold">⏳</h2>
+                    )}
+                  </div>
+                </Link>
+              </td>
+              <td className="p-2 block sm:table-cell">
+                <Link href={`/matchs/${match.ma_no}`} className="block w-full h-full">
+                  <div className="flex flex-row justify-center items-center m-2">
+                    <span className="text-gray-500 text-sm">
+                      {match.terrain.name}, {match.terrain.city}
+                    </span>
+                  </div>
+                </Link>
+              </td>
+            </tr>
+          ))}
+        </>
+      )}
+    </React.Fragment>
+  ))}
+</tbody>
+
         </table>
       </div>
 
