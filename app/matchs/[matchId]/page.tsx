@@ -91,7 +91,7 @@ const MatchAVenirPage: React.FC<{ params: { 'matchId': string } }> = ({ params }
                 {new Date(match.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).replace(/^\w/, (c) => c.toUpperCase())} à {match.time}
             </p>
             <div className="flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-8">
-                <div className="flex items-center w-1/2 justify-end">
+                <div className="flex items-center w-1/2 justify-center">
                     <Image
                         src={match.home.club.logo}
                         alt={`Logo ${match.home.short_name}`}
@@ -104,7 +104,7 @@ const MatchAVenirPage: React.FC<{ params: { 'matchId': string } }> = ({ params }
                 <div className="flex flex-row items-center w-1/2 justify-center text-3xl text-blue-500">
                     {match.home_score} - {match.away_score}
                 </div>
-                <div className="flex items-center w-1/2 justify-start">
+                <div className="flex items-center w-1/2 justify-center">
                     <span className="order-2 md:order-1 ml-4 md:ml-0 md:mr-4 text-lg">{match.away.short_name}</span>
                     <Image
                         src={match.away.club.logo}
