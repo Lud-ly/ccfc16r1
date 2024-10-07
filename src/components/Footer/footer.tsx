@@ -1,59 +1,20 @@
-import Link from "next/link";
-import { FaExternalLinkAlt, FaFacebook, FaInstagram } from "react-icons/fa";
-
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="p-4" style={{ backgroundColor: "rgb(9, 87, 159)" }}>
-      <div className="flex justify-between items-center">
-        {/* Left side - Social media icons */}
-        <div className="flex space-x-4">
-          <Link
-            href="https://www.facebook.com/CastelnauLeCres/?locale=fr_FR"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <FaFacebook
-              size={24}
-              className="text-white hover:text-blue-300 transition-colors"
-            />
-          </Link>
-          <Link
-            href="https://www.instagram.com/castelnaulecresfc"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <FaInstagram
-              size={24}
-              className="text-white hover:text-pink-400 transition-colors"
-            />
-          </Link>
-          <Link
-            href="https://www.castelnaulecresfootballclub.fr/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <FaExternalLinkAlt
-              size={22}
-              className="text-white hover:text-gray-400 transition-colors"
-            />
-          </Link>
-
-        </div>
-
-        {/* Right side - Text */}
-        <div className="text-right">
-          <span className="text-xs text-white">Source : </span>
+      <div className="flex justify-center items-center">
+        <div className="text-right flex flex-row items-center mx-auto">
+          <span className="text-[10px] text-white">Source:</span>
           <a
             href="https://occitanie.fff.fr"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-white ml-1 underline hover:text-blue-500 transition-colors"
+            className="text-[10px] text-white ml-1 underline hover:text-blue-500 transition-colors"
           >
             occitanie.fff.fr
           </a>
-          <h6 className="text-xs text-white font-semibold tracking-wide">
+          <h6 className="text-[10px] text-white font-semibold tracking-wide ml-2">
             L.M &copy; {currentYear}
           </h6>
         </div>

@@ -9,7 +9,11 @@ import {
   FaList,
   FaFutbol,
   FaGraduationCap,
+  FaFacebook,
+  FaInstagram,
+  FaExternalLinkAlt,
 } from "react-icons/fa";
+import SocialMediaLinks from "./SocialMediaLinks";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,7 +57,7 @@ const Navigation = () => {
                   width={50}
                   height={50}
                   priority
-                /> 
+                />
                 <h1 className="ml-2 text-xl font-bold text-white">U16 R1</h1>
               </div>
               <button
@@ -62,6 +66,9 @@ const Navigation = () => {
               >
                 <FaTimes size={24} />
               </button>
+            </div>
+            <div className="flex justify-end items-center mb-10">
+              <SocialMediaLinks />
             </div>
             <Link
               href="/classement"
@@ -83,13 +90,6 @@ const Navigation = () => {
               onClick={handleLinkClick}
             >
               <FaList className="mr-2 text-white" /> Tous les Matchs
-            </Link>
-            <Link
-              href="/prefs"
-              className="flex items-center py-2 text-xl text-white hover:text-blue-300 uppercase"
-              onClick={handleLinkClick}
-            >
-              <FaGraduationCap className="mr-2 text-white" /> Prefs
             </Link>
           </div>
         </div>
