@@ -289,7 +289,7 @@ const GraphComponent: React.FC = () => {
                                     onClick={() => setActiveClub(activeClub === club ? null : club)}
                                     className="flex flex-col items-center w-full"
                                 >
-                                    <div className="flex justify-center items-center text-white text-[35px] my-2">
+                                    <div className="flex justify-center items-center text-white text-[35px]">
                                         {index + 1}
                                     </div>
                                     <Image
@@ -334,7 +334,7 @@ const GraphComponent: React.FC = () => {
                                     onClick={() => setActiveClub(activeClub === club ? null : club)}
                                     className="flex flex-col items-center w-full"
                                 >
-                                    <div className="flex justify-center items-center text-white text-[35px] my-2">
+                                    <div className="flex justify-center items-center text-white text-[35px]">
                                         {index + 1}
                                     </div>
                                     <Image
