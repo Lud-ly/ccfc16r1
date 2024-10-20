@@ -5,10 +5,6 @@ import Image from "next/image";
 import { FaArrowUp, FaArrowRight, FaArrowDown } from "react-icons/fa";
 import Loader from "../components/Loader";
 
-interface ClubData {
-  logo: string;
-}
-
 interface ClassementJournee {
   "@id": string;
   rank: number;
@@ -29,25 +25,14 @@ interface ClassementJournee {
   external_updated_at: string;
 }
 
-interface ApiResponse {
-  "hydra:member": ClassementJournee[];
-}
-
 interface ClubResult {
   clubId: string;
-  clubName: string;
-  wonGamesCount: number;
-  drawGamesCount: number;
-  lostGamesCount: number;
-  totalGames: number;
-  goals_for_count: number;
-  goals_against_count: number;
   trend: string;
 }
-const baseUrl =
-  process.env.NODE_ENV === "production"
-    ? "https://ccfc16r1.vercel.app"
-    : "http://localhost:3000";
+
+const baseUrl = process.env.NODE_ENV === "production" 
+  ? "https://ccfc16r1.vercel.app" 
+  : "http://localhost:3000";
 
 const ClassementComponent = () => {
   const [classements, setClassements] = useState<ClassementJournee[]>([]);
@@ -55,154 +40,115 @@ const ClassementComponent = () => {
   const [lastUpdated, setLastUpdated] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
   const [results, setResults] = useState<ClubResult[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    let isCancelled = false;
-    const fetchClassements = async () => {
-      setIsLoading(true);
-
+    const controller = new AbortController();
+    
+    const fetchData = async () => {
       try {
-        const res = await fetch(
-          "https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/classement_journees"
-        );
-        const data: ApiResponse = await res.json();
-        if (isCancelled) return;
-        setClassements(data["hydra:member"]);
+        // Fetch classements and club results in parallel
+        const [classementsRes, resultsRes] = await Promise.all([
+          fetch("https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/classement_journees", {
+            signal: controller.signal
+          }),
+          fetch(`${baseUrl}/api/club-results`, {
+            signal: controller.signal
+          })
+        ]);
 
-        // Obtenir la date de mise à jour la plus récente
-        const latestUpdate = data["hydra:member"].reduce((latest, current) => {
-          return latest > current.external_updated_at
-            ? latest
-            : current.external_updated_at;
+        const classementsData = await classementsRes.json();
+        const resultsData = await resultsRes.json();
+
+        setClassements(classementsData["hydra:member"]);
+        setResults(resultsData);
+
+        // Get latest update date
+        const latestUpdate = classementsData["hydra:member"].reduce((latest: string, current: ClassementJournee) => {
+          return latest > current.external_updated_at ? latest : current.external_updated_at;
         }, "");
         setLastUpdated(latestUpdate);
 
-        // Vérifier et mettre à jour les données en base si nécessaire
-        await checkAndUpdateDatabase(latestUpdate, data["hydra:member"]);
+        // Update database in background
+        checkAndUpdateDatabase(latestUpdate, classementsData["hydra:member"]);
 
-        // Récupérer les logos pour chaque équipe
-        const logoPromises = data["hydra:member"].map(async (classement) => {
-          const clubId = classement.equipe.club["@id"].split("/").pop();
-          try {
-            const clubRes = await fetch(
-              `https://api-dofa.prd-aws.fff.fr/api/clubs/${clubId}`
-            );
-            const clubData: ClubData = await clubRes.json();
-            return { clubId, logo: clubData.logo };
-          } catch (error) {
-            console.error(
-              `Erreur lors de la récupération du logo pour le club ${clubId}:`,
-              error
-            );
-            return { clubId, logo: null };
-          }
-        });
+        // Fetch logos in batches of 5
+        const clubIds = classementsData["hydra:member"].map(
+          (c: ClassementJournee) => c.equipe.club["@id"].split("/").pop()
+        );
+        
+        const logosMap: { [key: string]: string } = {};
+        const batchSize = 5;
+        
+        for (let i = 0; i < clubIds.length; i += batchSize) {
+          const batch = clubIds.slice(i, i + batchSize);
+          const batchPromises = batch.map(async (clubId: any) => {
+            try {
+              const res = await fetch(
+                `https://api-dofa.prd-aws.fff.fr/api/clubs/${clubId}`,
+                { signal: controller.signal }
+              );
+              const data = await res.json();
+              return { clubId, logo: data.logo };
+            } catch (error) {
+              console.error(`Error fetching logo for club ${clubId}:`, error);
+              return { clubId, logo: null };
+            }
+          });
 
-        const logosData = await Promise.all(logoPromises);
-        const logosMap = logosData.reduce((acc, { clubId, logo }) => {
-          if (clubId && logo) {
-            acc[clubId] = logo;
-          }
-          return acc;
-        }, {} as { [key: string]: string });
+          const batchResults = await Promise.all(batchPromises);
+          batchResults.forEach(({ clubId, logo }) => {
+            if (clubId && logo) logosMap[clubId] = logo;
+          });
+          
+          setLogos(prev => ({ ...prev, ...logosMap }));
+        }
 
-        setLogos(logosMap);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des classements:", error);
-        setIsLoading(false);
-      }
-    };
-
-
-
-    const fetchClubResults = async () => {
-      try {
-        const response = await fetch(`${baseUrl}/api/club-results`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!response.ok) throw new Error("Network response was not ok");
-        const data: ClubResult[] = await response.json();
-
-        setResults(data);
-      } catch (error) {
-        console.error("Error fetching club results:", error);
+      } catch (error: any) {
+        if (error.name === 'AbortError') return;
+        console.error("Error fetching data:", error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
-    fetchClassements();
-    fetchClubResults();
-    return () => { isCancelled = true; };
+
+    fetchData();
+
+    return () => controller.abort();
   }, []);
 
+  const checkAndUpdateDatabase = async (latestUpdate: string, classements: ClassementJournee[]) => {
+    try {
+      const checkRes = await fetch(`${baseUrl}/api/check-update`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ latestUpdate })
+      });
+
+      const { shouldUpdate } = await checkRes.json();
+      
+      if (shouldUpdate) {
+        await fetch(`${baseUrl}/api/save-classement`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ classements })
+        });
+      }
+    } catch (error) {
+      console.error("Database update error:", error);
+    }
+  };
+
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleString("fr-FR", {
+    return new Date(dateString).toLocaleString("fr-FR", {
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
       hour: "2-digit",
-      minute: "2-digit",
+      minute: "2-digit"
     });
   };
 
-  // Fonction pour vérifier et mettre à jour les données dans la base Prisma
-  const checkAndUpdateDatabase = async (
-    latestUpdate: string,
-    classements: ClassementJournee[]
-  ) => {
-
-    try {
-      const res = await fetch(`${baseUrl}/api/check-update`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ latestUpdate }),
-      });
-
-      if (!res.ok) {
-        throw new Error("Erreur lors de la vérification de la mise à jour.");
-      }
-
-      const data = await res.json();
-
-      if (data.shouldUpdate) {
-        const saveRes = await fetch(
-          `${baseUrl}/api/save-classement`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ classements }),
-          }
-        );
-
-        if (!saveRes.ok) {
-          throw new Error("Erreur lors de la sauvegarde des classements.");
-        }
-
-        console.log("Classements mis à jour dans la base de données.");
-      } else {
-        console.log("Les classements sont déjà à jour.");
-      }
-    } catch (error) {
-      console.error(
-        "Erreur lors de la vérification de la base de données:",
-        error
-      );
-    }
-  };
-
-  if (isLoading) {
-    return  <Loader />;
-  }
+  if (isLoading) return <Loader />;
   
 
   return (

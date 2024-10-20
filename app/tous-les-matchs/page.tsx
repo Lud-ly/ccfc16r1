@@ -15,41 +15,91 @@ export default function TousLesMatchsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedJournee, setSelectedJournee] = useState<number | null>(null);
 
-  const fetchMatches = async (page: number) => {
+  const findPageWithNextMatch = (allMatches: Match[]): number => {
+    const today = new Date();
+    const nextMatch = allMatches.find(match => new Date(match.date) >= today);
+    if (nextMatch) {
+      const matchIndex = allMatches.indexOf(nextMatch);
+      return Math.floor(matchIndex / 30) + 1;
+    }
+    return 1;
+  };
+
+  const fetchAllMatches = async () => {
+    setIsLoading(true);
+    try {
+      const firstResponse = await fetch(
+        `https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/matchs?page=1`
+      );
+      const firstData = await firstResponse.json();
+      const totalItems = firstData["hydra:totalItems"];
+      const totalPages = Math.ceil(totalItems / 30);
+
+      const allMatches: Match[] = [];
+      for (let page = 1; page <= totalPages; page++) {
+        const response = await fetch(
+          `https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/matchs?page=${page}`
+        );
+        const data = await response.json();
+        allMatches.push(...data["hydra:member"]);
+      }
+
+      const nextPage = findPageWithNextMatch(allMatches);
+      setCurrentPage(nextPage);
+
+      const today = new Date();
+      const nextMatch = allMatches.find(match => new Date(match.date) >= today);
+      if (nextMatch) {
+        setSelectedJournee(nextMatch.poule_journee.number);
+      }
+
+      const matchesForPage = allMatches.slice((nextPage - 1) * 30, nextPage * 30);
+      setMatches(matchesForPage);
+      setTotalPages(totalPages);
+      
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Erreur lors de la récupération des matchs:", error.message);
+      } else {
+        console.error("Une erreur inconnue s'est produite");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchMatchesForPage = async (page: number) => {
     setIsLoading(true);
     try {
       const response = await fetch(
         `https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/matchs?page=${page}`
       );
       const data = await response.json();
-      const fetchedMatches = data["hydra:member"];
-      setMatches(fetchedMatches);
+      setMatches(data["hydra:member"]);
       setTotalPages(Math.ceil(data["hydra:totalItems"] / 30));
-
-      // Logique pour sélectionner la première journée avec un match à venir
-      const today = new Date();
-      const upcomingMatch = fetchedMatches.find(
-        (match: Match) => new Date(match.date) >= today
-      );
-      if (upcomingMatch) {
-        setSelectedJournee(upcomingMatch.poule_journee.number);
-      }
-
-      setIsLoading(false);
     } catch (error) {
-      console.error("Erreur lors de la récupération des matchs:", error);
+      if (error instanceof Error) {
+        console.error("Erreur lors de la récupération des matchs:", error.message);
+      } else {
+        console.error("Une erreur inconnue s'est produite");
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchMatches(currentPage);
+    if (currentPage === 1) {
+      fetchAllMatches();
+    } else {
+      fetchMatchesForPage(currentPage);
+    }
   }, [currentPage]);
 
   const handlePageClick = (selectedItem: { selected: number }) => {
     setCurrentPage(selectedItem.selected + 1);
   };
 
-  // Groupement des matchs par journée
   const groupedMatches = matches.reduce((acc: Record<number, Match[]>, match) => {
     const journeeNumber = match.poule_journee.number;
     if (!acc[journeeNumber]) {
@@ -72,7 +122,6 @@ export default function TousLesMatchsPage() {
     <div className="container mx-auto px-1">
       <h1 className="text-2xl font-bold py-5 text-center uppercase">Tous les Matchs</h1>
 
-      {/* Ajouter des boutons pour chaque journée */}
       <div className="mb-4 text-center flex flex-wrap justify-center">
         {Object.keys(groupedMatches).map((journeeNumber) => (
           <button
@@ -80,7 +129,7 @@ export default function TousLesMatchsPage() {
             className={`mx-1 my-1 px-4 py-2 rounded transition duration-200 ease-in-out 
               ${selectedJournee === Number(journeeNumber) ? "bg-yellow-500" : "bg-blue-500"} 
               text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300`}
-            onClick={() => setSelectedJournee(selectedJournee === Number(journeeNumber) ? null : Number(journeeNumber))} // Toggle pour sélectionner/désélectionner la journée
+            onClick={() => setSelectedJournee(selectedJournee === Number(journeeNumber) ? null : Number(journeeNumber))}
           >
             {journeeNumber}{getSuffix(Number(journeeNumber))} jour.
           </button>
@@ -179,7 +228,7 @@ export default function TousLesMatchsPage() {
                           <Link href={`/matchs/${match.ma_no}`} className="block w-full h-full">
                             <div className="flex flex-row justify-center items-center m-2">
                               <span className="text-gray-500 text-sm">
-                                {match.terrain?.name ?? "Inconnu"}, {match.terrain?.city ?? "Inconnu"}
+                                {match.terrain?.name ?? "⏳"}, {match.terrain?.city ?? ""}
                               </span>
                             </div>
                           </Link>
@@ -191,7 +240,6 @@ export default function TousLesMatchsPage() {
               </React.Fragment>
             ))}
           </tbody>
-
         </table>
       </div>
 
