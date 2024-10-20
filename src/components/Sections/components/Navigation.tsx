@@ -12,6 +12,7 @@ import {
   FaFacebook,
   FaInstagram,
   FaExternalLinkAlt,
+  FaTrophy,
 } from "react-icons/fa";
 import SocialMediaLinks from "./SocialMediaLinks";
 
@@ -75,7 +76,7 @@ const Navigation = () => {
               className="flex items-center py-2 text-xl text-white hover:text-blue-300 uppercase"
               onClick={handleLinkClick}
             >
-              <FaChartLine className="mr-2 text-white" /> Classement
+              <FaTrophy className="mr-2 text-white" /> Classement
             </Link>
             <Link
               href="/matchs"
@@ -96,7 +97,7 @@ const Navigation = () => {
               className="flex items-center py-2 text-xl text-white hover:text-blue-300 uppercase"
               onClick={handleLinkClick}
             >
-              <FaFutbol className="mr-2 text-white" /> Autres
+              <FaChartLine className="mr-2 text-white" /> Stats
             </Link>
           </div>
         </div>
