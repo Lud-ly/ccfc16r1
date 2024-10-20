@@ -31,6 +31,7 @@ const Loader: React.FC = () => {
           strokeLinecap="round"
         />
       </svg>
+      <p className="text-center text-gray-500 text-sm">Chargement...</p>
     </div>
   );
 };

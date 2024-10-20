@@ -276,7 +276,7 @@ const GraphComponent: React.FC = () => {
             </div>
 
             {isLoading ? (
-                <div className="flex justify-center items-center min-h-screen mt-16">
+                <div className="flex justify-center items-center min-h-screen">
                     <Loader />
                 </div>
             ) : (

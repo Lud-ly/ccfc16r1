@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { FaArrowUp, FaArrowRight, FaArrowDown } from "react-icons/fa";
+import { FaArrowUp, FaArrowRight, FaArrowDown, FaSync } from "react-icons/fa";
 import Loader from "../components/Loader";
 
 interface ClubData {
@@ -79,7 +79,7 @@ const ClassementComponent = () => {
         setLastUpdated(latestUpdate);
 
         // Vérifier et mettre à jour les données en base si nécessaire
-       // await checkAndUpdateDatabase(latestUpdate, data["hydra:member"]);
+        // await checkAndUpdateDatabase(latestUpdate, data["hydra:member"]);
 
         // Récupérer les logos pour chaque équipe
         const logoPromises = data["hydra:member"].map(async (classement) => {
@@ -136,7 +136,7 @@ const ClassementComponent = () => {
       }
     };
     fetchClassements();
-    //fetchClubResults();
+    fetchClubResults();
     return () => { isCancelled = true; };
   }, []);
 
@@ -202,20 +202,34 @@ const ClassementComponent = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-screen mt-16">
+      <div className="flex justify-center items-center min-h-screen">
         <Loader />
       </div>
     );
   }
 
+  const handleRefresh = async () => {
+    setIsLoading(true);
+    await checkAndUpdateDatabase(lastUpdated, classements);
+    setIsLoading(false);
+  };
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl text-center font-bold py-5 uppercase">Classement</h1>
+      <h1 className="text-2xl text-center font-bold py-5 uppercase">
+        Classement
+      </h1>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
         <p className="text-sm text-black mt-2 md:mt-0">
           Mise à jour le : {formatDate(lastUpdated)}
         </p>
+        <button
+          onClick={handleRefresh}
+          disabled={isLoading}
+          className="ml-2 py-2 px-4 rounded hover:bg-blue-600 transition flex items-center"
+        >
+          <FaSync />
+        </button>
       </div>
       <div className="overflow-x-auto">
         <table className="table-auto min-w-full border-collapse">
