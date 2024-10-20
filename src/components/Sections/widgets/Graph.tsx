@@ -282,32 +282,29 @@ const GraphComponent: React.FC = () => {
             ) : (
                 <div>
                     {/* Podium Meilleures Attaques */}
-                    <div className="flex items-end mb-8">
+                    <div className="flex justify-center items-center mb-8">
                         {bestAttackers.map(({ club, goalsFor, logo }, index) => (
-                            <div key={index} className={`w-48 ${index === 0 ? 'min-h-[300px] bg-gradient-to-b from-[#FFAC25] via-[#FECF33] to-[#FFAC25]' : index === 1 ? 'min-h-[200px] bg-blue-500' : 'min-h-[100px] bg-green-500'}`}>
+                            <div key={index} className={`w-48 ${index === 0 ? 'min-h-[350px] bg-gradient-to-b from-[#FFAC25] via-[#FECF33] to-[#FFAC25]' : index === 1 ? 'min-h-[250px] bg-blue-500' : 'min-h-[80px] bg-green-500'}`}>
                                 <button
                                     onClick={() => setActiveClub(activeClub === club ? null : club)}
-                                    className="flex flex-col items-center"
+                                    className="flex flex-col items-center w-full"
                                 >
-                                    {/* Logo centré et agrandi */}
+                                    <div className="flex justify-center items-center text-white text-[35px] my-2">
+                                        {index + 1}
+                                    </div>
                                     <Image
                                         src={logo}
                                         alt={`Logo ${club}`}
-                                        width={72} // Taille du logo agrandie
-                                        height={72}
-                                        className="mx-auto my-2" // Centrage
+                                        width={60}
+                                        height={60}
+                                        className="mx-auto my-2 w-auto h-auto"
                                         onError={(e) => {
                                             e.currentTarget.onerror = null;
                                             e.currentTarget.src = "./images/next.svg";
                                         }}
                                         unoptimized
                                     />
-                                    {/* Numéro de classement centré */}
-                                    <div className="flex justify-center items-center text-white text-[35px] my-2">
-                                        {index + 1}
-                                    </div>
-                                    {/* Nombre de buts en blanc */}
-                                    <div className="text-center text-white">{goalsFor} Buts</div>
+                                    <div className="text-center text-white">{goalsFor} Buts marqués</div>
                                 </button>
                             </div>
                         ))}
@@ -330,30 +327,29 @@ const GraphComponent: React.FC = () => {
 
                     {/* Podium Meilleures Défenses */}
                     <h2 className="text-xl my-8 uppercase font-bold">Meilleures Défenses</h2>
-                    <div className="flex items-end mb-8">
-                        {bestDefenders.map(({ club, logo }, index) => (
-                            <div key={index} className={`w-48 ${index === 0 ? 'min-h-[300px] bg-gradient-to-b from-[#FFAC25] via-[#FECF33] to-[#FFAC25]' : index === 1 ? 'min-h-[200px] bg-blue-500' : 'min-h-[100px] bg-green-500'}`}>
+                    <div className="flex justify-center items-center mb-8">
+                        {bestDefenders.map(({ club, logo, goalsAgainst }, index) => (
+                            <div key={index} className={`w-48 ${index === 0 ? 'min-h-[350px] bg-gradient-to-b from-[#FFAC25] via-[#FECF33] to-[#FFAC25]' : index === 1 ? 'min-h-[250px] bg-blue-500' : 'min-h-[80px] bg-green-500'}`}>
                                 <button
                                     onClick={() => setActiveClub(activeClub === club ? null : club)}
-                                    className="flex flex-col items-center"
+                                    className="flex flex-col items-center w-full"
                                 >
-                                    {/* Logo centré et agrandi */}
+                                    <div className="flex justify-center items-center text-white text-[35px] my-2">
+                                        {index + 1}
+                                    </div>
                                     <Image
                                         src={logo}
                                         alt={`Logo ${club}`}
-                                        width={72} // Taille du logo agrandie
-                                        height={72}
-                                        className="mx-auto my-2" // Centrage
+                                        width={60}
+                                        height={60}
+                                        className="mx-auto my-2 w-auto h-auto"
                                         onError={(e) => {
                                             e.currentTarget.onerror = null;
                                             e.currentTarget.src = "./images/next.svg";
                                         }}
                                         unoptimized
                                     />
-                                    {/* Numéro de classement centré */}
-                                    <div className="flex justify-center items-center text-white text-[35px] my-2">
-                                        {index + 1}
-                                    </div>
+                                    <div className="text-center text-white">{goalsAgainst} Buts encaissés</div>
                                 </button>
                             </div>
                         ))}
