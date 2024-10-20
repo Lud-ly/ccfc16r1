@@ -73,8 +73,12 @@ const MatchAVenirPage: React.FC<{ params: { 'matchId': string } }> = ({ params }
     }, [params]);
 
     if (isLoading) {
-        return <Loader />;
-    }
+        return (
+            <div className="flex justify-center items-center min-h-screen mt-16">
+                <Loader />
+            </div>
+        );
+    }    
 
     if (!matchData || matchData["hydra:member"].length === 0) {
         return <div><ArrowBack iSize={40} /><p className="text-center">Match non disponible pour l&#39;instant</p></div>;

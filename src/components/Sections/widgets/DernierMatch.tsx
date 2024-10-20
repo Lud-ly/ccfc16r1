@@ -43,7 +43,11 @@ export default function DernierMatch() {
     }, []);
 
     if (isLoading) {
-        return <Loader />;
+        return (
+            <div className="flex justify-center items-center min-h-screen mt-16">
+                <Loader />
+            </div>
+        );
     }
 
     if (!latestMatch) {
@@ -55,7 +59,7 @@ export default function DernierMatch() {
             <div className="w-full bg-white shadow-lg opacity-70 overflow-hidden cursor-pointer rounded">
                 <div className="flex flex-col md:flex-row justify-between items-center p-4">
                     <div className="flex flex-col items-center space-y-2 px-5">
-                    <small className="inline-block text-gray-800 p-1 text-sm text-center rounded italic">
+                        <small className="inline-block text-gray-800 p-1 text-sm text-center rounded italic">
                             {latestMatch.poule_journee.number}<sup>e</sup> j
                         </small>
                         <Image

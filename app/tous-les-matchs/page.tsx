@@ -56,7 +56,7 @@ export default function TousLesMatchsPage() {
       const matchesForPage = allMatches.slice((nextPage - 1) * 30, nextPage * 30);
       setMatches(matchesForPage);
       setTotalPages(totalPages);
-      
+
     } catch (error) {
       if (error instanceof Error) {
         console.error("Erreur lors de la récupération des matchs:", error.message);
@@ -115,7 +115,11 @@ export default function TousLesMatchsPage() {
   };
 
   if (isLoading) {
-    return <Loader />;
+    return (
+      <div className="flex justify-center items-center min-h-screen mt-16">
+        <Loader />
+      </div>
+    );
   }
 
   return (

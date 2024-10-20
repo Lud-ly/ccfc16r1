@@ -49,7 +49,11 @@ const MatchsAVenirPage: React.FC = () => {
   }, []);
 
   if (isLoading) {
-    return <Loader />;
+    return (
+      <div className="flex justify-center items-center min-h-screen mt-16">
+        <Loader />
+      </div>
+    );
   }
 
   return (

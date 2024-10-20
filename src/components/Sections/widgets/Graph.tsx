@@ -257,7 +257,7 @@ const GraphComponent: React.FC = () => {
 
     const bestAttackers = sortClubs(results, 'attack').slice(0, 3); // Top 3 for attackers
     const bestDefenders = sortClubs(results, 'defense').slice(0, 3); // Top 3 for defenders
-    
+
     return (
         <div className="p-8 bg-gray-100 min-h-screen">
             {/* Podium Meilleures Attaques */}
@@ -274,9 +274,11 @@ const GraphComponent: React.FC = () => {
                     </select>
                 </div>
             </div>
-    
+
             {isLoading ? (
-                <Loader />
+                <div className="flex justify-center items-center min-h-screen mt-16">
+                    <Loader />
+                </div>
             ) : (
                 <div>
                     {/* Podium Meilleures Attaques */}
@@ -310,7 +312,7 @@ const GraphComponent: React.FC = () => {
                             </div>
                         ))}
                     </div>
-    
+
                     {/* Graphiques pour Meilleures Attaques */}
                     <div className="flex flex-col gap-4">
                         {bestAttackers.map(({ club }, index) => (
@@ -325,7 +327,7 @@ const GraphComponent: React.FC = () => {
                             )
                         ))}
                     </div>
-    
+
                     {/* Podium Meilleures Défenses */}
                     <h2 className="text-xl my-8 uppercase font-bold">Meilleures Défenses</h2>
                     <div className="flex items-end mb-8">
@@ -356,7 +358,7 @@ const GraphComponent: React.FC = () => {
                             </div>
                         ))}
                     </div>
-    
+
                     {/* Graphiques pour Meilleures Défenses */}
                     <div className="flex flex-col gap-4">
                         {bestDefenders.map(({ club }, index) => (
@@ -374,7 +376,7 @@ const GraphComponent: React.FC = () => {
                 </div>
             )}
         </div>
-    );    
+    );
 };
 
 export default GraphComponent;

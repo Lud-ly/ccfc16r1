@@ -79,7 +79,7 @@ const ClassementComponent = () => {
         setLastUpdated(latestUpdate);
 
         // Vérifier et mettre à jour les données en base si nécessaire
-        await checkAndUpdateDatabase(latestUpdate, data["hydra:member"]);
+       // await checkAndUpdateDatabase(latestUpdate, data["hydra:member"]);
 
         // Récupérer les logos pour chaque équipe
         const logoPromises = data["hydra:member"].map(async (classement) => {
@@ -136,7 +136,7 @@ const ClassementComponent = () => {
       }
     };
     fetchClassements();
-    fetchClubResults();
+    //fetchClubResults();
     return () => { isCancelled = true; };
   }, []);
 
@@ -201,9 +201,13 @@ const ClassementComponent = () => {
   };
 
   if (isLoading) {
-    return  <Loader />;
+    return (
+      <div className="flex justify-center items-center min-h-screen mt-16">
+        <Loader />
+      </div>
+    );
   }
-  
+
 
   return (
     <div className="p-4">
