@@ -304,16 +304,22 @@ const GraphComponent: React.FC = () => {
                                     />
                                     <div className="text-center text-blue-500">{goalsFor} Buts</div>
                                 </button>
-                                {activeClub === club && (
-                                    <div className="w-full mt-4">
-                                        {chartType === "line" ? (
-                                            <Line data={generateChartDataForClub(club, results)} options={commonOptions} />
-                                        ) : (
-                                            <Bar data={generateBarChartDataForClub(club, results)} options={commonOptions} />
-                                        )}
-                                    </div>
-                                )}
                             </div>
+                        ))}
+                    </div>
+                    
+                    {/* Graphiques pour Meilleures Attaques */}
+                    <div className="flex flex-col gap-4">
+                        {bestAttackers.map(({ club }, index) => (
+                            activeClub === club && (
+                                <div key={index} className="w-full mt-4">
+                                    {chartType === "line" ? (
+                                        <Line data={generateChartDataForClub(club, results)} options={commonOptions} />
+                                    ) : (
+                                        <Bar data={generateBarChartDataForClub(club, results)} options={commonOptions} />
+                                    )}
+                                </div>
+                            )
                         ))}
                     </div>
     
@@ -342,16 +348,22 @@ const GraphComponent: React.FC = () => {
                                         unoptimized
                                     />
                                 </button>
-                                {activeClub === club && (
-                                    <div className="w-full mt-4">
-                                        {chartType === "line" ? (
-                                            <Line data={generateChartDataForClub(club, results)} options={commonOptions} />
-                                        ) : (
-                                            <Bar data={generateBarChartDataForClub(club, results)} options={commonOptions} />
-                                        )}
-                                    </div>
-                                )}
                             </div>
+                        ))}
+                    </div>
+    
+                    {/* Graphiques pour Meilleures Défenses */}
+                    <div className="flex flex-col gap-4">
+                        {bestDefenders.map(({ club }, index) => (
+                            activeClub === club && (
+                                <div key={index} className="w-full mt-4">
+                                    {chartType === "line" ? (
+                                        <Line data={generateChartDataForClub(club, results)} options={commonOptions} />
+                                    ) : (
+                                        <Bar data={generateBarChartDataForClub(club, results)} options={commonOptions} />
+                                    )}
+                                </div>
+                            )
                         ))}
                     </div>
                 </div>
