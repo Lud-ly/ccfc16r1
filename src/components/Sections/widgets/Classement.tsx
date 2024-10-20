@@ -79,7 +79,7 @@ const ClassementComponent = () => {
         setLastUpdated(latestUpdate);
 
         // Vérifier et mettre à jour les données en base si nécessaire
-        // await checkAndUpdateDatabase(latestUpdate, data["hydra:member"]);
+        await checkAndUpdateDatabase(latestUpdate, data["hydra:member"]);
 
         // Récupérer les logos pour chaque équipe
         const logoPromises = data["hydra:member"].map(async (classement) => {
@@ -135,8 +135,8 @@ const ClassementComponent = () => {
         setLoading(false);
       }
     };
-    fetchClassements();
     fetchClubResults();
+    fetchClassements();
     return () => { isCancelled = true; };
   }, []);
 
@@ -223,13 +223,6 @@ const ClassementComponent = () => {
         <p className="text-sm text-black mt-2 md:mt-0">
           Mise à jour le : {formatDate(lastUpdated)}
         </p>
-        <button
-          onClick={handleRefresh}
-          disabled={isLoading}
-          className="ml-2 py-2 px-4 rounded hover:bg-blue-600 transition flex items-center"
-        >
-          <FaSync />
-        </button>
       </div>
       <div className="overflow-x-auto">
         <table className="table-auto min-w-full border-collapse">
