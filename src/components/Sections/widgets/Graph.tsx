@@ -290,7 +290,7 @@ const GraphComponent: React.FC = () => {
                 ))}
             </div>
             {isLoading ? (
-                <div className="flex justify-center items-center min-h-screen">
+                <div className="flex justify-center items-start min-h-screen">
                     <Loader />
                 </div>
             ) : (
@@ -298,12 +298,12 @@ const GraphComponent: React.FC = () => {
                     {/* Podium Meilleures Attaques */}
                     <div className="flex justify-center items-center mb-8">
                         {bestAttackers.map(({ club, goalsFor, logo }, index) => (
-                            <div key={index} className={`w-48 ${index === 0 ? 'min-h-[350px] bg-gradient-to-b from-[#FFAC25] via-[#FECF33] to-[#FFAC25]' : index === 1 ? 'min-h-[250px] bg-blue-500' : 'min-h-[80px] bg-green-500'}`}>
+                            <div key={index} className={`w-48 rounded ${index === 0 ? 'min-h-[350px] bg-gradient-to-b from-[#FFAC25] via-[#FECF33] to-[#FFAC25]' : index === 1 ? 'min-h-[250px] bg-blue-500' : 'min-h-[80px] bg-green-500'}`}>
                                 <button
                                     onClick={() => setActiveClub(activeClub === club ? null : club)}
                                     className="flex flex-col items-center w-full"
                                 >
-                                    <div className="flex justify-center items-center text-white text-[35px]">
+                                    <div className="flex justify-center items-center text-white text-[35px] badge">
                                         {index + 1}
                                     </div>
                                     <Image
@@ -318,7 +318,7 @@ const GraphComponent: React.FC = () => {
                                         }}
                                         unoptimized
                                     />
-                                    <div className="text-center text-white">{goalsFor} Buts marqués</div>
+                                    <div className="text-center text-white mb-3">{goalsFor} Buts marqués</div>
                                 </button>
                             </div>
                         ))}
@@ -344,7 +344,7 @@ const GraphComponent: React.FC = () => {
                     </div>
                     <div className="flex justify-center items-center mb-8">
                         {bestDefenders.map(({ club, logo, goalsAgainst }, index) => (
-                            <div key={index} className={`w-48 ${index === 0 ? 'min-h-[350px] bg-gradient-to-b from-[#FFAC25] via-[#FECF33] to-[#FFAC25]' : index === 1 ? 'min-h-[250px] bg-blue-500' : 'min-h-[80px] bg-green-500'}`}>
+                            <div key={index} className={`w-48 ${index === 0 ? 'min-h-[350px] bg-gradient-to-b from-[#FFAC25] via-[#FECF33] to-[#FFAC25] rounded' : index === 1 ? 'min-h-[250px] bg-blue-500' : 'min-h-[80px] bg-green-500'}`}>
                                 <button
                                     onClick={() => setActiveClub(activeClub === club ? null : club)}
                                     className="flex flex-col items-center w-full"
@@ -364,7 +364,7 @@ const GraphComponent: React.FC = () => {
                                         }}
                                         unoptimized
                                     />
-                                    <div className="text-center text-white">{goalsAgainst} Buts encaissés</div>
+                                    <div className="text-center text-white mb-3">{goalsAgainst} Buts encaissés</div>
                                 </button>
                             </div>
                         ))}

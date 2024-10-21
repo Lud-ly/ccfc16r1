@@ -116,7 +116,7 @@ export default function TousLesMatchsPage() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-start min-h-screen">
         <Loader />
       </div>
     );
