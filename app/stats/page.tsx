@@ -1,5 +1,5 @@
 import React from "react";
-import { ChickenSoccerStory } from "~/src/components/Sections/components/ChickenSoccerStory";
+import ChickenSoccerStory  from "~/src/components/Sections/components/ChickenSoccerStory";
 import GraphComponent from "~/src/components/Sections/widgets/Graph";
 
 

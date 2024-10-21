@@ -1,7 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
 
-export const ChickenSoccerStory = () => {
+const ChickenSoccerStory = () => {
 
     const settings = {
         dots: false, // Activer les points de pagination
@@ -36,3 +36,5 @@ export const ChickenSoccerStory = () => {
 
   )
 }
+
+export default ChickenSoccerStory;

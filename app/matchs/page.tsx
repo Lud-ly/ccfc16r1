@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
 import Loader from '../../src/components/Sections/components/Loader';
-import { ChickenSoccerStory } from '~/src/components/Sections/components/ChickenSoccerStory';
+import ChickenSoccerStory  from '~/src/components/Sections/components/ChickenSoccerStory';
 
 interface Match {
   ma_no: number;

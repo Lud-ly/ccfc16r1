@@ -7,7 +7,7 @@ import Image from "next/image";
 import Loader from "../../src/components/Sections/components/Loader";
 import { FaSync } from "react-icons/fa";
 import Link from "next/link";
-import { ChickenSoccerStory } from "~/src/components/Sections/components/ChickenSoccerStory";
+import ChickenSoccerStory  from "~/src/components/Sections/components/ChickenSoccerStory";
 
 
 export default function TousLesMatchsPage() {

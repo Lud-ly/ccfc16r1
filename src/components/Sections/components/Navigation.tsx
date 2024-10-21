@@ -11,7 +11,6 @@ import {
   FaTrophy,
 } from "react-icons/fa";
 import SocialMediaLinks from "./SocialMediaLinks";
-import { ChickenSoccerStory } from "./ChickenSoccerStory";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
