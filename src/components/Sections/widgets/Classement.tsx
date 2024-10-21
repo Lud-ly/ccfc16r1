@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaArrowUp, FaArrowRight, FaArrowDown, FaSync } from "react-icons/fa";
 import Loader from "../components/Loader";
-import ChickenSoccerStory  from "../components/ChickenSoccerStory";
 
 interface ClubData {
   logo: string;
@@ -335,7 +334,6 @@ const ClassementComponent = () => {
           </tbody>
         </table>
       </div>
-      <ChickenSoccerStory/>
     </div>
   );
 };
