@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import Slider from "react-slick"; // Importer le composant Slider
 import {
   FaBars,
   FaTimes,
@@ -25,6 +26,18 @@ const Navigation = () => {
     setIsOpen(false);
   };
 
+  // Configurer les paramètres du carousel
+  const settings = {
+    dots: false, // Activer les points de pagination
+    infinite: true, // Boucle infinie
+    speed: 500, // Vitesse de transition
+    slidesToShow: 1, // Nombre d'éléments à afficher à la fois
+    slidesToScroll: 1, // Nombre d'éléments à défiler à la fois
+    autoplay: true, // Activer le défilement automatique
+    autoplaySpeed: 3000, // Temps (en ms) entre les défilements
+    pauseOnHover: true, // Mettre en pause le défilement lors du survol
+  };
+
   return (
     <nav className="shadow-md">
       <div className="flex justify-between items-center p-4">
@@ -43,9 +56,7 @@ const Navigation = () => {
           className="fixed inset-0 bg-black bg-opacity-70 z-50"
           onClick={handleOutsideClick}
         >
-          <div
-            className="bg-[rgb(9,87,159)] bg-opacity-50 w-3/4 sm:w-1/3 h-full flex flex-col p-4"
-          >
+          <div className="bg-[rgb(9,87,159)] bg-opacity-50 w-3/4 sm:w-1/3 h-full flex flex-col p-4">
             <div className="flex justify-between items-center mb-10">
               <div className="home flex flex-row items-center">
                 <Image
@@ -95,7 +106,26 @@ const Navigation = () => {
             >
               <FaChartLine className="mr-2 text-white" /> Stats
             </Link>
-            <iframe src="https://giphy.com/embed/elatsjsGzdLtNov4Ky" width="100%" className="mt-4 rouded"  allowFullScreen></iframe>
+
+            {/* Carousel des GIFs */}
+            <div className="mt-4">
+              <Slider {...settings}>
+                <iframe src="https://giphy.com/embed/elatsjsGzdLtNov4Ky" width="100%" className="rounded" allowFullScreen></iframe>
+                <iframe src="https://giphy.com/embed/iJhcSIRE8IhJEwWudO" width="100%" className="rounded" allowFullScreen></iframe>
+                <iframe src="https://giphy.com/embed/loeVS7xSL1o46LxeoK" width="100%" className="rounded" allowFullScreen></iframe>
+                <iframe src="https://giphy.com/embed/S6kvJjp6iGB6YXMbK4" width="100%" className="rounded" allowFullScreen></iframe>
+                <iframe src="https://giphy.com/embed/Kg9DmEoDJjhC1gWPHE" width="100%" className="rounded" allowFullScreen></iframe>
+                <iframe src="https://giphy.com/embed/QCIa3WEcgZCa6YmJT5" width="100%" className="rounded" allowFullScreen></iframe>
+                <iframe src="https://giphy.com/embed/fUGW4erfIYUJRoZIwZ" width="100%" className="rounded" allowFullScreen></iframe>
+                <iframe src="https://giphy.com/embed/llUeFDNRaLWvokhbat" width="100%" className="rounded" allowFullScreen></iframe>
+                <iframe src="https://giphy.com/embed/L2llNi8VK3XgfuDUKR" width="100%" className="rounded" allowFullScreen></iframe>
+                <iframe src="https://giphy.com/embed/SYoYIr1xwXExnGaQuM" width="100%" className="rounded" allowFullScreen></iframe>
+                <iframe src="https://giphy.com/embed/U6eTGDLMa0L1FWkL9Z" width="100%" className="rounded" allowFullScreen></iframe>
+                <iframe src="https://giphy.com/embed/Sql4zgbgJCH2BtdJT8" width="100%" className="rounded" allowFullScreen></iframe>
+                <iframe src="https://giphy.com/embed/jRwKzj28kaAxbfH5fC" width="100%" className="rounded" allowFullScreen></iframe>
+                <iframe src="https://giphy.com/embed/kyXRKuEYmGhscoz3ki" width="100%" className="rounded" allowFullScreen></iframe>
+              </Slider>
+            </div>
           </div>
         </div>
       )}

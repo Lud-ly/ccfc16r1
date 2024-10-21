@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 const SplashScreen = ({ finishLoading }: { finishLoading: () => void }) => {
     const [isMounted, setIsMounted] = useState(false);
-    const [showLogo1, setShowLogo1] = useState(true); // État pour contrôler l'affichage du logo 1
+    const [currentScreen, setCurrentScreen] = useState(0); // État pour suivre l'écran actuel
     const [bgColor, setBgColor] = useState("white"); // Couleur de fond initiale
     const router = useRouter();
 
@@ -15,11 +15,26 @@ const SplashScreen = ({ finishLoading }: { finishLoading: () => void }) => {
                 finishLoading();
                 setTimeout(() => {
                     router.push("/"); // Redirection vers la page d'accueil
-                }, 5000);
+                }, 6000);
             },
         });
 
         loader
+            .add({
+                targets: "#gif",
+                opacity: [0, 1],
+                duration: 1000,
+                easing: "easeInOutExpo",
+            })
+            .add({
+                targets: "#gif",
+                opacity: [1, 0],
+                duration: 1000,
+                easing: "easeInOutExpo",
+                complete: () => {
+                    setCurrentScreen(1); // Passer au logo 1
+                },
+            })
             .add({
                 targets: "#logo1",
                 scale: [0, 1],
@@ -45,7 +60,9 @@ const SplashScreen = ({ finishLoading }: { finishLoading: () => void }) => {
                 opacity: 0, // Fait disparaître le logo 1
                 duration: 500,
                 easing: "easeInOutExpo",
-                complete: () => setShowLogo1(false), // Met à jour l'état pour cacher le logo 1
+                complete: () => {
+                    setCurrentScreen(2); // Passer au logo 2
+                },
             })
             .add({
                 targets: "#logo2",
@@ -83,7 +100,22 @@ const SplashScreen = ({ finishLoading }: { finishLoading: () => void }) => {
         <div className="flex h-screen items-center justify-center" style={{ backgroundColor: bgColor }}>
             {isMounted && (
                 <>
-                    {showLogo1 && ( // Rendre logo1 seulement si showLogo1 est vrai
+                    {currentScreen === 0 && (
+                        <div className="flex flex-col items-center justify-center">
+                            <h2 className="text-2xl text-center font-bold py-2 uppercase">
+                                Les Rôtis du F⚽⚽t
+                            </h2>
+                            <iframe
+                                id="gif"
+                                src="https://giphy.com/embed/elatsjsGzdLtNov4Ky"
+                                width="240"
+                                height="203"
+                                className="giphy-embed"
+                                allowFullScreen
+                            />
+                        </div>
+                    )}
+                    {currentScreen === 1 && ( // Affiche le logo 1
                         <div className="flex flex-col items-center justify-center">
                             <h2 className="text-2xl text-center font-bold py-2 uppercase">
                                 U16 R1 Occitanie
@@ -97,14 +129,15 @@ const SplashScreen = ({ finishLoading }: { finishLoading: () => void }) => {
                             />
                         </div>
                     )}
-                    <Image
-                        id="logo2"
-                        src="/images/logo.png"
-                        alt="Logo 2"
-                        width={250}
-                        height={250}
-                        style={{ display: showLogo1 ? 'none' : 'block' }} // Cache le logo 2 jusqu'à ce qu'il soit prêt à être affiché
-                    />
+                    {currentScreen === 2 && ( // Affiche le logo 2
+                        <Image
+                            id="logo2"
+                            src="/images/logo.png"
+                            alt="Logo 2"
+                            width={250}
+                            height={250}
+                        />
+                    )}
                 </>
             )}
         </div>

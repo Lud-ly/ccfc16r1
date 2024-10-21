@@ -49,8 +49,8 @@ const BottomNavBar: React.FC = () => {
       </div>
       <div className="flex justify-center items-center">
         <div className="text-right flex flex-row items-center mx-auto">  
-          <h6 className="text-[10px] text-white font-semibold tracking-wide mr-3">
-            🐔 Rôtis du Foot &copy; {currentYear}
+          <h6 className="text-[9px] text-white font-semibold tracking-wide mr-3">
+            🐔 Les Rôtis du Foot &copy; {currentYear}
           </h6>
           <span className="text-[10px] text-white">Source:</span>
           <a
