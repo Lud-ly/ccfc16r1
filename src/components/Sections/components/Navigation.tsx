@@ -45,7 +45,7 @@ const Navigation = () => {
           className="text-white focus:outline-none"
           onClick={() => setIsOpen(!isOpen)}
         >
-          {isOpen ? <FaFutbol size={24} /> : <FaBars size={24} />}
+          {isOpen ? "🐔" : <FaBars size={24} />}
         </button>
       </div>
 
