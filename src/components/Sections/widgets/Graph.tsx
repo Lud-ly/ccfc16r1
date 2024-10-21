@@ -18,6 +18,7 @@ import {
 import Loader from "../components/Loader";
 import { ClubData, Match } from "~/types/types";
 import Image from "next/image";
+import { FaChartBar, FaChartLine } from "react-icons/fa";
 
 ChartJS.register(
     CategoryScale,
@@ -261,20 +262,33 @@ const GraphComponent: React.FC = () => {
     return (
         <div className="p-8 bg-gray-100 min-h-screen">
             {/* Podium Meilleures Attaques */}
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex items-start mb-4">
                 <h2 className="text-2xl font-bold">Meilleures Attaques</h2>
-                <div>
-                    <select
-                        value={chartType}
-                        onChange={(e) => setChartType(e.target.value as "line" | "bar")}
-                        className="p-2 border border-gray-300 rounded"
-                    >
-                        <option value="line">Courbes</option>
-                        <option value="bar">Barres</option>
-                    </select>
-                </div>
             </div>
-
+            {/* Graphiques pour Meilleures Attaques */}
+            <div className="flex flex-col gap-4">
+                {bestAttackers.map(({ club }, index) => (
+                    activeClub === club && (
+                        <div key={index} className="w-full mt-4">
+                            <div>
+                                <select
+                                    value={chartType}
+                                    onChange={(e) => setChartType(e.target.value as "line" | "bar")}
+                                    className="p-2 border border-gray-300 rounded"
+                                >
+                                    <option value="line">Courbes</option>
+                                    <option value="bar">Barres</option>
+                                </select>
+                            </div>
+                            {chartType === "line" ? (
+                                <Line data={generateChartDataForClub(club, results)} options={commonOptions} />
+                            ) : (
+                                <Bar data={generateBarChartDataForClub(club, results)} options={commonOptions} />
+                            )}
+                        </div>
+                    )
+                ))}
+            </div>
             {isLoading ? (
                 <div className="flex justify-center items-center min-h-screen">
                     <Loader />
@@ -310,9 +324,11 @@ const GraphComponent: React.FC = () => {
                         ))}
                     </div>
 
-                    {/* Graphiques pour Meilleures Attaques */}
+                    {/* Podium Meilleures Défenses */}
+                    <h2 className="text-xl my-8 uppercase font-bold">Meilleures Défenses</h2>
+                    {/* Graphiques pour Meilleures Défenses */}
                     <div className="flex flex-col gap-4">
-                        {bestAttackers.map(({ club }, index) => (
+                        {bestDefenders.map(({ club }, index) => (
                             activeClub === club && (
                                 <div key={index} className="w-full mt-4">
                                     {chartType === "line" ? (
@@ -324,9 +340,6 @@ const GraphComponent: React.FC = () => {
                             )
                         ))}
                     </div>
-
-                    {/* Podium Meilleures Défenses */}
-                    <h2 className="text-xl my-8 uppercase font-bold">Meilleures Défenses</h2>
                     <div className="flex justify-center items-center mb-8">
                         {bestDefenders.map(({ club, logo, goalsAgainst }, index) => (
                             <div key={index} className={`w-48 ${index === 0 ? 'min-h-[350px] bg-gradient-to-b from-[#FFAC25] via-[#FECF33] to-[#FFAC25]' : index === 1 ? 'min-h-[250px] bg-blue-500' : 'min-h-[80px] bg-green-500'}`}>
@@ -355,20 +368,7 @@ const GraphComponent: React.FC = () => {
                         ))}
                     </div>
 
-                    {/* Graphiques pour Meilleures Défenses */}
-                    <div className="flex flex-col gap-4">
-                        {bestDefenders.map(({ club }, index) => (
-                            activeClub === club && (
-                                <div key={index} className="w-full mt-4">
-                                    {chartType === "line" ? (
-                                        <Line data={generateChartDataForClub(club, results)} options={commonOptions} />
-                                    ) : (
-                                        <Bar data={generateBarChartDataForClub(club, results)} options={commonOptions} />
-                                    )}
-                                </div>
-                            )
-                        ))}
-                    </div>
+
                 </div>
             )}
         </div>
