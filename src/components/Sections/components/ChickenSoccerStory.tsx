@@ -15,8 +15,6 @@ const ChickenSoccerStory = () => {
     };
 
     return (
-        <div className="rounded-full bg-white h-64 w-64 border-4 border-gray-500 flex items-center justify-center my-4">
-            <div className="h-full w-full flex items-center justify-center">
                 <Slider {...settings}>
                     <iframe src="https://giphy.com/embed/elatsjsGzdLtNov4Ky" width="100%" className="rounded" allowFullScreen></iframe>
                     <iframe src="https://giphy.com/embed/iJhcSIRE8IhJEwWudO" width="100%" className="rounded" allowFullScreen></iframe>
@@ -33,9 +31,6 @@ const ChickenSoccerStory = () => {
                     <iframe src="https://giphy.com/embed/kyXRKuEYmGhscoz3ki" width="100%" className="rounded" allowFullScreen></iframe>
                     <iframe src="https://giphy.com/embed/llUeFDNRaLWvokhbat" width="100%" className="rounded" allowFullScreen></iframe>
                 </Slider>
-            </div>
-        </div>
-
     )
 }
 
