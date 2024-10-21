@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import "./globals.css";
 import { Header } from "~/src/components/Header/Header";
@@ -14,23 +14,33 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   const pathName = usePathname();
   const isHome = pathName === "/";
-  const [isLoading, setIsLoading] = useState(isHome);
+  const [isLoading, setIsLoading] = useState(false); // Commence à false
 
   useEffect(() => {
-    if (isLoading) return;
+    // Vérifie si le splash screen a déjà été affiché
+    const hasShownSplash = localStorage.getItem("hasShownSplash");
 
-  }, [isLoading]);
+    if (!hasShownSplash && isHome) {
+      setIsLoading(true); // Affiche le splash screen si c'est la première visite
+    } else {
+      setIsLoading(false); // Sinon, ne pas afficher le splash screen
+    }
+  }, [isHome]);
 
+  const handleFinishLoading = () => {
+    setIsLoading(false);
+    localStorage.setItem("hasShownSplash", "true");
+  };
 
   return (
     <html lang="en">
       <head />
       <body className="flex flex-col min-h-screen">
-        {isLoading && isHome ? (
-          <SplashScreen finishLoading={() => setIsLoading(false)} />) :
+        {isLoading ? (
+          <SplashScreen finishLoading={handleFinishLoading} />
+        ) : (
           <>
             <Header />
             <main className="flex-grow">{children}</main>
@@ -38,7 +48,7 @@ export default function RootLayout({
             <BottomNavBar />
             <Footer />
           </>
-        }
+        )}
       </body>
     </html>
   );

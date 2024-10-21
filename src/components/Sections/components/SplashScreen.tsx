@@ -99,7 +99,7 @@ const SplashScreen = ({ finishLoading }: { finishLoading: () => void }) => {
             animate();
             return () => clearTimeout(timeout);
         }
-    }, [hasShownSplash]); // Ajoute hasShownSplash comme dépendance
+    }, [hasShownSplash]);
 
     return (
         <div className="flex h-screen items-center justify-center" style={{ backgroundColor: bgColor }}>
@@ -139,8 +139,8 @@ const SplashScreen = ({ finishLoading }: { finishLoading: () => void }) => {
                             id="logo2"
                             src="/images/logo.png"
                             alt="Logo 2"
-                            width={250}
-                            height={250}
+                            width={230}
+                            height={230}
                         />
                     )}
                 </>
