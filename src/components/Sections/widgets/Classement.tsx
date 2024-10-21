@@ -79,7 +79,7 @@ const ClassementComponent = () => {
         setLastUpdated(latestUpdate);
 
         // Vérifier et mettre à jour les données en base si nécessaire
-      //  await checkAndUpdateDatabase(latestUpdate, data["hydra:member"]);
+        //  await checkAndUpdateDatabase(latestUpdate, data["hydra:member"]);
 
         // Récupérer les logos pour chaque équipe
         const logoPromises = data["hydra:member"].map(async (classement) => {
@@ -216,10 +216,11 @@ const ClassementComponent = () => {
 
   return (
     <div className="p-4 mb-5">
-      <h1 className="text-2xl text-center font-bold py-5 uppercase">
-        Classement
-      </h1>
+      <h2 className="text-2xl text-center font-bold py-5 uppercase">
+        Classement U16 R1 Occitanie
+      </h2>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+        <button className="bg-transparent hover:bg-gray-200 text-black font-bold py-2 px-4 border border-gray-300 rounded" onClick={handleRefresh}>Saison 2024-2025</button>
         <p className="text-sm text-black mt-2 md:mt-0">
           Mise à jour le : {formatDate(lastUpdated)}
         </p>
