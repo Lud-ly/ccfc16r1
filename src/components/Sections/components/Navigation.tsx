@@ -119,8 +119,8 @@ const Navigation = () => {
                 <iframe src="https://giphy.com/embed/fUGW4erfIYUJRoZIwZ" width="100%" className="rounded" allowFullScreen></iframe>
                 <iframe src="https://giphy.com/embed/L2llNi8VK3XgfuDUKR" width="100%" className="rounded" allowFullScreen></iframe>
                 <iframe src="https://giphy.com/embed/SYoYIr1xwXExnGaQuM" width="100%" className="rounded" allowFullScreen></iframe>
-                <iframe src="https://giphy.com/embed/U6eTGDLMa0L1FWkL9Z" width="100%" className="rounded" allowFullScreen></iframe>
                 <iframe src="https://giphy.com/embed/Sql4zgbgJCH2BtdJT8" width="100%" className="rounded" allowFullScreen></iframe>
+                <iframe src="https://giphy.com/embed/U6eTGDLMa0L1FWkL9Z" width="100%" className="rounded" allowFullScreen></iframe>
                 <iframe src="https://giphy.com/embed/jRwKzj28kaAxbfH5fC" width="100%" className="rounded" allowFullScreen></iframe>
                 <iframe src="https://giphy.com/embed/kyXRKuEYmGhscoz3ki" width="100%" className="rounded" allowFullScreen></iframe>
                 <iframe src="https://giphy.com/embed/llUeFDNRaLWvokhbat" width="100%" className="rounded" allowFullScreen></iframe>

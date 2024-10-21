@@ -267,10 +267,22 @@ const GraphComponent: React.FC = () => {
             </div>
             {/* Graphiques pour Meilleures Attaques */}
             <div className="flex flex-col gap-4">
-                {bestAttackers.map(({ club }, index) => (
+                {bestAttackers.map(({ club, logo }, index) => (
                     activeClub === club && (
                         <div key={index} className="w-full mt-4">
-                            <div>
+                            <div className="flex flex-row items-center justify-around">
+                                <Image
+                                    src={logo}
+                                    alt={`Logo ${club}`}
+                                    width={60}
+                                    height={60}
+                                    className="mx-auto my-2 w-auto h-auto"
+                                    onError={(e) => {
+                                        e.currentTarget.onerror = null;
+                                        e.currentTarget.src = "./images/next.svg";
+                                    }}
+                                    unoptimized
+                                />
                                 <select
                                     value={chartType}
                                     onChange={(e) => setChartType(e.target.value as "line" | "bar")}
@@ -330,9 +342,24 @@ const GraphComponent: React.FC = () => {
                     </div>
                     {/* Graphiques pour Meilleures Défenses */}
                     <div className="flex flex-col gap-4">
-                        {bestDefenders.map(({ club }, index) => (
+                        
+                        {bestDefenders.map(({ club, logo }, index) => (
                             activeClub === club && (
                                 <div key={index} className="w-full mt-4">
+                                       <div className="flex flex-row items-center justify-around">
+                                <Image
+                                    src={logo}
+                                    alt={`Logo ${club}`}
+                                    width={60}
+                                    height={60}
+                                    className="mx-auto my-2 w-auto h-auto"
+                                    onError={(e) => {
+                                        e.currentTarget.onerror = null;
+                                        e.currentTarget.src = "./images/next.svg";
+                                    }}
+                                    unoptimized
+                                />
+                                </div>
                                     {chartType === "line" ? (
                                         <Line data={generateChartDataForClub(club, results)} options={commonOptions} />
                                     ) : (
@@ -369,8 +396,6 @@ const GraphComponent: React.FC = () => {
                             </div>
                         ))}
                     </div>
-
-
                 </div>
             )}
         </div>
