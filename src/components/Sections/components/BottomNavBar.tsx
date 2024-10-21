@@ -52,15 +52,6 @@ const BottomNavBar: React.FC = () => {
           <h6 className="text-[9px] text-white font-semibold tracking-wide mr-3">
             🐔 Les Rôtis du Foot &copy; {currentYear}
           </h6>
-          <span className="text-[10px] text-white">Source:</span>
-          <a
-            href="https://occitanie.fff.fr"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[10px] text-white ml-1 underline hover:text-blue-500 transition-colors"
-          >
-            occitanie.fff.fr
-          </a>
         </div>
       </div>
     </nav>
