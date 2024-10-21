@@ -7,6 +7,7 @@ import Image from "next/image";
 import Loader from "../../src/components/Sections/components/Loader";
 import { FaSync } from "react-icons/fa";
 import Link from "next/link";
+import { ChickenSoccerStory } from "~/src/components/Sections/components/ChickenSoccerStory";
 
 
 export default function TousLesMatchsPage() {
@@ -164,7 +165,7 @@ export default function TousLesMatchsPage() {
                 {selectedJournee === Number(journeeNumber) && (
                   <>
                     <tr className="bg-yellow-100">
-                      <td colSpan={4} className="text-center text-blue-500 font-bold bg-yellow-500 text-2xl p-5">
+                      <td colSpan={4} className="text-center text-blue-500 font-bold bg-yellow-500 text-2xl p-5 rounded">
                         {journeeNumber}
                         <sup>{getSuffix(Number(journeeNumber))}</sup> Journée
                       </td>
@@ -299,6 +300,7 @@ export default function TousLesMatchsPage() {
           disabledClassName="pagination__link--disabled text-gray-400 cursor-not-allowed"
           forcePage={currentPage - 1}
         />
+        <ChickenSoccerStory />
       </div>
     </div>
   );
