@@ -64,39 +64,49 @@ const MatchsAVenirPage: React.FC = () => {
           <Link key={match.ma_no} href={`/matchs/${match.ma_no}`}>
             <div className="border p-4 rounded-md shadow-md cursor-pointer">
               <p className="text-center mt-2">
-                {new Date(match.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).replace(/^\w/, (c) => c.toUpperCase())} à <span className='text-blue-500'>{match.time}</span>
+                {new Date(match.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).replace(/^\w/, (c) => c.toUpperCase())} à <span className="text-blue-500">{match.time}</span>
               </p>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center w-1/3">
+
+              <div className="grid grid-cols-3 gap-4 items-center mt-4">
+                {/* Équipe domicile */}
+                <div className="flex flex-col items-center shadow-lg rounded-lg p-3">
                   <Image
                     src={match.home.club.logo}
                     alt={`Logo ${match.home.club.logo}`}
                     width={40}
                     height={40}
-                    className="w-10 h-10 mr-4"
+                    className="w-10 h-10 mb-2"
                     onError={(e) => {
                       e.currentTarget.onerror = null;
                       e.currentTarget.src = "/next.svg.png";
                     }}
                   />
-                  <span className="truncate">{match.home.short_name}</span>
+                  <span className="text-center truncate max-w-full text-sm">
+                    {match.home.short_name.split(' ')[0]}
+                  </span>
                 </div>
-                <div className="text-lg font-bold w-1/3 text-center">
+
+                {/* Score */}
+                <div className="text-2xl font-bold text-center shadow-lg rounded-lg p-3">
                   {match.home_score} - {match.away_score}
                 </div>
-                <div className="flex items-center w-1/3 justify-end">
-                  <span className="truncate">{match.away.short_name}</span>
+
+                {/* Équipe extérieur */}
+                <div className="flex flex-col items-center shadow-lg rounded-lg p-3">
                   <Image
                     src={match.away.club.logo}
-                    alt={`${match.away.short_name} logo`}
+                    alt={`Logo ${match.away.club.logo}`}
                     width={40}
                     height={40}
-                    className="w-10 h-10 ml-4"
+                    className="w-10 h-10 mb-2"
                     onError={(e) => {
                       e.currentTarget.onerror = null;
                       e.currentTarget.src = "/next.svg.png";
                     }}
                   />
+                  <span className="text-center truncate max-w-full text-sm">
+                    {match.away.short_name.split(' ')[0]}
+                  </span>
                 </div>
               </div>
             </div>

@@ -169,75 +169,75 @@ export default function TousLesMatchsPage() {
                     </tr>
                     {matches.map((match) => (
                       <tr key={match.ma_no} className="border-b-2 border-gray-700 bg-white my-4">
-                        <td className="p-2 block sm:table-cell">
-                          <Link href={`/matchs/${match.ma_no}`} className="block w-full h-full">
-                            <div className="flex flex-row justify-around items-center m-2">
-                              <span className="text-gray-500">
-                                {new Date(match.date).toLocaleDateString('fr-FR', {
-                                  weekday: 'long',
-                                  year: 'numeric',
-                                  month: 'long',
-                                  day: 'numeric'
-                                }).replace(/^\w/, (c) => c.toUpperCase())}{" "}
-                                à <span className="text-blue-500">{match.time}</span>
-                              </span>
-                            </div>
-                          </Link>
-                        </td>
-                        <td className="p-2 block sm:table-cell">
-                          <Link href={`/matchs/${match.ma_no}`} className="block w-full h-full">
-                            <div className="flex flex-row justify-around items-center m-2">
-                              <Image
-                                src={match.home.club.logo}
-                                alt={`Logo ${match.home.club.logo}`}
-                                width={40}
-                                height={40}
-                                className="w-8 h-8 m-2"
-                                onError={(e) => {
-                                  e.currentTarget.onerror = null;
-                                  e.currentTarget.src = "/next.svg.png";
-                                }}
-                              />
-                              <span className="w-32 text-center font-bold">{match.home.short_name}</span>
-                              <span className="text-blue-500 text-sm mx-2">vs</span>
-                              <span className="w-32 text-center font-bold">{match.away.short_name}</span>
-                              <Image
-                                src={match.away.club.logo}
-                                alt={`Logo ${match.away.short_name}`}
-                                width={40}
-                                height={40}
-                                className="w-8 h-8 m-2"
-                                onError={(e) => {
-                                  e.currentTarget.onerror = null;
-                                  e.currentTarget.src = "/next.svg.png";
-                                }}
-                              />
-                            </div>
-                          </Link>
-                        </td>
-                        <td className="p-2 font-semibold block sm:table-cell">
-                          <Link href={`/matchs/${match.ma_no}`} className="block w-full h-full">
-                            <div className="flex flex-row justify-around items-center m-2">
-                              {match.home_score !== null && match.away_score !== null ? (
-                                <h2 className="text-lg sm:text-2xl font-bold">
-                                  {match.home_score} - {match.away_score}
-                                </h2>
-                              ) : (
-                                <h2 className="text-lg sm:text-2xl font-bold">⏳</h2>
-                              )}
-                            </div>
-                          </Link>
-                        </td>
-                        <td className="p-2 block sm:table-cell">
-                          <Link href={`/matchs/${match.ma_no}`} className="block w-full h-full">
-                            <div className="flex flex-row justify-center items-center m-2">
-                              <span className="text-gray-500 text-sm">
-                                {match.terrain?.name ?? "⏳"}, {match.terrain?.city ?? ""}
-                              </span>
-                            </div>
-                          </Link>
-                        </td>
-                      </tr>
+                          <td className="p-2 block sm:table-cell">
+                            <Link href={`/matchs/${match.ma_no}`} className="block w-full h-full mt-5">
+                              <div className="flex flex-row justify-around items-center m-2">
+                                {/* Équipe domicile */}
+                                <div className="flex flex-col items-center">
+                                  <Image
+                                    src={match.home.club.logo}
+                                    alt={`Logo ${match.home.club.logo}`}
+                                    width={70}
+                                    height={70}
+                                    className="mb-2"
+                                    onError={(e) => {
+                                      e.currentTarget.onerror = null;
+                                      e.currentTarget.src = "/next.svg.png";
+                                    }}
+                                  />
+                                  <span className="text-center text-sm font-bold">
+                                    {match.home.short_name.split(' ')[0]}
+                                  </span>
+                                </div>
+
+                                {/* VS */}
+                                <div className="flex flex-col items-center justify-center">
+                                  <span className="text-blue-500 text-2xl">vs</span>
+                                </div>
+
+                                {/* Équipe extérieur */}
+                                <div className="flex flex-col items-center">
+                                  <Image
+                                    src={match.away.club.logo}
+                                    alt={`Logo ${match.away.short_name}`}
+                                    width={70}
+                                    height={70}
+                                    className="mb-2"
+                                    onError={(e) => {
+                                      e.currentTarget.onerror = null;
+                                      e.currentTarget.src = "/next.svg.png";
+                                    }}
+                                  />
+                                  <span className="text-center text-sm font-bold">
+                                    {match.away.short_name.split(' ')[0]}
+                                  </span>
+                                </div>
+                              </div>
+                            </Link>
+                          </td>
+                          <td className="p-2 font-semibold block sm:table-cell">
+                            <Link href={`/matchs/${match.ma_no}`} className="block w-full h-full">
+                              <div className="flex flex-row justify-around items-center m-2">
+                                {match.home_score !== null && match.away_score !== null ? (
+                                  <h2 className="text-lg sm:text-2xl font-bold">
+                                    {match.home_score} - {match.away_score}
+                                  </h2>
+                                ) : (
+                                  <h2 className="text-lg sm:text-2xl font-bold">⏳</h2>
+                                )}
+                              </div>
+                            </Link>
+                          </td>
+                          <td className="p-2 block sm:table-cell">
+                            <Link href={`/matchs/${match.ma_no}`} className="block w-full h-full">
+                              <div className="flex flex-row justify-center items-center m-2">
+                                <span className="text-gray-500 text-sm">
+                                  {match.terrain?.name ?? "⏳"}, {match.terrain?.city ?? ""}
+                                </span>
+                              </div>
+                            </Link>
+                          </td>
+                        </tr>
                     ))}
                   </>
                 )}
@@ -247,7 +247,7 @@ export default function TousLesMatchsPage() {
         </table>
       </div>
 
-      <div className="my-4 text-center">
+      <div className="my-14 text-center">
         <ReactPaginate
           previousLabel={
             <svg

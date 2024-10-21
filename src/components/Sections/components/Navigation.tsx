@@ -8,10 +8,6 @@ import {
   FaCalendarAlt,
   FaList,
   FaFutbol,
-  FaGraduationCap,
-  FaFacebook,
-  FaInstagram,
-  FaExternalLinkAlt,
   FaTrophy,
 } from "react-icons/fa";
 import SocialMediaLinks from "./SocialMediaLinks";
@@ -55,8 +51,8 @@ const Navigation = () => {
                 <Image
                   src="/images/logo.png"
                   alt="logo ccfc"
-                  width={50}
-                  height={50}
+                  width={70}
+                  height={70}
                   priority
                 />
                 <h1 className="ml-2 text-xl font-bold text-white">U16 R1</h1>

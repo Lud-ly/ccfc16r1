@@ -105,7 +105,7 @@ const MatchAVenirPage: React.FC<{ params: { 'matchId': string } }> = ({ params }
                     />
                     <span className="text-lg">{match.home.short_name}</span>
                 </div>
-                <div className="flex flex-row items-center w-1/2 justify-center text-3xl text-blue-500">
+                <div className="flex flex-row items-center w-1/2 justify-center shadow-lg rounded-lg p-3 text-5xl text-blue-800">
                     {match.home_score} - {match.away_score}
                 </div>
                 <div className="flex items-center w-1/2 justify-center">
@@ -133,7 +133,7 @@ const MatchAVenirPage: React.FC<{ params: { 'matchId': string } }> = ({ params }
                 <p>{matchMembre.label_position}</p>
 
             </div>
-            <Link href={`https://occitanie.fff.fr/competitions?competition_id=420289&poule=1&match_id=${params['matchId']}`} target="_blank">
+            <Link href={`https://occitanie.fff.fr/competitions?competition_id=420289&poule=1&match_id=${params['matchId']}`} target="_blank" className="mb-5">
                 <div className="flex justify-center items-center">
                     <button className="text-white rounded-md p-2 hover:bg-gray-900"style={{ backgroundColor: "rgb(9, 87, 159)" }}>
                         Fiche Match LFO

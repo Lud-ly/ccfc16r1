@@ -215,7 +215,7 @@ const ClassementComponent = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 mb-5">
       <h1 className="text-2xl text-center font-bold py-5 uppercase">
         Classement
       </h1>
