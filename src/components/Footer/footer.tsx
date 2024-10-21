@@ -15,7 +15,7 @@ const Footer = () => {
             occitanie.fff.fr
           </a>
           <h6 className="text-[10px] text-white font-semibold tracking-wide ml-2">
-            L.M &copy; {currentYear}
+            L.Mouly &copy; {currentYear}
           </h6>
         </div>
       </div>

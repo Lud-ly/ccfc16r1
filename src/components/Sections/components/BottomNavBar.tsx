@@ -6,6 +6,7 @@ import { FaChartLine, FaCalendarAlt, FaList, FaTrophy } from 'react-icons/fa';
 
 const BottomNavBar: React.FC = () => {
   const pathname = usePathname();
+  const currentYear = new Date().getFullYear();
 
   const getLinkStyle = (path: string) => {
     const isActive = pathname === path;
@@ -24,27 +25,43 @@ const BottomNavBar: React.FC = () => {
       <div className="flex justify-around items-center p-2">
         {/* Bouton Classement */}
         <Link href="/" className={getLinkStyle('/')}>
-          <FaTrophy className="text-[30px] sm:text-[34px]" />
-          <span className="text-[8px] sm:text-xs">Classement</span>
+          <FaTrophy className="text-[30px] sm:text-[34px] mb-3" />
+          {/* <span className="text-[8px] sm:text-xs">Classement</span> */}
         </Link>
 
         {/* Bouton Matchs */}
         <Link href="/matchs" className={getLinkStyle('/matchs')}>
-          <FaCalendarAlt className="text-[30px] sm:text-[34px]" />
-          <span className="text-[8px] sm:text-xs">Nos matchs</span>
+          <FaCalendarAlt className="text-[30px] sm:text-[34px] mb-3" />
+          {/* <span className="text-[8px] sm:text-xs">Nos matchs</span> */}
         </Link>
 
         {/* Bouton Tous les Matchs */}
         <Link href="/tous-les-matchs" className={getLinkStyle('/tous-les-matchs')}>
-          <FaList className="text-[30px] sm:text-[34px]" />
-          <span className="text-[8px] sm:text-xs">Tous les Matchs</span>
+          <FaList className="text-[30px] sm:text-[34px] mb-3" />
+          {/* <span className="text-[8px] sm:text-xs">Tous les Matchs</span> */}
         </Link>
 
         {/* Bouton Stats */}
         <Link href="/stats" className={getLinkStyle('/stats')}>
-          <FaChartLine className="text-[30px] sm:text-[34px]" />
-          <span className="text-[8px] sm:text-xs">Stats</span>
+          <FaChartLine className="text-[30px] sm:text-[34px] mb-3" />
+          {/* <span className="text-[8px] sm:text-xs">Stats</span> */}
         </Link>
+      </div>
+      <div className="flex justify-center items-center">
+        <div className="text-right flex flex-row items-center mx-auto">  
+          <h6 className="text-[10px] text-white font-semibold tracking-wide mr-3">
+            🐔 Rôtis du Foot &copy; {currentYear}
+          </h6>
+          <span className="text-[10px] text-white">Source:</span>
+          <a
+            href="https://occitanie.fff.fr"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] text-white ml-1 underline hover:text-blue-500 transition-colors"
+          >
+            occitanie.fff.fr
+          </a>
+        </div>
       </div>
     </nav>
   );

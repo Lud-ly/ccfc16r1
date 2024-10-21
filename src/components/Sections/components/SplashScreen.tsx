@@ -101,8 +101,8 @@ const SplashScreen = ({ finishLoading }: { finishLoading: () => void }) => {
                         id="logo2"
                         src="/images/logo.png"
                         alt="Logo 2"
-                        width={150}
-                        height={150}
+                        width={250}
+                        height={250}
                         style={{ display: showLogo1 ? 'none' : 'block' }} // Cache le logo 2 jusqu'à ce qu'il soit prêt à être affiché
                     />
                 </>

@@ -95,6 +95,7 @@ const Navigation = () => {
             >
               <FaChartLine className="mr-2 text-white" /> Stats
             </Link>
+            <iframe src="https://giphy.com/embed/elatsjsGzdLtNov4Ky" width="100%" className="mt-4 rouded"  allowFullScreen></iframe>
           </div>
         </div>
       )}
