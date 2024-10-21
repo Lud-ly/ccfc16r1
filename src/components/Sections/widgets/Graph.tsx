@@ -19,6 +19,7 @@ import Loader from "../components/Loader";
 import { ClubData, Match } from "~/types/types";
 import Image from "next/image";
 import { FaChartBar, FaChartLine } from "react-icons/fa";
+import ChickenSoccerStory from "../components/ChickenSoccerStory";
 
 ChartJS.register(
     CategoryScale,
@@ -398,6 +399,7 @@ const GraphComponent: React.FC = () => {
                     </div>
                 </div>
             )}
+             <ChickenSoccerStory/>
         </div>
     );
 };
