@@ -10,7 +10,7 @@ const BottomNavBar: React.FC = () => {
 
   const getLinkStyle = (path: string) => {
     const isActive = pathname === path;
-    return `flex flex-col items-center relative ${isActive ? 'text-yellow-300 scale-110' : 'text-white'}`;
+    return `flex flex-col items-center relative ${isActive ? 'text-yellow-500 scale-110' : 'text-white'}`;
   };
 
   return (
