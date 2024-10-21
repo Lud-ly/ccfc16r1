@@ -7,12 +7,14 @@ const SplashScreen = ({ finishLoading }: { finishLoading: () => void }) => {
     const [isMounted, setIsMounted] = useState(false);
     const [currentScreen, setCurrentScreen] = useState(0); // État pour suivre l'écran actuel
     const [bgColor, setBgColor] = useState("white"); // Couleur de fond initiale
+    const [hasShownSplash, setHasShownSplash] = useState(false); // État pour vérifier si le splash a été affiché
     const router = useRouter();
 
     const animate = () => {
         const loader = anime.timeline({
             complete: () => {
                 finishLoading();
+                setHasShownSplash(true); // Met à jour l'état pour indiquer que le splash a été affiché
                 setTimeout(() => {
                     router.push("/"); // Redirection vers la page d'accueil
                 }, 6000);
@@ -91,10 +93,13 @@ const SplashScreen = ({ finishLoading }: { finishLoading: () => void }) => {
     };
 
     useEffect(() => {
-        const timeout = setTimeout(() => setIsMounted(true), 10);
-        animate();
-        return () => clearTimeout(timeout);
-    }, []);
+        // Vérifie si le splash screen a déjà été affiché
+        if (!hasShownSplash) {
+            const timeout = setTimeout(() => setIsMounted(true), 10);
+            animate();
+            return () => clearTimeout(timeout);
+        }
+    }, [hasShownSplash]); // Ajoute hasShownSplash comme dépendance
 
     return (
         <div className="flex h-screen items-center justify-center" style={{ backgroundColor: bgColor }}>
