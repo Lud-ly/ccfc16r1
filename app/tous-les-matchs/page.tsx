@@ -8,6 +8,7 @@ import Loader from "../../src/components/Sections/components/Loader";
 import { FaSync } from "react-icons/fa";
 import Link from "next/link";
 
+
 export default function TousLesMatchsPage() {
   const [matches, setMatches] = useState<Match[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,6 +16,7 @@ export default function TousLesMatchsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedJournee, setSelectedJournee] = useState<number | null>(null);
 
+  // Find the page with the next match closest to the current date
   const findPageWithNextMatch = (allMatches: Match[]): number => {
     const today = new Date();
     const nextMatch = allMatches.find(match => new Date(match.date) >= today);
@@ -25,6 +27,7 @@ export default function TousLesMatchsPage() {
     return 1;
   };
 
+  // Fetch all matches and set the page with the closest upcoming match
   const fetchAllMatches = async () => {
     setIsLoading(true);
     try {
@@ -45,29 +48,28 @@ export default function TousLesMatchsPage() {
       }
 
       const nextPage = findPageWithNextMatch(allMatches);
-      setCurrentPage(nextPage);
+      setCurrentPage(nextPage); // Initially set to the closest match page
 
+      // Find the closest match's journee and set it
       const today = new Date();
       const nextMatch = allMatches.find(match => new Date(match.date) >= today);
       if (nextMatch) {
         setSelectedJournee(nextMatch.poule_journee.number);
       }
 
+      // Set matches for the closest match page
       const matchesForPage = allMatches.slice((nextPage - 1) * 30, nextPage * 30);
       setMatches(matchesForPage);
       setTotalPages(totalPages);
 
     } catch (error) {
-      if (error instanceof Error) {
-        console.error("Erreur lors de la récupération des matchs:", error.message);
-      } else {
-        console.error("Une erreur inconnue s'est produite");
-      }
+      console.error("Erreur lors de la récupération des matchs:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
+  // Fetch matches for a specific page
   const fetchMatchesForPage = async (page: number) => {
     setIsLoading(true);
     try {
@@ -78,28 +80,29 @@ export default function TousLesMatchsPage() {
       setMatches(data["hydra:member"]);
       setTotalPages(Math.ceil(data["hydra:totalItems"] / 30));
     } catch (error) {
-      if (error instanceof Error) {
-        console.error("Erreur lors de la récupération des matchs:", error.message);
-      } else {
-        console.error("Une erreur inconnue s'est produite");
-      }
+      console.error("Erreur lors de la récupération des matchs:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
+  // Fetch matches when the component is mounted and on page change
   useEffect(() => {
-    if (currentPage === 1) {
-      fetchAllMatches();
-    } else {
-      fetchMatchesForPage(currentPage);
+    fetchAllMatches(); // Initial fetch
+  }, []);
+
+  useEffect(() => {
+    if (currentPage > 1) {
+      fetchMatchesForPage(currentPage); // Fetch when the page changes
     }
   }, [currentPage]);
 
+  // Handle pagination click
   const handlePageClick = (selectedItem: { selected: number }) => {
     setCurrentPage(selectedItem.selected + 1);
   };
 
+  // Group matches by journee
   const groupedMatches = matches.reduce((acc: Record<number, Match[]>, match) => {
     const journeeNumber = match.poule_journee.number;
     if (!acc[journeeNumber]) {
