@@ -325,7 +325,9 @@ const GraphComponent: React.FC = () => {
                     </div>
 
                     {/* Podium Meilleures Défenses */}
-                    <h2 className="text-xl my-8 uppercase font-bold">Meilleures Défenses</h2>
+                    <div className="flex items-start mb-4">
+                        <h2 className="text-2xl font-bold">Meilleures Défenses</h2>
+                    </div>
                     {/* Graphiques pour Meilleures Défenses */}
                     <div className="flex flex-col gap-4">
                         {bestDefenders.map(({ club }, index) => (
