@@ -14,27 +14,29 @@ const ChickenSoccerStory = () => {
         pauseOnHover: true, // Mettre en pause le défilement lors du survol
     };
 
-  return(
-    <div className="">
-        <Slider {...settings}>
-            <iframe src="https://giphy.com/embed/elatsjsGzdLtNov4Ky" width="100%" className="rounded" allowFullScreen></iframe>
-            <iframe src="https://giphy.com/embed/iJhcSIRE8IhJEwWudO" width="100%" className="rounded" allowFullScreen></iframe>
-            <iframe src="https://giphy.com/embed/loeVS7xSL1o46LxeoK" width="100%" className="rounded" allowFullScreen></iframe>
-            <iframe src="https://giphy.com/embed/S6kvJjp6iGB6YXMbK4" width="100%" className="rounded" allowFullScreen></iframe>
-            <iframe src="https://giphy.com/embed/Kg9DmEoDJjhC1gWPHE" width="100%" className="rounded" allowFullScreen></iframe>
-            <iframe src="https://giphy.com/embed/QCIa3WEcgZCa6YmJT5" width="100%" className="rounded" allowFullScreen></iframe>
-            <iframe src="https://giphy.com/embed/fUGW4erfIYUJRoZIwZ" width="100%" className="rounded" allowFullScreen></iframe>
-            <iframe src="https://giphy.com/embed/L2llNi8VK3XgfuDUKR" width="100%" className="rounded" allowFullScreen></iframe>
-            <iframe src="https://giphy.com/embed/SYoYIr1xwXExnGaQuM" width="100%" className="rounded" allowFullScreen></iframe>
-            <iframe src="https://giphy.com/embed/Sql4zgbgJCH2BtdJT8" width="100%" className="rounded" allowFullScreen></iframe>
-            <iframe src="https://giphy.com/embed/U6eTGDLMa0L1FWkL9Z" width="100%" className="rounded" allowFullScreen></iframe>
-            <iframe src="https://giphy.com/embed/jRwKzj28kaAxbfH5fC" width="100%" className="rounded" allowFullScreen></iframe>
-            <iframe src="https://giphy.com/embed/kyXRKuEYmGhscoz3ki" width="100%" className="rounded" allowFullScreen></iframe>
-            <iframe src="https://giphy.com/embed/llUeFDNRaLWvokhbat" width="100%" className="rounded" allowFullScreen></iframe>
-        </Slider>
-    </div>
+    return (
+        <div className="rounded-full bg-white h-64 w-64 border-4 border-gray-500 flex items-center justify-center my-4">
+            <div className="h-full w-full flex items-center justify-center">
+                <Slider {...settings}>
+                    <iframe src="https://giphy.com/embed/elatsjsGzdLtNov4Ky" width="100%" className="rounded" allowFullScreen></iframe>
+                    <iframe src="https://giphy.com/embed/iJhcSIRE8IhJEwWudO" width="100%" className="rounded" allowFullScreen></iframe>
+                    <iframe src="https://giphy.com/embed/loeVS7xSL1o46LxeoK" width="100%" className="rounded" allowFullScreen></iframe>
+                    <iframe src="https://giphy.com/embed/S6kvJjp6iGB6YXMbK4" width="100%" className="rounded" allowFullScreen></iframe>
+                    <iframe src="https://giphy.com/embed/Kg9DmEoDJjhC1gWPHE" width="100%" className="rounded" allowFullScreen></iframe>
+                    <iframe src="https://giphy.com/embed/QCIa3WEcgZCa6YmJT5" width="100%" className="rounded" allowFullScreen></iframe>
+                    <iframe src="https://giphy.com/embed/fUGW4erfIYUJRoZIwZ" width="100%" className="rounded" allowFullScreen></iframe>
+                    <iframe src="https://giphy.com/embed/L2llNi8VK3XgfuDUKR" width="100%" className="rounded" allowFullScreen></iframe>
+                    <iframe src="https://giphy.com/embed/SYoYIr1xwXExnGaQuM" width="100%" className="rounded" allowFullScreen></iframe>
+                    <iframe src="https://giphy.com/embed/Sql4zgbgJCH2BtdJT8" width="100%" className="rounded" allowFullScreen></iframe>
+                    <iframe src="https://giphy.com/embed/U6eTGDLMa0L1FWkL9Z" width="100%" className="rounded" allowFullScreen></iframe>
+                    <iframe src="https://giphy.com/embed/jRwKzj28kaAxbfH5fC" width="100%" className="rounded" allowFullScreen></iframe>
+                    <iframe src="https://giphy.com/embed/kyXRKuEYmGhscoz3ki" width="100%" className="rounded" allowFullScreen></iframe>
+                    <iframe src="https://giphy.com/embed/llUeFDNRaLWvokhbat" width="100%" className="rounded" allowFullScreen></iframe>
+                </Slider>
+            </div>
+        </div>
 
-  )
+    )
 }
 
 export default ChickenSoccerStory;
