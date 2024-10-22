@@ -261,7 +261,7 @@ const GraphComponent: React.FC = () => {
     const bestDefenders = sortClubs(results, 'defense').slice(0, 3); // Top 3 for defenders
 
     return (
-        <div className="p-8 bg-gray-100 min-h-screen">
+        <div className="p-8 bg-white min-h-screen">
             {/* Podium Meilleures Attaques */}
             <div className="flex items-start mb-4">
                 <h2 className="text-2xl font-bold">Meilleures Attaques</h2>

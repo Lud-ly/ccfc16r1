@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   const pathName = usePathname();
   const isHome = pathName === "/";
-  const [isLoading, setIsLoading] = useState(false); // Commence à false
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // Vérifie si le splash screen a déjà été affiché
@@ -25,7 +25,7 @@ export default function RootLayout({
     if (!hasShownSplash && isHome) {
       setIsLoading(true); // Affiche le splash screen si c'est la première visite
     } else {
-      setIsLoading(false); // Sinon, ne pas afficher le splash screen
+      setIsLoading(false); // Sinon, ne pas afficher 
     }
   }, [isHome]);
 
