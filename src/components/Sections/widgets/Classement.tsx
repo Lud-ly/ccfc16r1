@@ -47,7 +47,7 @@ interface ClubResult {
 }
 const baseUrl =
   process.env.NODE_ENV === "production"
-    ? "https://parlonsfoot.vercel.app"
+    ? "https://ccfc16r1.vercel.app"
     : "http://localhost:3000";
 
 const ClassementComponent = () => {
