@@ -62,47 +62,42 @@ const ClassementComponent = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    let isCancelled = false;
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    // Fonction pour récupérer les classements
     const fetchClassements = async () => {
       setIsLoading(true);
 
       try {
-        const res = await fetch(
-          "https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/classement_journees"
-        );
-        const data: ApiResponse = await res.json();
-        if (isCancelled) return;
+        const res = await fetch('/api/classements', { signal });
+        if (!res.ok) throw new Error("Failed to fetch classement data");
+        const data = await res.json();
+
         setClassements(data["hydra:member"]);
 
         // Obtenir la date de mise à jour la plus récente
-        const latestUpdate = data["hydra:member"].reduce((latest, current) => {
+        const latestUpdate = data["hydra:member"].reduce((latest: string, current: any) => {
           return latest > current.external_updated_at
             ? latest
             : current.external_updated_at;
         }, "");
         setLastUpdated(latestUpdate);
 
-        // Vérifier et mettre à jour les données en base si nécessaire
-        //  await checkAndUpdateDatabase(latestUpdate, data["hydra:member"]);
-
         // Récupérer les logos pour chaque équipe
-        const logoPromises = data["hydra:member"].map(async (classement) => {
+        const logoPromises = data["hydra:member"].map(async (classement: any) => {
           const clubId = classement.equipe.club["@id"].split("/").pop();
           try {
-            const clubRes = await fetch(
-              `https://api-dofa.prd-aws.fff.fr/api/clubs/${clubId}`
-            );
-            const clubData: ClubData = await clubRes.json();
+            const clubRes = await fetch(`/api/clubs/${clubId}`, { signal });
+            const clubData = await clubRes.json();
             return { clubId, logo: clubData.logo };
           } catch (error) {
-            console.error(
-              `Erreur lors de la récupération du logo pour le club ${clubId}:`,
-              error
-            );
+            console.error(`Erreur lors de la récupération du logo pour le club ${clubId}:`, error);
             return { clubId, logo: null };
           }
         });
 
+        // Stocker les logos dans un objet { clubId: logo }
         const logosData = await Promise.all(logoPromises);
         const logosMap = logosData.reduce((acc, { clubId, logo }) => {
           if (clubId && logo) {
@@ -112,25 +107,27 @@ const ClassementComponent = () => {
         }, {} as { [key: string]: string });
 
         setLogos(logosMap);
-        setIsLoading(false);
       } catch (error) {
         console.error("Erreur lors de la récupération des classements:", error);
+      } finally {
         setIsLoading(false);
       }
     };
 
-
-
+    // Fonction pour récupérer les résultats des clubs
     const fetchClubResults = async () => {
+      setLoading(true);
+
       try {
-        const response = await fetch(`${baseUrl}/api/club-results`, {
+        const res = await fetch(`${baseUrl}/api/club-results`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
+          signal,
         });
-        if (!response.ok) throw new Error("Network response was not ok");
-        const data: ClubResult[] = await response.json();
+        if (!res.ok) throw new Error("Network response was not ok");
+        const data = await res.json();
 
         setResults(data);
       } catch (error) {
@@ -139,9 +136,13 @@ const ClassementComponent = () => {
         setLoading(false);
       }
     };
-    fetchClubResults();
+
     fetchClassements();
-    return () => { isCancelled = true; };
+    fetchClubResults();
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   const formatDate = (dateString: string) => {
@@ -223,7 +224,6 @@ const ClassementComponent = () => {
       <h2 className="text-2xl text-center font-bold py-5 uppercase">
         Classement U16 R1 Occitanie
       </h2>
-      {classements[0].poule.name}
       <div className="flex flex-row justify-between items-start md:items-center mb-4">
         <p className="text-sm text-black mt-2 md:mt-0 mr-2">
           Mise à jour le : {formatDate(lastUpdated)}
