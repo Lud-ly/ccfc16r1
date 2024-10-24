@@ -86,13 +86,6 @@ const Navigation = () => {
             >
               <FaList className="mr-2 text-white" /> Tous les Matchs
             </Link>
-            <Link
-              href="/stats"
-              className="flex items-center py-2 text-xl text-white hover:text-blue-300 uppercase"
-              onClick={handleLinkClick}
-            >
-              <FaChartLine className="mr-2 text-white" /> Stats
-            </Link>
           </div>
         </div>
       )}

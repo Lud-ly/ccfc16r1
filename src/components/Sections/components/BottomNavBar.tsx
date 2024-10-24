@@ -41,11 +41,6 @@ const BottomNavBar: React.FC = () => {
           {/* <span className="text-[8px] sm:text-xs">Tous les Matchs</span> */}
         </Link>
 
-        {/* Bouton Stats */}
-        <Link href="/stats" className={getLinkStyle('/stats')}>
-          <FaChartLine className="text-[30px] sm:text-[34px] mb-3" />
-          {/* <span className="text-[8px] sm:text-xs">Stats</span> */}
-        </Link>
       </div>
       <div className="flex justify-center items-center">
         <div className="text-right flex flex-row items-center mx-auto">  
