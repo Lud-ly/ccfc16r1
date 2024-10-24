@@ -51,7 +51,7 @@ interface ClubResult {
 const baseUrl =
   process.env.NODE_ENV === "production"
     ? "https://ccfc16r1.vercel.app"
-    : "http://localhost:3000";
+    : "http://localhost:3001";
 
 const ClassementComponent = () => {
   const [classements, setClassements] = useState<ClassementJournee[]>([]);
