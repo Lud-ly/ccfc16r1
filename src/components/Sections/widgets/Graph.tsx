@@ -43,9 +43,7 @@ const GraphComponent: React.FC = () => {
         const fetchMatchResults = async (page: number = 1) => {
             setIsLoading(true);
             try {
-                const response = await fetch(
-                    `https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/matchs?page=${page}`
-                );
+                const response = await fetch(`/api/matchs?page=${page}`);
                 const data = await response.json();
 
                 const clubIds = new Set<number>();
@@ -78,7 +76,7 @@ const GraphComponent: React.FC = () => {
 
     const fetchClubLogo = async (clubId: number) => {
         try {
-            const clubRes = await fetch(`https://api-dofa.prd-aws.fff.fr/api/clubs/${clubId}`);
+            const clubRes = await fetch(`/api/clubs/${clubId}`);
             const clubData: ClubData = await clubRes.json();
             return { clubId, logo: clubData.logo, shortName: clubData.name };
         } catch (error) {
@@ -343,24 +341,24 @@ const GraphComponent: React.FC = () => {
                     </div>
                     {/* Graphiques pour Meilleures Défenses */}
                     <div className="flex flex-col gap-4">
-                        
+
                         {bestDefenders.map(({ club, logo }, index) => (
                             activeClub === club && (
                                 <div key={index} className="w-full mt-4">
-                                       <div className="flex flex-row items-center justify-around">
-                                <Image
-                                    src={logo}
-                                    alt={`Logo ${club}`}
-                                    width={60}
-                                    height={60}
-                                    className="mx-auto my-2 w-auto h-auto"
-                                    onError={(e) => {
-                                        e.currentTarget.onerror = null;
-                                        e.currentTarget.src = "./images/next.svg";
-                                    }}
-                                    unoptimized
-                                />
-                                </div>
+                                    <div className="flex flex-row items-center justify-around">
+                                        <Image
+                                            src={logo}
+                                            alt={`Logo ${club}`}
+                                            width={60}
+                                            height={60}
+                                            className="mx-auto my-2 w-auto h-auto"
+                                            onError={(e) => {
+                                                e.currentTarget.onerror = null;
+                                                e.currentTarget.src = "./images/next.svg";
+                                            }}
+                                            unoptimized
+                                        />
+                                    </div>
                                     {chartType === "line" ? (
                                         <Line data={generateChartDataForClub(club, results)} options={commonOptions} />
                                     ) : (
@@ -399,7 +397,7 @@ const GraphComponent: React.FC = () => {
                     </div>
                 </div>
             )}
-             <ChickenSoccerStory/>
+            <ChickenSoccerStory />
         </div>
     );
 };
