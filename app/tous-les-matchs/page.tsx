@@ -32,18 +32,14 @@ export default function TousLesMatchsPage() {
   const fetchAllMatches = async () => {
     setIsLoading(true);
     try {
-      const firstResponse = await fetch(
-        `https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/matchs?page=1`
-      );
+      const firstResponse = await fetch('/api/matchs/1');
       const firstData = await firstResponse.json();
       const totalItems = firstData["hydra:totalItems"];
       const totalPages = Math.ceil(totalItems / 30);
 
       const allMatches: Match[] = [];
       for (let page = 1; page <= totalPages; page++) {
-        const response = await fetch(
-          `https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/matchs?page=${page}`
-        );
+        const response = await fetch(`/api/matchs/${page}`); 
         const data = await response.json();
         allMatches.push(...data["hydra:member"]);
       }
@@ -74,9 +70,7 @@ export default function TousLesMatchsPage() {
   const fetchMatchesForPage = async (page: number) => {
     setIsLoading(true);
     try {
-      const response = await fetch(
-        `https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/matchs?page=${page}`
-      );
+      const response = await fetch(`/api/matchs/${page}`);
       const data = await response.json();
       setMatches(data["hydra:member"]);
       setTotalPages(Math.ceil(data["hydra:totalItems"] / 30));
@@ -92,8 +86,8 @@ export default function TousLesMatchsPage() {
   }, []);
 
   useEffect(() => {
-    if (currentPage >= 1) { //egal
-      fetchMatchesForPage(currentPage);
+    if (currentPage >= 1) {
+      fetchMatchesForPage(currentPage); // Fetch specific page on page change
     }
   }, [currentPage]);
 
@@ -116,7 +110,6 @@ export default function TousLesMatchsPage() {
     if (number === 1) return "ère";
     return "ème";
   };
-
   if (isLoading) {
     return (
       <div className="flex justify-center items-start min-h-screen">
@@ -301,7 +294,7 @@ export default function TousLesMatchsPage() {
           forcePage={currentPage - 1}
         />
       </div>
-      <ChickenSoccerStory/>
+      <ChickenSoccerStory />
     </div>
   );
 }

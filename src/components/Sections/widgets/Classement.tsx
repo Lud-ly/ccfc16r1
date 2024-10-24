@@ -6,9 +6,6 @@ import { FaArrowUp, FaArrowRight, FaArrowDown, FaSync } from "react-icons/fa";
 import Loader from "../components/Loader";
 import ChickenSoccerStory from "../components/ChickenSoccerStory";
 
-interface ClubData {
-  logo: string;
-}
 
 interface ClassementJournee {
   "@id": string;
