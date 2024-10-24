@@ -31,23 +31,36 @@ const MatchsAVenirPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     const fetchMatches = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(
-          'https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/matchs?page=1&clNo=23399'
-        );
+        const response = await fetch('/api/matchs', { signal });
+        if (!response.ok) {
+          throw new Error('Failed to fetch match data');
+        }
         const data = await response.json();
         setMatches(data['hydra:member']);
       } catch (error) {
-        console.error('Erreur lors du chargement des matchs:', error);
+        if (error === 'AbortError') {
+          console.log('Requête annulée');
+        } else {
+          console.error('Erreur lors du chargement des matchs:', error);
+        }
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchMatches();
+
+    return () => {
+      controller.abort(); // Annule la requête si le composant est démonté
+    };
   }, []);
+
 
   if (isLoading) {
     return (
@@ -114,7 +127,7 @@ const MatchsAVenirPage: React.FC = () => {
           </Link>
         ))}
       </div>
-      <ChickenSoccerStory/>
+      <ChickenSoccerStory />
     </div>
   );
 };
