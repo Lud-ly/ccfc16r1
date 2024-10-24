@@ -21,6 +21,9 @@ interface ClassementJournee {
   goals_for_count: number;
   goals_against_count: number;
   goals_diff: number;
+  poule: {
+    name: string;
+  };
   equipe: {
     club: {
       "@id": string;
@@ -220,6 +223,7 @@ const ClassementComponent = () => {
       <h2 className="text-2xl text-center font-bold py-5 uppercase">
         Classement U16 R1 Occitanie
       </h2>
+      {classements[0].poule.name}
       <div className="flex flex-row justify-between items-start md:items-center mb-4">
         <p className="text-sm text-black mt-2 md:mt-0 mr-2">
           Mise à jour le : {formatDate(lastUpdated)}
