@@ -5,7 +5,7 @@ import DernierMatch from "../src/components/Sections/widgets/DernierMatch";
 const Home = () => {
   return (
     <div className="container mx-auto">
-      <Classement />
+      {/* <Classement /> */}
     </div>
   );
 };
