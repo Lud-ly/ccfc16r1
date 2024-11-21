@@ -38,7 +38,7 @@ export default function RootLayout({
     <html lang="en">
       <head />
       <body className="flex flex-col min-h-screen">
-        {/* {isLoading ? (
+        {isLoading ? (
           <SplashScreen finishLoading={handleFinishLoading} />
         ) : (
           <>
@@ -48,7 +48,7 @@ export default function RootLayout({
             <BottomNavBar />
             <Footer />
           </>
-        )} */}
+        )}
       </body>
     </html>
   );
