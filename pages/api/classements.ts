@@ -3,10 +3,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const url = "https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/classement_journees";
+  const url = `https://api-dofa.fff.fr/api/compets/420289/phases/1/poules/1/classement_journees`;
 
   try {
     const response = await fetch(url);
+    console.log(response);
     if (!response.ok) throw new Error("Failed to fetch data");
 
     const data = await response.json();

@@ -11,6 +11,7 @@ interface ClubResult {
   goalsScored: number;
   goalsConceded: number;
   trend: string;
+  updatedAt:Date;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ClubResult[] | { error: string }>) {
@@ -55,6 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           winPercentage: winPercentage.toFixed(2), 
           drawPercentage: drawPercentage.toFixed(2),
           losePercentage: losePercentage.toFixed(2),
+          updatedAt: new Date(result.updatedAt),
         };
       });
       

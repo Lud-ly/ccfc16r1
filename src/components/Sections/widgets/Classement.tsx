@@ -48,7 +48,7 @@ interface ClubResult {
 const baseUrl =
   process.env.NODE_ENV === "production"
     ? "https://ccfc16r1.vercel.app"
-    : "http://localhost:3001";
+    : "http://localhost:3000";
 
 const ClassementComponent = () => {
   const [classements, setClassements] = useState<ClassementJournee[]>([]);
@@ -67,7 +67,7 @@ const ClassementComponent = () => {
       setIsLoading(true);
 
       try {
-        const res = await fetch('/api/classements', { signal });
+        const res = await fetch('/api/classements');
         if (!res.ok) throw new Error("Failed to fetch classement data");
         const data = await res.json();
 
@@ -138,7 +138,7 @@ const ClassementComponent = () => {
     fetchClubResults();
 
     return () => {
-      controller.abort();
+      // controller.abort();
     };
   }, []);
 
@@ -244,7 +244,7 @@ const ClassementComponent = () => {
               <th className="p-2 text-right">BP</th>
               <th className="p-2 text-right">BC</th>
               <th className="p-2 text-right">Diff</th>
-              <th className="p-2 text-center">T</th>
+              {/* <th className="p-2 text-center">T</th> */}
             </tr>
           </thead>
           <tbody>
@@ -302,7 +302,7 @@ const ClassementComponent = () => {
                       {classement.goals_for_count -
                         classement.goals_against_count}
                     </td>
-                    <td className="p-2 text-center">
+                    {/* <td className="p-2 text-center">
                       <div className="inline-block p-2 bg-black rounded-full">
                         {trend === "up" && (
                           <FaArrowUp className="text-green-500" />
@@ -320,7 +320,7 @@ const ClassementComponent = () => {
                           <FaArrowDown className="text-purple-500" />
                         )}
                       </div>
-                    </td>
+                    </td> */}
 
                   </tr>
                 );

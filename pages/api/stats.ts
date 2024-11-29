@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const { page } = req.query;
   // URL de l'API externe pour récupérer les matchs
-  const apiUrl = `https://api-dofa.fff.fr/api/compets/420289/phases/1/poules/1/matchs?page=1&clNo=23399`;
+  const apiUrl = `https://api-dofa.fff.fr/api/compets/420289/phases/1/poules/1/matchs?page=${page}`;
 
   try {
     const response = await fetch(apiUrl);

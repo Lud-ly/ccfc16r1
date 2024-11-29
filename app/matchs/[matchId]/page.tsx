@@ -58,7 +58,7 @@ const MatchAVenirPage: React.FC<{ params: { 'matchId': string } }> = ({ params }
             setIsLoading(true);
             try {
                 const response = await fetch(
-                    `https://api-dofa.prd-aws.fff.fr/api/match_membres?match_entity.ma_no=${params['matchId']}`
+                    `https://api-dofa.fff.fr/api/match_membres?match_entity.ma_no=${params['matchId']}`
                 );
                 const data: MatchData = await response.json();
                 setMatchData(data);

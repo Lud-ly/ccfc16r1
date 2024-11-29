@@ -4,7 +4,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // Vérifier que 'page' est fourni dans la requête, sinon, assigner une valeur par défaut
   const page = req.query.page || 1; // Utilise 1 comme valeur par défaut
 
-  const apiUrl = `https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/matchs?page=${page}`;
+  const apiUrl = `https://api-dofa.fff.fr/api/compets/420289/phases/1/poules/1/matchs?page=${page}`;
 
   try {
     const response = await fetch(apiUrl);

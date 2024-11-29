@@ -4,7 +4,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { clubId } = req.query;
 
   // URL de l'API externe pour récupérer les infos du club
-  const apiUrl = `https://api-dofa.prd-aws.fff.fr/api/clubs/${clubId}`;
+  const apiUrl = `https://api-dofa.fff.fr/api/clubs/${clubId}`;
 
   try {
     const response = await fetch(apiUrl);

@@ -43,11 +43,10 @@ const GraphComponent: React.FC = () => {
         const fetchMatchResults = async (page: number = 1) => {
             setIsLoading(true);
             try {
-                const response = await fetch(
-                    `https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/matchs?page=${page}`
-                );
-                // const response = await fetch(`/api/matchs?page=${page}`);
+                const response = await fetch(`/api/matchs?page=${page}`);
                 const data = await response.json();
+                console.log(data);
+                
                 const clubIds = new Set<number>();
                 data["hydra:member"].forEach((match: Match) => {
                     clubIds.add(match.home.club.cl_no);
@@ -58,15 +57,14 @@ const GraphComponent: React.FC = () => {
                 const logosData = await Promise.all(logoPromises);
                 const logosMap = logosData.reduce((acc, { clubId, logo, shortName }) => {
                     if (clubId && logo) {
-                        acc[shortName] = logo; // Use shortName as the key
-                        acc[logo] = logo; // Use shortName as the key
+                        acc[shortName] = logo;
+                        acc[logo] = logo;
                     }
                     return acc;
                 }, {} as { [key: string]: string });
 
                 setLogos(logosMap);
                 setResults(data["hydra:member"].sort((a: Match, b: Match) => a.poule_journee.number - b.poule_journee.number));
-                console.log(data["hydra:member"].sort((a: Match, b: Match) => a.poule_journee.number - b.poule_journee.number));
             } catch (error) {
                 console.error("Erreur lors de la récupération des résultats de match:", error);
             } finally {
@@ -78,8 +76,10 @@ const GraphComponent: React.FC = () => {
     }, []);
 
     const fetchClubLogo = async (clubId: number) => {
+        const controller = new AbortController();
+        const signal = controller.signal;
         try {
-            const clubRes = await fetch(`https://api-dofa.prd-aws.fff.fr/api/clubs/${clubId}`);
+            const clubRes = await fetch(`/api/clubs/${clubId}`, { signal });
             const clubData: ClubData = await clubRes.json();
             return { clubId, logo: clubData.logo, shortName: clubData.name };
         } catch (error) {
@@ -254,12 +254,12 @@ const GraphComponent: React.FC = () => {
                 points: stats.goalsFor - stats.goalsAgainst,
             }))
             .sort((a, b) => type === 'attack' ? b.goalsFor - a.goalsFor : a.goalsAgainst - b.goalsAgainst);
-
+         
         return sortedClubs;
     };
 
-    const bestAttackers = sortClubs(results, 'attack').slice(0, 3); // Top 3 for attackers
-    const bestDefenders = sortClubs(results, 'defense').slice(0, 3); // Top 3 for defenders
+    const bestAttackers = sortClubs(results, 'attack').slice(0, 4);
+    const bestDefenders = sortClubs(results, 'defense').slice(0, 4);
 
     return (
         <div className="p-8 bg-white min-h-screen">

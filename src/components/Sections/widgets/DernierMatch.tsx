@@ -14,7 +14,7 @@ export default function DernierMatch() {
         setIsLoading(true);
         try {
             const response = await fetch(
-                `https://api-dofa.prd-aws.fff.fr/api/compets/420289/phases/1/poules/1/matchs?page=1&clNo=23399`
+                `https://api-dofa.fff.fr/api/compets/420289/phases/1/poules/1/matchs?page=1&clNo=23399`
             );
             const data = await response.json();
             const matches = data["hydra:member"];
