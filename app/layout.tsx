@@ -8,7 +8,6 @@ import BottomNavBar from "~/src/components/Sections/components/BottomNavBar";
 import SplashScreen from "~/src/components/Sections/components/SplashScreen";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import ChickenSoccerStory from "~/src/components/Sections/components/ChickenSoccerStory";
 
 export default function RootLayout({
   children,
@@ -39,16 +38,7 @@ export default function RootLayout({
     <html lang="en">
       <head />
       <body className="flex flex-col min-h-screen">
-      {/* <div className="min-h-screen flex flex-col items-center justify-center bg-white text-gray-800 p-6">
-      <div className="max-w-md w-full text-center">
-        <h1 className="text-3xl font-bold mb-4">Accès réservé aux membres</h1>
-        <p className="text-lg mb-6">
-          Cette section est exclusivement réservée aux membres.
-        </p>
-        <ChickenSoccerStory/>
-      </div>
-    </div> */}
-        {/* {isLoading ? (
+        {isLoading ? (
           <SplashScreen finishLoading={handleFinishLoading} />
         ) : (
           <>
@@ -58,7 +48,7 @@ export default function RootLayout({
             <BottomNavBar />
             <Footer />
           </>
-        )} */}
+        )}
       </body>
     </html>
   );
