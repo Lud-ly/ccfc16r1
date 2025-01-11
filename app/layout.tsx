@@ -35,7 +35,6 @@ export default function RootLayout({
       <body className="flex flex-col min-h-screen">
         <div className="min-h-screen flex flex-col items-center justify-center bg-black text-gray-800 p-6">
           <div className="max-w-md w-full text-center">
-            <iframe src="https://giphy.com/embed/u31fedwl4J7G0" width="100%" height="100%" className="giphy-embed" allowFullScreen></iframe>
           </div>
         </div>
       </body>
