@@ -1,11 +1,6 @@
 "use client";
 
 import "./globals.css";
-import { Header } from "~/src/components/Header/Header";
-import Footer from "~/src/components/Footer/footer";
-import BackToTopButton from '../src/components/Sections/components/BackToTopButton';
-import BottomNavBar from "~/src/components/Sections/components/BottomNavBar";
-import SplashScreen from "~/src/components/Sections/components/SplashScreen";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -38,17 +33,11 @@ export default function RootLayout({
     <html lang="en">
       <head />
       <body className="flex flex-col min-h-screen">
-        {isLoading ? (
-          <SplashScreen finishLoading={handleFinishLoading} />
-        ) : (
-          <>
-            <Header />
-            <main className="flex-grow">{children}</main>
-            <BackToTopButton />
-            <BottomNavBar />
-            <Footer />
-          </>
-        )}
+        <div className="min-h-screen flex flex-col items-center justify-center bg-black text-gray-800 p-6">
+          <div className="max-w-md w-full text-center">
+            <iframe src="https://giphy.com/embed/u31fedwl4J7G0" width="100%" height="100%" className="giphy-embed" allowFullScreen></iframe>
+          </div>
+        </div>
       </body>
     </html>
   );
